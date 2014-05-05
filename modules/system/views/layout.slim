@@ -1,0 +1,17 @@
+doctype html
+html
+	head
+		title = @t[:title]
+		meta name="keywords" content="#{@t[:keywords]}"
+		meta name="description" content="#{@t[:description]}"
+		meta http-equiv="content-type" content="text/html; charset=UFT-8"
+		script src="#{_public('/js/jquery-172.js')}" type="text/javascript"
+		link rel="shortcut icon" href="#{_file(_var(:shortcut_icon, :system))}"
+		link rel='stylesheet' type='text/css' href='#{_public("/css/style.css")}'
+	body
+		#wrap
+			#header
+
+			== _tpl(:_message)
+
+			#bodyer == yield

@@ -1,0 +1,24 @@
+source 'http://rubygems.org'
+
+gem 'sequel', '3.42.0'
+gem 'pg'
+
+gem 'sinatra', '1.2.6'
+gem 'rack', '1.3.3'
+gem 'thin', '1.2.11'
+
+gem 'slim', '1.2.0'
+gem 'tilt', '1.3.3'
+gem 'temple', '0.4.0'
+
+gem 'sass', '3.1.7'
+gem 'redcarpet', '2.2.2'
+
+#gem 'rake'
+#gem 'thor', :git => 'git://github.com/wycats/thor.git'
+
+group :development do
+	gem 'sqlite3'
+	gem 'mysql'
+end
+

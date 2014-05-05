@@ -1,0 +1,35 @@
+form
+	.box-1
+		.title = L[:'selected tables']
+		.body
+			- DB.tables.each do | t |
+				label.mr10.lhover
+					input id="tn_#{t}" type="checkbox" name="table_name[]" value="#{t}"
+					label for="tn_#{t}" = t
+
+		.body
+			label.mr10 = L[:encoding]
+			input.mr10 type="text" name="encoding" value="#{@encoding}"
+
+			label.mr10 = L[:filename]
+			input.mr10 type="text" name="filename" placeholder='file name'
+
+			input.button type="submit" name="backup" value="#{L[:backup]}" formaction="/admin/_baks/backup" formmethod="post"
+
+	.box-1
+		.title = L[:'backup records']
+		table.table
+			- _fetch_backup_list.each do | f |
+				tr
+					td = f
+					td
+						a href="#{_url('', :opt => 'export', :id => f)}" = L[:export]
+					td
+						a href="#{_url('', :opt => 'recover', :id => f, :encoding => @encoding)}" = L[:recover]
+
+	.box-1
+		.title = L[:'inport records']
+		.body
+			input type="file" name="inport"
+			input.button type="submit" value="#{L[:execute]}" formaction="/admin/_baks/inport" formmethod="post" formenctype="multipart/form-data"
+

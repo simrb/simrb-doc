@@ -1,0 +1,107 @@
+form.form action="#{_url(@t[:action])}" method="post" id='adminform'
+	p
+		- unless @t[:btn_fns].empty?
+			- @t[:btn_fns].each do | name, method |
+				a.mr10 href="#{_url('', :_method_ => method)}"
+					button.button = L[name]
+			span |
+
+		- unless @t[:opt_fns].empty?
+			input.button.mr10 type="submit" value="#{L[:execute]}"
+			select.button.mr10 name="_method_"
+				- @t[:opt_fns].each do | k, v |
+					option value="#{v}" = L[k]
+			span |
+
+		input type="hidden" name="_name" value="#{@t[:name]}"
+
+		input type="hidden" name="_repath" value="#{_url}"
+
+
+form.form action="#{request.path}" method="get"
+	p
+		- unless @t[:search_fns].empty?
+			input.mr10 type="search" name="sc" placeholder="#{L[:keywords]}" value="#{@qs[:sc]}"
+
+			select.button.mr10 name="sw"
+				option value='' -- #{L[:all]} --
+				- @t[:search_fns].each do | k |
+					- label = @t[:data][k].has_key?(:label) ? L[@t[:data][k][:label]] : L[k]
+					- if @qs[:sw] == k.to_s
+						option selected="selected" value="#{k}" = label
+					- else
+						option value="#{k}" = label
+
+			input.button.mr10 type="submit" value="#{L[:search]}"
+.clear
+
+
+table.table
+	thead
+		- unless @t[:opt_fns].empty?
+			th
+
+		- @t[:fields].each do | k |
+			th
+				- label = @t[:data][k].has_key?(:label) ? L[@t[:data][k][:label]] : L[k]
+				- if @t[:orders].include?(k)
+					a href="#{_url('', :order => k)}" = label
+				- else
+					= label
+
+		- tag_enable = false
+		- if _tag_enable?(@t[:name]) and not _tags?(@t[:name])
+			- tag_enable = true
+			th = L[:tag]
+
+		- unless @t[:lnk_fns].empty?
+			th
+
+
+	tbody
+		- @ds.each do | row |
+			tr
+				- unless @t[:opt_fns].empty?
+					td
+						input type='checkbox' name="#{row.first[0]}[]" value="#{row.first[1]}" form="adminform"
+
+				- @t[:fields].each do | k |
+					- if @t[:data][k][:view_type] == :img
+						td : img.img src="#{_file(row[k])}"
+
+					- elsif @t[:data][k].has_key?(:assoc_one)
+						- kv = _kv(@t[:data][k][:assoc_one][0], k, @t[:data][k][:assoc_one][1])
+						- if @t[:data][k].has_key?(:index)
+							td : a href="#{_url2('', :sw => k, :sc => kv[row[k]])}" = kv[row[k]]
+						- else
+							td = kv[row[k]]
+
+					- elsif @t[:data][k].has_key?(:assoc_many)
+						- kv2 = _kv(@t[:data][k][:assoc_many][0], @t[:data][k][:assoc_many][1], @t[:data][k][:assoc_many][2])
+						- arr = _assoc_many(k, row[k])
+						td = arr.map{ |r| kv2[r] }.join(' , ')
+
+					- else
+						- if @t[:data][k].has_key?(:index)
+							td : a href="#{_url2('', :sw => k, :sc => row[k])}" = row[k]
+						- else
+							td = row[k]
+
+				- if tag_enable
+					td
+						== _tag_names(@t[:name], row.first[1])
+
+				- unless @t[:lnk_fns].empty?
+					td
+						- @t[:lnk_fns].each do | name, method |
+							a href="#{_url('', :_method_ => method, row.first[0] => row.first[1])}" = L[name]
+
+
+	- unless @t[:css].empty?
+		link rel='stylesheet' type='text/css' href='#{@t[:css]}'
+
+- if @page_count > 1
+	p.page_bar
+		- for i in 1..@page_count
+			- page_focus = i == @page_curr ? "page_focus" : ""
+			span class="#{page_focus}" : a href="#{_url2('', :page_curr => i)}" = i

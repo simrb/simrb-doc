@@ -1,0 +1,22 @@
+.table {
+	background-color: #f5f5f5;
+	padding: 5px;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border: 1px solid #ebebeb;
+}
+.table td, .table th { padding: 1px 5px; }
+.table thead { font-weight: normal; text-shadow: 0 1px 0 white; color: #999; }
+.table th { text-align: left; border-bottom: 1px solid #fff; }
+.table td { font-size: 14px; }
+.table .img { width: 32px; height: 32px; }
+.table a { color: black; }
+.table a:hover, .table a:focus, .table a:visited { color: blue; }
+.form { float: left; }
+.table { margin-top: 20px; }
+
+.page_bar {margin: 10px 0;}
+.page_bar a {padding: 3px; margin-right: 5px; color: black;}
+.page_focus a {background: #E7ECF0; font-weight: 900;}
+.page_bar span { margin: 0 3px; }

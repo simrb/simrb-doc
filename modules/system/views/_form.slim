@@ -1,0 +1,94 @@
+form.form action="#{_url2(@t[:action])}" method="post" id="editform"
+	p
+		- if @t[:back_fn] == :enable
+			a href="#{_url}"
+				button.button.mr10 = L[:return]
+
+		input.button type="submit" value="#{L[:save]}"
+		input type="hidden" name="_method_" value="#{@t[:_method_]}"
+		input type="hidden" name="_name" value="#{@t[:name]}"
+		input type="hidden" name="_repath" value="#{_url}"
+
+	- load_picture_js = false
+	- load_editor_js = false
+	- @t[:fields].each do | k |
+		- fieldclass = @t[:data][k][:class] if @t[:data][k].has_key?(:class)
+		- allownull = @t[:data][k].has_key?(:required) ? @t[:data][k][:required] : true
+
+		- unless @t[:data][k][:form_type] == :hide
+			- label = @t[:data][k].has_key?(:label) ? L[@t[:data][k][:label]] : L[k]
+			p : label = label
+
+		- if @t[:data][k][:form_type] == :select
+			- kv = _kv(@t[:data][k][:assoc_one][0], k, @t[:data][k][:assoc_one][1])
+			p : select name="#{k}" 
+				- kv.each do | ak,av |
+					- if @f[k] == ak
+						option selected="selected" value="#{ak}" = av
+					- else
+						option value="#{ak}" = av
+
+		- elsif @t[:data][k][:form_type] == :radio
+			- kv = _kv(@t[:data][k][:assoc_one][0], k, @t[:data][k][:assoc_one][1])
+			p
+				- kv.each do | ak,av |
+					- if @f[k] == ak
+						input id="radio_#{ak}" type="radio" name="#{k}" value="#{ak}" checked='checked'
+						label.mr10.pointer for="radio_#{ak}" = av
+					- else
+						input id="radio_#{ak}" type="radio" name="#{k}" value="#{ak}"
+						label.mr10.pointer for="radio_#{ak}" = av
+
+		- elsif @t[:data][k][:form_type] == :checkbox
+			- kv = _kv(@t[:data][k][:assoc_many][0], @t[:data][k][:assoc_many][1], @t[:data][k][:assoc_many][2])
+			- arr = _assoc_many(k, @f[k])
+			p
+				- arr.each do | ak |
+					- if @f[k] == ak
+						input id="ck_#{ak}" type="checkbox" name="#{k}[]" value="#{kv[ak]}" checked='checked'
+						label.mr10.pointer for="ck_#{ak}" = kv[ak]
+					- else
+						input id="ck_#{ak}" type="checkbox" name="#{k}[]" value="#{kv[ak]}"
+						label.mr10.pointer for="ck_#{ak}" = kv[ak]
+
+		- elsif @t[:data][k][:form_type] == :img
+			- load_picture_js = true
+			p : input class="#{fieldclass} ly_picture" type="number" name="#{k}" value="#{@f[k]}"
+
+		- elsif @t[:data][k][:form_type] == :number
+			p : input class="#{fieldclass}" type="number" name="#{k}" value="#{@f[k]}"
+
+		- elsif @t[:data][k][:form_type] == :hide
+			p : input class="#{fieldclass}" type="hidden" name="#{k}" value="#{@f[k]}"
+
+		- elsif @t[:data][k][:form_type] == :textarea
+			p : textarea class="#{fieldclass}" name="#{k}" required=allownull = @f[k]
+
+		- elsif @t[:data][k][:form_type] == :password
+			p : input class="#{fieldclass}" type="password" name="#{k}" required=allownull
+
+		- else
+			p : input class="#{fieldclass}" type="text" name="#{k}" required=allownull value="#{@f[k]}"
+
+
+	- if _tag_enable?(@t[:name])
+		p : label = L[:tag]
+		- if @t[:opt] == :update
+			- tag = _tag_names(@t[:name], @qs[@t[:pk]], :array)
+			p : input type="hidden" name="oldtag" value="#{tag}"
+
+		p : input type="text" name="tag" id="itags" value="#{tag}"
+
+		script src="#{_assets('/system/jquery.tagsinput.js')}"
+		link rel="stylesheet" type="text/css" href="#{_assets('/system/jquery.tagsinput.css')}"
+
+
+	- if load_picture_js == true
+		== _tpl(:_picture_js)
+
+
+	- unless @t[:css] == ''
+		link rel='stylesheet' type='text/css' href='#{@t[:css]}'
+
+	- unless @t[:js] == ''
+		script src="#{@t[:js]}"

@@ -1,0 +1,5 @@
+.form {float:left;}
+.form p {margin-bottom: 10px;}
+.form textarea {width: 500px; height: 200px;}
+.form input[type="text"] {width: 300px;}
+.form input[type="password"] {width: 300px;}

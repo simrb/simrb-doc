@@ -1,0 +1,8 @@
+*.swp
+*.gem
+db/*
+tmp/*
+log/*
+modules/*
+!modules/system
+scfg

@@ -1,0 +1,16 @@
+- if @msg != ''
+	#msg -- #{@msg}
+
+javascript:
+
+	if ($('#msg').text() != '') {
+		setTimeout(function(){
+			$('#msg').text('')
+		}, 5000)
+	}
+
+	$('#msg').mouseleave(function(){
+		if ($(this).text() != '') {
+			$(this).text('')
+		}
+	});

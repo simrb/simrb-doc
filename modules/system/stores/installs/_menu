@@ -1,0 +1,60 @@
+#system base menu
+name	= system
+link	= /admin/info
+tag		= admin
+
+name	= module
+link	= /admin/mods
+parent	= system
+tag		= admin
+
+name	= menu
+link	= /admin/menu
+parent	= system
+tag		= admin
+
+name	= settings
+link	= /admin/vars
+parent	= system
+tag		= admin
+
+name	= file
+link	= /admin/file
+parent	= system
+tag		= admin
+
+name	= tags
+link	= /admin/tags
+parent	= system
+tag		= admin
+
+name	= docs
+link	= /admin/docs
+parent	= system
+tag		= admin
+
+name	= backup
+link	= /admin/baks
+parent	= system
+tag		= admin
+
+#user menu
+name	= user
+link	= /admin/userinfo
+tag		= admin
+
+name	= menber
+link	= /admin/user
+parent	= user
+tag		= admin
+
+name	= session
+link	= /admin/sess
+parent	= user
+tag		= admin
+
+name	= logs
+link	= /admin/logs
+parent	= user
+tag		= admin
+

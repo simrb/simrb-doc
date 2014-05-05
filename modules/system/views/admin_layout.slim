@@ -1,0 +1,45 @@
+doctype html
+html
+	head
+		title = @t[:title]
+		meta name="keywords" content="#{@t[:keywords]}"
+		meta name="description" content="#{@t[:description]}"
+		meta http-equiv="content-type" content="text/html; charset=UFT-8"
+		script src="#{_public('/js/jquery-172.js')}" type="text/javascript"
+		link rel="shortcut icon" href="#{_var(:shortcut_icon, :system)}"
+		link rel='stylesheet' type='text/css' href='#{_public("/css/style.css")}'
+		link rel='stylesheet' type='text/css' href='#{_assets("/system/admin.css")}'
+	body
+		#wrap
+			#header
+				ul#top_menu
+					- @menus.each do | item |
+						- menu_focus = item.include?(:focus) ? "focus1" : ""
+						li
+							span class="#{menu_focus}"
+								a href="#{item[:link]}" title="#{item[:name]}" = L[item[:name].to_sym]
+							- if item.include?(:sub_menu)
+								- menu_hide = menu_focus == "focus1" ? '' : 'hide'
+								ul.sub_menu class="#{menu_hide}"
+									- item[:sub_menu].each do | item |
+										- menu_focus = item.include?(:focus) ? "focus2" : ""
+										li
+											span class="#{menu_focus}"
+												a href="#{item[:link]}" title="#{item[:name]}" = L[item[:name].to_sym]
+				.clear
+
+				#description = @t[:description]
+
+				.clear
+
+				== _tpl(:_message)
+
+			#bodyer
+				#content == yield
+
+				.clear
+
+			#footer
+
+		script src="#{_public('/js/jq.ontop.js')}" type="text/javascript"
+		script src="#{_assets('/system/admin.js')}" type="text/javascript"
