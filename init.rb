@@ -88,6 +88,7 @@ module Simrb
 			:upload_dir		=> Sdir + 'db/upload/',
 			:backup_dir		=> Sdir + 'db/backup/',
 			:log_dir		=> Sdir + 'log',
+			:tmp_dir		=> Sdir + 'tmp',
 			:cache_dir		=> '/var/cache/simrb/',
 			:time_types		=> ['created', 'changed'],
 			:fixnum_types	=> ['order', 'level'],
@@ -116,6 +117,7 @@ Scfg.merge!(read_kv_file('scfg'))
 
 # initialize default dirs
 Dir.mkdir 'db' unless File.exist? 'db'
+Dir.mkdir Scfg[:tmp_dir] unless File.exist? Scfg[:tmp_dir]
 Dir.mkdir Scfg[:log_dir] unless File.exist? Scfg[:log_dir]
 Dir.mkdir Scfg[:upload_dir] unless File.exist? Scfg[:upload_dir]
 Dir.mkdir Scfg[:backup_dir] unless File.exist? Scfg[:backup_dir]
