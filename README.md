@@ -17,7 +17,7 @@ Step 2, connect database, assuming the default database is sqlite, you should do
 
 and put the connection to configure file
 
-	echo 'db_connect=splite://db/data.db' > scfg
+	echo 'db_connect=sqlite://db/data.db' > scfg
 
 more database installation please see modules/system/stores/docs/db.rb
 
