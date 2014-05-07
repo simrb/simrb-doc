@@ -49,7 +49,7 @@ module Simrb
 		# 	$3s clone coolesting/cms
 		#
 		def clone args = []
-			`git clone git://github.com/#{args[0]}.git modules/#{args[0].split('/').last}`
+			`git clone https://github.com/#{args[0]}.git modules/#{args[0].split('/').last}`
 		end
 
 		# create a module, initializes the default dirs and files of module

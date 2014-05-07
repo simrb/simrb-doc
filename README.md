@@ -2,31 +2,48 @@
 
 ### Installation
 	
-	# Step 1, get it from repository
+Step 1, get it from repository
 
-	git clone git://github.com/simrb/simrb.git myapp
+	$git clone https://github.com/simrb/simrb.git myapp
 
-	# Step 2, if you first time to install, run the command for initializing
-	( add alias to ~/.bashrc file)
+add a command alias to bashrc file
 
-	cd myapp && ruby cmd.rb init
+	echo 'alias 3s="ruby cmd.rb"' >> ~/.bashrc && source
 
-	# Step 3, connect to db, and install
-	# put this option db_connect=your_db_path to your scfg file, details at `$3s doc db`
+Step 2, connect database, assuming the default database is sqlite, you should do as following, if you have the existed database, ignore it
+
+	$yum install sqlite3*
+	$yum install sqlite-devel
+
+and put the connection to configure file
+
+	echo 'db_connect=splite://db/data.db' > scfg
+
+more database installation please see modules/system/stores/docs/db.rb
+
+Step 3, install gems
+
+	$bundle install --gemfile=modules/system/stores/Gemfile
+
+Step 4, install simrb
 
 	$3s install
 
-### Extending with modules
 
-	clone it from github
-	
-	$3s clone simrb/cms
+### Booting
 
-### Starting by thin
+assuming your server is thin
 
 	thin start -a 0.0.0.0 -p 80
 
-	or, run at background
+or, run at background
 
 	thin start -a 0.0.0.0 -p 80 -d
+
+
+### Extending
+
+Extending your application with modules
+
+	$3s clone repo_name/project_name
 

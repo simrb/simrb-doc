@@ -44,6 +44,7 @@ Sdocs['db'] =<<Doc
 ### sqlite
 
 	yum install sqlite3*
+	yum install sqlite-devel
 	gem install sqlite3
 
 	# db_connect=sqlite://db/data.db

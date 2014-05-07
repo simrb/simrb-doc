@@ -109,10 +109,12 @@ end
 include Simrb
 
 # a config file of key-val
+File.open('scfg', 'w') unless File.exist? 'scfg'
 Scfg = Sbase::Scfg
 Scfg.merge!(read_kv_file('scfg'))
 
 # initialize default dirs
+Dir.mkdir 'db' unless File.exist? 'db'
 Dir.mkdir Scfg[:upload_dir] unless File.exist? Scfg[:upload_dir]
 Dir.mkdir Scfg[:backup_dir] unless File.exist? Scfg[:backup_dir]
 
