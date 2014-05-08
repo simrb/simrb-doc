@@ -40,6 +40,22 @@ or, run at background
 
 	thin start -a 0.0.0.0 -p 80 -d
 
+further more, check the port whethe it is used
+
+	netstat -apn
+
+add port for ip4
+
+	# vi /etc/sysconfig/iptables
+
+add
+
+	-A INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT
+
+restart
+
+	# /etc/init.d/iptables restart
+
 
 ### Extending
 
