@@ -9,11 +9,11 @@ module Simrb
 		#
 		# run all of module migrations
 		#
-		# 	$3s db
+		# 	$ 3s db
 		#
 		# run the migrations for the specified module 
 		#
-		# 	$3s db user cms
+		# 	$ 3s db user cms
 		#
 		def db args = []
 			args = system_fetch_modules if args.empty?
@@ -31,22 +31,22 @@ module Simrb
 		#
 		# == Example
 		# 
-		# 	$3s init
+		# 	# 3s bundle
 		#
-		def init
+		def bundle
 			# bundle gems
 			`bundle install --gemfile=modules/"#{Scfg[:main_module]}"/#{Sbase::File[:gemfile]}`
 
 			# add the bash commands to your ~/.bashrc file
-			`echo 'alias 3s="ruby cmd.rb"' >> ~/.bashrc && source`
-			"Initializing complete"
+# 			`echo 'alias 3s="ruby cmd.rb"' >> ~/.bashrc && source`
+			"bundle complete"
 		end
 
 		# clone a module from github to modules dir
 		#
 		# == Example
 		# 
-		# 	$3s clone coolesting/cms
+		# 	$ 3s clone coolesting/cms
 		#
 		def clone args = []
 			`git clone https://github.com/#{args[0]}.git modules/#{args[0].split('/').last}`
@@ -56,7 +56,7 @@ module Simrb
 		#
 		# == Example
 		# 
-		# 	$3s new blog
+		# 	$ 3s new blog
 		#
 		def new args
 			args.each do | module_name |
@@ -86,11 +86,11 @@ module Simrb
 		# 
 		# install all of module, it will auto detects
 		#
-		# 	$3s install
+		# 	$ 3s install
 		#
 		# or, install the specified module
 		# 	
-		# 	$3s install blog
+		# 	$ 3s install blog
 		#
 		def install args = []
 			args = system_fetch_modules if args.empty?
