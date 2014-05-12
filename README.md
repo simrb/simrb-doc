@@ -4,7 +4,7 @@
 	
 Step 1, get it from repository
 
-	$git clone https://github.com/simrb/simrb.git myapp
+	$ git clone https://github.com/simrb/simrb.git myapp
 
 add a command alias to bashrc file
 
@@ -12,8 +12,8 @@ add a command alias to bashrc file
 
 Step 2, connect database, assuming the default database is sqlite, you should do as following, if you have the existed database, ignore it
 
-	$yum install sqlite3*
-	$yum install sqlite-devel
+	# yum install sqlite3*
+	# yum install sqlite-devel
 
 and put the connection to configure file
 
@@ -23,11 +23,11 @@ more database installation please see modules/system/stores/docs/db.rb
 
 Step 3, install gems
 
-	$bundle install --gemfile=modules/system/stores/Gemfile
+	# bundle install --gemfile=modules/system/stores/Gemfile
 
 Step 4, install simrb
 
-	$3s install
+	# 3s install
 
 
 ### Booting
