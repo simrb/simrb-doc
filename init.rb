@@ -135,6 +135,10 @@ end
 set :environment, Scfg[:environment].to_sym
 
 configure do
+	
+	# open local static files
+# 	set :static, true
+# 	set :root, Sdir
 
 	DB = Sequel.connect(Scfg[:db_connect])
 

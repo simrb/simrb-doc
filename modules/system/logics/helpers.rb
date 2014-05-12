@@ -7,6 +7,11 @@ get '/_assets/:module/:filename' do
 	send_file path, :type => params[:filename].split('.').last().to_sym
 end
 
+get '/_public/:dir/:filename' do
+	path = Sdir + "public/#{params[:dir]}/#{params[:filename]}"
+	send_file path, :type => params[:filename].split('.').last().to_sym
+end
+
 # require 'sass'
 # configure do
 # 	set :sass, :cache => true, :cahce_location => './tmp/sass-cache', :style => :compressed
@@ -19,7 +24,7 @@ end
 helpers do
 
 	def _public path, domain = nil
-		path
+		"/_public#{path}"
 	end
 
 	def _file path, domain = nil
