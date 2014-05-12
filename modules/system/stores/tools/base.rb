@@ -33,14 +33,14 @@ module Simrb
 		# 
 		# 	# 3s bundle
 		#
-		def bundle
-			# bundle gems
-			`bundle install --gemfile=modules/"#{Scfg[:main_module]}"/#{Sbase::File[:gemfile]}`
-
-			# add the bash commands to your ~/.bashrc file
-# 			`echo 'alias 3s="ruby cmd.rb"' >> ~/.bashrc && source`
-			"bundle complete"
-		end
+# 		def bundle
+# 			# bundle gems
+# 			`bundle install --gemfile=modules/"#{Scfg[:main_module]}"/#{Sbase::File[:gemfile]}`
+# 
+# 			# add the bash commands to your ~/.bashrc file
+#  			`echo 'alias 3s="ruby cmd.rb"' >> ~/.bashrc && source`
+# 			"bundle complete"
+# 		end
 
 		# clone a module from github to modules dir
 		#

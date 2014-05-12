@@ -28,11 +28,11 @@ more database installation please see modules/system/stores/docs/db.rb
 
 Step 3, install gems
 
-	# bundle install --gemfile=modules/system/stores/Gemfile
+	$ bundle install --gemfile=modules/system/stores/Gemfile --without=production
 
 Step 4, install simrb
 
-	# 3s install
+	$ 3s install
 
 
 ### Booting
