@@ -25,7 +25,7 @@ get '/a' do
 end
 
 before '/admin/*' do
-#  	_login? _var(:login, :link)
+  	_login? _var(:login, :link)
 	@menus = _menu(:admin)
 end
 
@@ -38,7 +38,7 @@ end
 # a interface route that preformments the form submit, and record delete, or others
 # you must to assign the rule to user allow to use this route
 before '/_system/_opt' do
-# 	_level? _var(:form_submit_level)
+ 	_level? _var(:form_submit_level)
 # 	_rule? :system_opt
 end
 

@@ -1,4 +1,4 @@
-## A simple way to create your application with ruby
+## A simple way to build your application with ruby
 
 ### Installation
 
