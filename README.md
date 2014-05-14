@@ -6,6 +6,7 @@ Step 0, install ruby and git
 	
 	$ yum install git
 	$ \curl -sSL https://get.rvm.io | bash -s stable
+	# rvm install ruby-1.9.2
 
 Step 1, get it from repository
 
