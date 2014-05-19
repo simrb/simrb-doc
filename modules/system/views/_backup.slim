@@ -1,7 +1,9 @@
 form
 	.box-1
 		.title = L[:'selected tables']
-		.body
+		.body.checkall
+			label.lhover
+				label.pointer class='checkall-switch' #{L[:'select all']} >>> 
 			- DB.tables.each do | t |
 				label.mr10.lhover
 					input id="tn_#{t}" type="checkbox" name="table_name[]" value="#{t}"
@@ -33,3 +35,4 @@ form
 			input type="file" name="inport"
 			input.button type="submit" value="#{L[:execute]}" formaction="/admin/_baks/inport" formmethod="post" formenctype="multipart/form-data"
 
+	script src="#{_public('/js/view.js')}"

@@ -35,7 +35,7 @@ helpers do
 	#normal view
 	def _view argv = {}
 		@t[:layout]		= false
-		@t[:js]			= []
+		@t[:js]			= _public('/js/view.js')
 		@t[:tpl] 		= :_view
 		@t[:css]		= _public('/css/view.css')
 		@t[:search_fns]	= :enable

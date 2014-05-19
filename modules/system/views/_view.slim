@@ -36,10 +36,11 @@ form.form action="#{request.path}" method="get"
 .clear
 
 
-table.table
+table.table.checkall
 	thead
 		- unless @t[:opt_fns].empty?
 			th
+				input type='checkbox' class='checkall-switch'
 
 		- @t[:fields].each do | k |
 			th
@@ -99,6 +100,9 @@ table.table
 
 	- unless @t[:css].empty?
 		link rel='stylesheet' type='text/css' href='#{@t[:css]}'
+
+	- unless @t[:js].empty?
+		script src="#{@t[:js]}"
 
 - if @page_count > 1
 	p.page_bar
