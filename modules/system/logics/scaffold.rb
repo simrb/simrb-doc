@@ -84,7 +84,7 @@ helpers do
 		@page_size = 30
 		@page_curr = (@qs.include?(:page_curr) and @qs[:page_curr].to_i > 0) ? @qs[:page_curr].to_i : 1
 
-		Sequel.extension :pagination
+		ds = ds.extension :pagination
 		@ds = ds.paginate(@page_curr, @page_size, ds.count)
 		@page_count = @ds.page_count
 
