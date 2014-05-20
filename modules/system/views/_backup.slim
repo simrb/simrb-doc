@@ -16,7 +16,7 @@ form
 			label.mr10 = L[:filename]
 			input.mr10 type="text" name="filename" placeholder='file name'
 
-			input.button type="submit" name="backup" value="#{L[:backup]}" formaction="/admin/_baks/backup" formmethod="post"
+			input.button type="submit" name="backup" value="#{L[:backup]}" formaction="/admin/baks/backup" formmethod="post"
 
 	.box-1
 		.title = L[:'backup records']
@@ -33,6 +33,6 @@ form
 		.title = L[:'inport records']
 		.body
 			input type="file" name="inport"
-			input.button type="submit" value="#{L[:execute]}" formaction="/admin/_baks/inport" formmethod="post" formenctype="multipart/form-data"
+			input.button type="submit" value="#{L[:execute]}" formaction="/admin/baks/inport" formmethod="post" formenctype="multipart/form-data"
 
 	script src="#{_public('/js/view.js')}"
