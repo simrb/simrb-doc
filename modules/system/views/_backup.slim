@@ -20,19 +20,19 @@ form
 
 	.box-1
 		.title = L[:'backup records']
-		table.table
+		table.table.center
 			thead
 				th file name
-				th export
 				th recover
+				th export
 			tbody
 				- _fetch_backup_list.each do | f |
 					tr
 						td = f
 						td
-							a href="#{_url('', :opt => 'export', :id => f)}" >>
-						td
 							a href="#{_url('', :opt => 'recover', :id => f, :encoding => @encoding)}" <<
+						td
+							a href="#{_url('', :opt => 'export', :id => f)}" >>
 
 	.box-1
 		.title = L[:'inport records']

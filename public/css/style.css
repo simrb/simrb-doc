@@ -9,6 +9,7 @@ ul li {list-style-type: none;}
 .white {color: white;}
 .left {float: left;}
 .right {float: right;}
+.center {text-align: center;}
 .w100 {width: 100%;}
 .w99 {width: 99%;}
 .w90 {width: 90%;}
