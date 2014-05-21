@@ -253,25 +253,19 @@ helpers do
 			end
 		end
 
-		unless encoding == nil
-			require 'iconv'
-			csv_file = Iconv.iconv(encoding, "UTF-8", csv_file)
-		end
-
-		csv_file[0]
+		encoding == nil ? csv_file : csv_file.force_encoding(encoding)
 	end
 
 	def _backup_recover id, encoding = nil
 		file = File.read Scfg[:backup_dir] + "#{id}"
 
 		#encoding
-		unless encoding == nil
- 			require 'iconv'
-  			file = Iconv.iconv("UTF-8", encoding, file)
-		end
+# 		unless encoding == nil
+		file.force_encoding 'UTF-8'
+# 		end
 
 		require 'csv'
-		contents = CSV.parse(file[0])
+		contents = CSV.parse(file)
 
 		#split the contents with '##########' to many block. each block is a table data
 		contents.each do | row |
