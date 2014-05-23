@@ -93,7 +93,10 @@ module Simrb
 			:time_types		=> ['created', 'changed'],
 			:fixnum_types	=> ['order', 'level'],
 			:number_types 	=> ['Fixnum', 'Integer', 'Float'],
-			:environment 	=> 'development',						# or production, test
+			:environment 	=> 'development',	# or production, test
+			:server 		=> 'thin',
+			:bind 			=> '0.0.0.0',
+			:port			=> 3000,
 		}
 
 		# field type alias
