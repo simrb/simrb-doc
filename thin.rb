@@ -1,4 +1,4 @@
-require './start'
+require './init'
 
 set :run, true
 set :server, Scfg[:server]

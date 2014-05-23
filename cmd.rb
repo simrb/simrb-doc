@@ -1,7 +1,7 @@
 # ####################
 # booting for command mode
 # ####################
-require './start'
+require './init'
 
 # loads the documentations
 Sdocs = {}

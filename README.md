@@ -36,17 +36,13 @@ Step 4, install simrb
 	$ 3s install
 
 
-### Booting
+### Starting
 
-assuming your server is thin
+Assuming the default web server is thin
 
-	thin start -a 0.0.0.0 -p 80
+	ruby thin.rb
 
-or, run at background
-
-	thin start -a 0.0.0.0 -p 80 -d
-
-further more, check the port whethe it is used
+further more, check the port whether it is used
 
 	netstat -apn
 
@@ -54,11 +50,11 @@ add port for ip4
 
 	# vi /etc/sysconfig/iptables
 
-add
+write
 
 	-A INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT
 
-restart
+restart it
 
 	# /etc/init.d/iptables restart
 
