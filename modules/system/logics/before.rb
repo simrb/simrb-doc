@@ -29,6 +29,14 @@ before '/admin/*' do
 	@menus = _menu(:admin)
 end
 
+get "/robot.txt" do
+	arr = []
+	arr << "User-agent:*"
+	arr << "Disallow:/admin*"
+	arr << "Disallow:/_*"
+	arr.join("\n")
+end
+
 
 
 # ================================================
