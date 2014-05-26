@@ -87,8 +87,9 @@ module Simrb
 			:db_connect		=> 'sqlite://db/data.db',
 			:upload_dir		=> Sdir + 'db/upload/',
 			:backup_dir		=> Sdir + 'db/backup/',
-			:log_dir		=> Sdir + 'log',
 			:tmp_dir		=> Sdir + 'tmp',
+			:log_dir		=> Sdir + 'log',
+			:log			=> Sdir + 'log/thin.log',
 			:cache_dir		=> '/var/cache/simrb/',
 			:time_types		=> ['created', 'changed'],
 			:fixnum_types	=> ['order', 'level'],
@@ -144,9 +145,6 @@ configure do
 # 	set :root, Sdir
 
 	DB = Sequel.connect(Scfg[:db_connect])
-
-#  	disable :logging
-#  	set :log, false
 
 end
 
