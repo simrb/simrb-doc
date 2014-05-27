@@ -29,7 +29,7 @@ before '/admin/*' do
 	@menus = _menu(:admin)
 end
 
-get "/robot.txt" do
+get "/robots.txt" do
 	arr = []
 	arr << "User-agent:*"
 	arr << "Disallow:/admin*"
