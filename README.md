@@ -1,37 +1,42 @@
 ## A simple way to build your application with ruby
 
-### Installation
 
-Step 0, install ruby and git
+### Preparation
+
+Make sure your git and database would be setup first.
+
+installing ruby
 	
-	$ yum install git
 	$ \curl -sSL https://get.rvm.io | bash -s stable
 	# rvm install ruby-1.9.2
 
-Step 1, get it from repository
+installing git
 
-	$ git clone https://github.com/simrb/simrb.git myapp
+	$ yum install git
 
-add a command alias to bashrc file
+installing database
 
-	echo 'alias 3s="ruby cmd.rb"' >> ~/.bashrc && source
-
-Step 2, connect database, assuming the default database is sqlite, you should do as following, if you have the existed database, ignore this step
+assuming the database is sqlite, you should type the commands to install it as following
 
 	# yum install sqlite3*
 	# yum install sqlite-devel
 
-and put the connection to configure file
-
-	echo 'db_connect=sqlite://db/data.db' > scfg
-
+now, the database connection is `sqlite://db/data.db` that would be used as below,
 more database installation please see modules/system/stores/docs/db.rb
 
-Step 3, install gems
+
+#### Installation
+
+	$ gem install simrb
+	$ simrb init myapp
+	$ cd myapp
+	$ echo 'db_connect=sqlite://db/data.db' > scfg
+
+bundle the running environment as you want
 
 	$ bundle install --gemfile=modules/system/stores/Gemfile --without=production
-
-Step 4, install simrb
+or
+	$ bundle install --gemfile=modules/system/stores/Gemfile --without=develpment
 
 	$ 3s install
 
@@ -61,7 +66,11 @@ restart it
 
 ### Extending
 
-Extending your application with modules
+Extending your application with modules of offical repository, just enter the project root dir, then
 
-	$3s clone repo_name/project_name
+	$ 3s clone repo_name/project_name
 
+
+### Community
+
+[issue](https://github.com/simrb/simrb/issues)
