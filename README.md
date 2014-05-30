@@ -22,21 +22,23 @@ assuming the database is sqlite, you should type the commands to install it as f
 	# yum install sqlite-devel
 
 now, the database connection is `sqlite://db/data.db` that would be used as below,
-more database installation please see modules/system/stores/docs/db.rb
+more database installation please see `modules/system/stores/docs/db.rb`
 
 
-#### Installation
+### Installation
 
 	$ gem install simrb
-	$ simrb init myapp
+
+initialize a project copy of development
+
+	$ simrb init myapp --dev
+
+or, production mode
+
+	$ simrb init myapp --pro
+
 	$ cd myapp
 	$ echo 'db_connect=sqlite://db/data.db' > scfg
-
-bundle the running environment as you want
-
-	$ bundle install --gemfile=modules/system/stores/Gemfile --without=production
-or
-	$ bundle install --gemfile=modules/system/stores/Gemfile --without=develpment
 
 	$ 3s install
 
