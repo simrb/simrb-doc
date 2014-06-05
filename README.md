@@ -8,7 +8,7 @@ Make sure your git and database would be setup first.
 installing ruby
 	
 	$ \curl -sSL https://get.rvm.io | bash -s stable
-	# rvm install ruby-1.9.2
+	# rvm install ruby-2.1.2
 
 installing git
 
