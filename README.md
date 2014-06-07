@@ -3,10 +3,10 @@
 
 ### Preparation
 
-Make sure your git and database would be setup first.
+If this is not the first time to install simrb, please ignore this environment configure, just jump to the part of installation directly.
 
 installing ruby
-	
+
 	$ \curl -sSL https://get.rvm.io | bash -s stable
 	# rvm install ruby-2.1.2
 
@@ -14,9 +14,7 @@ installing git
 
 	$ yum install git
 
-installing database
-
-assuming the database is sqlite, you should type the commands to install it as following
+installing database, assuming the database is sqlite, you should type the commands to install it as following
 
 	# yum install sqlite3*
 	# yum install sqlite-devel
@@ -24,9 +22,7 @@ assuming the database is sqlite, you should type the commands to install it as f
 now, the database connection is `sqlite://db/data.db` that would be used as below,
 more database installation please see `modules/system/stores/docs/db.rb`
 
-about web server environment
-
-check the port 80 whether it has been used yet
+about web server environment, check the port 80 whether it has been used yet
 
 	netstat -apn | grep :80
 
