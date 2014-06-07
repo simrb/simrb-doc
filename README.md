@@ -24,6 +24,22 @@ assuming the database is sqlite, you should type the commands to install it as f
 now, the database connection is `sqlite://db/data.db` that would be used as below,
 more database installation please see `modules/system/stores/docs/db.rb`
 
+about web server environment
+
+check the port 80 whether it has been used yet
+
+	netstat -apn | grep :80
+
+normally, you need to remove the apache because the httpd always occupy the port 80 if it exists
+
+	# yum remove httpd
+
+reset the port for our server
+
+	# iptables -A INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT
+	# service iptables save
+	# service iptables restart
+
 
 ### Installation
 
@@ -48,22 +64,6 @@ or, production mode
 Assuming the default web server is thin
 
 	ruby thin.rb
-
-further more, check the port whether it is used
-
-	netstat -apn
-
-add port for ip4
-
-	# vi /etc/sysconfig/iptables
-
-write
-
-	-A INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT
-
-restart it
-
-	# /etc/init.d/iptables restart
 
 
 ### Extending
