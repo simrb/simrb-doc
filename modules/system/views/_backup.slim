@@ -4,7 +4,11 @@ form
 		.body.checkall
 			label.lhover
 				label.pointer class='checkall-switch' #{L[:'select all']} >>> 
-			- DB.tables.each do | t |
+			- i = 0
+			- @tables.each do | t |
+				- if(i % 5) == 0
+					br
+				- i = i + 1
 				label.mr10.lhover
 					input id="tn_#{t}" type="checkbox" name="table_name[]" value="#{t}"
 					label for="tn_#{t}" = t
@@ -13,18 +17,22 @@ form
 			label.mr10 = L[:encoding]
 			input.mr10 type="text" name="encoding" value="#{@encoding}"
 
+		.body
+
 			label.mr10 = L[:filename]
 			input.mr10 type="text" name="filename" placeholder='file name'
 
 			input.button type="submit" name="backup" value="#{L[:backup]}" formaction="/admin/baks/backup" formmethod="post"
 
 	.box-1
+
 		.title = L[:'backup records']
-		table.table.center
+		table.table
 			thead
 				th file name
 				th recover
 				th export
+				th delete
 			tbody
 				- _fetch_backup_list.each do | f |
 					tr
@@ -34,10 +42,12 @@ form
 						td
 							a href="#{_url('', :opt => 'export', :id => f)}" >>
 
-	.box-1
-		.title = L[:'inport records']
+						td
+							a href="#{_url('', :opt => 'delete', :id => f)}" >>
+
 		.body
 			input type="file" name="inport"
-			input.button type="submit" value="#{L[:execute]}" formaction="/admin/baks/inport" formmethod="post" formenctype="multipart/form-data"
+			input.button type="submit" value="#{L[:'inport records']}" formaction="/admin/baks/inport" formmethod="post" formenctype="multipart/form-data"
+
 
 	script src="#{_public('/js/view.js')}"

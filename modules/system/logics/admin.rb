@@ -117,7 +117,12 @@ get '/admin/baks' do
 		_backup_recover(@qs[:id], @qs[:encoding]) if @qs[:id]
 		_msg L[:'recover complete']
 		redirect back
+	elsif @qs[:opt] == 'delete'
+		file = File.delete Scfg[:backup_dir] + "#{@qs[:id]}"
+		_msg L[:'delete complete']
+		redirect back
 	else
+		@tables = DB.tables
 		@encoding = _var(:encoding, :file) != "" ? _var(:encoding, :file) : Scfg[:encoding]
 		admin_page :_backup
 	end
