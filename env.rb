@@ -6,9 +6,9 @@ require 'slim'
 #######################
 # common methods
 #######################
-def read_kv_file path
+def _file_kv_read path
 	res		= {}
-	content = File.read path
+	content = File.exist?(path) ? File.read(path) : ''
 	content = content.index("\n") ? content.split("\n") : [content]
 	content.each do | line |
 		if line.index("=") and line[0] != '#'
@@ -26,12 +26,23 @@ def read_kv_file path
 	res
 end
 
+def _file_kv_write path, data
+	res = ""
+	data.each do | k, v |
+		res << "#{k.to_s}=#{v}"
+	end
+	File.open(path, 'w+') do | f |
+		f.write res
+	end
+end
+
 def iputs args
 	args = args.class.to_s == 'Array' ? args.join("\n") : args.to_s
 	puts "="*30
 	puts args
 	puts "="*30
 end
+
 
 
 #######################
@@ -115,9 +126,16 @@ end
 include Simrb
 
 # a config file of key-val
-File.open('scfg', 'w') unless File.exist? 'scfg'
 Scfg = Sbase::Scfg
-Scfg.merge!(read_kv_file('scfg'))
+Scfg.merge!(_file_kv_read('scfg'))
+
+unless File.exist? 'scfg'
+	data = {}
+	[:environment, :bind, :port].each do | opt |
+		data[opt] = Scfg[opt]
+	end
+	_file_kv_write('scfg', data)
+end
 
 # initialize default dirs
 Dir.mkdir 'db' unless File.exist? 'db'
@@ -126,11 +144,6 @@ Dir.mkdir Scfg[:log_dir] unless File.exist? Scfg[:log_dir]
 Dir.mkdir Scfg[:upload_dir] unless File.exist? Scfg[:upload_dir]
 Dir.mkdir Scfg[:backup_dir] unless File.exist? Scfg[:backup_dir]
 
-unless File.exist? 'scfg'
-	File.open('scfg', 'w+') do | f |
-		f.write "environment=#{Scfg[:environment]}"
-	end
-end
 
 
 #######################
