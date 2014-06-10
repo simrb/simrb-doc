@@ -51,7 +51,7 @@ class L
 	end
 end
 Spath[:lang].each do | lang |
-	L << read_kv_file(lang)
+	L << _file_kv_read(lang)
 end
 
 Svalid = {}
