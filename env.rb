@@ -29,7 +29,7 @@ end
 def _file_kv_write path, data
 	res = ""
 	data.each do | k, v |
-		res << "#{k.to_s}=#{v}"
+		res << "#{k.to_s}=#{v}\n"
 	end
 	File.open(path, 'w+') do | f |
 		f.write res
