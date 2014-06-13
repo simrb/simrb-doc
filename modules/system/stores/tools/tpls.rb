@@ -15,7 +15,7 @@ module Simrb
 
 			tpl << "\tend\n\n"
 			tpl << "end"
-			{"modules/#{modulename}/#{Sbase::Dir[:logic]}/helpers.rb" => tpl}
+			{"modules/#{modulename}/#{Simrb::Dir[:logic]}/helpers.rb" => tpl}
 		end
 
 		# /logics/admin.rb
@@ -31,39 +31,39 @@ module Simrb
 				tpl << "\t_admin :#{name}\n"
 				tpl << "end\n\n"
 			end
-			{"modules/#{modulename}/#{Sbase::Dir[:logic]}/admin.rb" => tpl}
+			{"modules/#{modulename}/#{Simrb::Dir[:logic]}/admin.rb" => tpl}
 		end
 
 		# /views/name_layout.slim
 		def system_tpl_layout modulename
 			@et = { :name => modulename }
-			tpl	= system_get_erb("modules/#{Scfg[:main_module]}/#{Sbase::Dir[:docs]}/layout.erb")
-			{"modules/#{modulename}/#{Sbase::Dir[:view]}/#{modulename}_layout.slim" => tpl}
+			tpl	= system_get_erb("modules/#{Scfg[:main_module]}/#{Simrb::Dir[:docs]}/layout.erb")
+			{"modules/#{modulename}/#{Simrb::Dir[:view]}/#{modulename}_layout.slim" => tpl}
 		end
 
 		# /stores/assets/name.css
 		def system_tpl_layout_css modulename
 			tpl = ""
-			path = "modules/system/#{Sbase::Docs[:layout_css]}"
+			path = "modules/system/#{Simrb::Docs[:layout_css]}"
 			if File.exist? path
 				tpl << File.read(path)
 			end
-			{"modules/#{modulename}/#{Sbase::Dir[:assets]}/#{modulename}.css" => tpl}
+			{"modules/#{modulename}/#{Simrb::Dir[:assets]}/#{modulename}.css" => tpl}
 		end
 
 		def system_tpl_common_css modulename
 			tpl = ""
-			path = "modules/system/#{Sbase::Docs[:common_css]}"
+			path = "modules/system/#{Simrb::Docs[:common_css]}"
 			if File.exist? path
 				tpl << File.read(path)
 			end
-			{"modules/#{modulename}/#{Sbase::Dir[:assets]}/#{modulename}_common.css" => tpl}
+			{"modules/#{modulename}/#{Simrb::Dir[:assets]}/#{modulename}_common.css" => tpl}
 		end
 
 		# /stores/assets/name.js
 		def system_tpl_js modulename
 			tpl = ""
-			{"modules/#{modulename}/#{Sbase::Dir[:assets]}/#{modulename}.js" => tpl}
+			{"modules/#{modulename}/#{Simrb::Dir[:assets]}/#{modulename}.js" => tpl}
 		end
 
 		# /stores/installs/_menu 
@@ -82,7 +82,7 @@ module Simrb
 			end
 
 			require 'yaml'
-			{"modules/#{modulename}/#{Sbase::Dir[:install]}/_menu" => tpl.to_yaml}
+			{"modules/#{modulename}/#{Simrb::Dir[:install]}/_menu" => tpl.to_yaml}
 		end
 
 		# /stores/installs/_vars
@@ -99,7 +99,7 @@ module Simrb
 			end
 
 			require 'yaml'
-			{"modules/#{modulename}/#{Sbase::Dir[:install]}/_vars" => tpl.to_yaml}
+			{"modules/#{modulename}/#{Simrb::Dir[:install]}/_vars" => tpl.to_yaml}
 		end
 
 	end

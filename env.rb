@@ -3,112 +3,106 @@ require 'sinatra/base'
 require 'sequel'
 require 'slim'
 
-#######################
-# common methods
-#######################
-def _file_read path
-	require 'yaml'
-	YAML.load_file path
-end
-
-def _file_write path, data
-	require "yaml"
-	File.open(path, 'w+') do | f |
-		f.write data.to_yaml
-	end
-end
-
-def iputs args
-	args = args.class.to_s == 'Array' ? args.join("\n") : args.to_s
-	puts "="*30 + "\n" + args + "\n" + "="*30
-end
-
-
-
-#######################
-# base configs
-#######################
 Sdir = Dir.pwd + '/'
 module Simrb
-	module Sbase
 
-		# default generated directories
-		Dir					= {
-			:store			=> 'stores',
-			:logic			=> 'logics',
-			:view			=> 'views',
-			:assets			=> 'views/assets',
-			:lang			=> 'stores/langs',
-			:docs			=> 'stores/docs',
-			:schema			=> 'stores/migrations',
-			:tool			=> 'stores/tools',
-			:install		=> 'stores/installs',
-		}
+	# common methods
+	class << self
 
-		# default generated files
-		File				= {
-			:route			=> 'logics/routes.rb',
-			:gemfile		=> 'stores/Gemfile',
-			:modinfo		=> 'stores/installs/_mods',
-			:readme			=> 'README.md',
-			:vars			=> 'stores/installs/_vars',
-			:menu			=> 'stores/installs/_menu',
-		}
+		def read_file path
+			require 'yaml'
+			YAML.load_file path
+		end
 
-		# default installed dirs
-		Defdir				= [:logic, :store, :view, :assets, :lang, :install, :docs, :schema, :tool]
+		def write_file path, data
+			require "yaml"
+			File.open(path, 'w+') do | f |
+				f.write data.to_yaml
+			end
+		end
 
-		# default installed files
-		Defile				= [:route, :gemfile, :modinfo, :readme]
-
-		# document or template file
-		Docs				= {
- 			:layout_css		=> 'stores/docs/layout.css',
- 			:common_css		=> 'stores/docs/common.css',
-		}
-
-		# default scfg file settings
-		Scfg				= {
-			:requiredb		=> 'yes',
-			:main_module	=> 'system',
-			:disable_modules=> [],
-			:encoding		=> 'utf-8',
-			:lang			=> 'en',
-			:install_lock	=> 'yes',
-			:db_connect		=> 'sqlite://db/data.db',
-			:db_dir			=> Sdir + 'db',
-			:upload_dir		=> Sdir + 'db/upload/',
-			:backup_dir		=> Sdir + 'db/backup/',
-			:tmp_dir		=> Sdir + 'tmp',
-			:log_dir		=> Sdir + 'log',
-			:log			=> Sdir + 'log/thin.log',
-			:cache_dir		=> '/var/cache/simrb/',
-			:time_types		=> ['created', 'changed'],
-			:fixnum_types	=> ['order', 'level'],
-			:number_types 	=> ['Fixnum', 'Integer', 'Float'],
-			:environment 	=> 'development',	# or production, test
-			:server 		=> 'thin',
-			:bind 			=> '0.0.0.0',
-			:port			=> 3000,
-		}
-
-		# field type alias
-		Alias				=	{
-			:int 			=> 'Fixnum',
-			:str 			=> 'String',
-			:text 			=> 'Text',
-			:time			=> 'Time',
-			:big			=> 'Bignum',
-			:fl				=> 'Float',
-		}
+		def p args
+			args = args.class.to_s == 'Array' ? args.join("\n") : args.to_s
+			puts "="*30 + "\n" + args + "\n" + "="*30
+		end
 
 	end
+
+	# default generated directories
+	Dir					= {
+		:store			=> 'stores',
+		:logic			=> 'logics',
+		:view			=> 'views',
+		:assets			=> 'views/assets',
+		:lang			=> 'stores/langs',
+		:docs			=> 'stores/docs',
+		:schema			=> 'stores/migrations',
+		:tool			=> 'stores/tools',
+		:install		=> 'stores/installs',
+	}
+
+	# default generated files
+	File				= {
+		:route			=> 'logics/routes.rb',
+		:gemfile		=> 'stores/Gemfile',
+		:modinfo		=> 'stores/installs/_mods',
+		:readme			=> 'README.md',
+		:vars			=> 'stores/installs/_vars',
+		:menu			=> 'stores/installs/_menu',
+	}
+
+	# default installed dirs
+	Defdir				= [:logic, :store, :view, :assets, :lang, :install, :docs, :schema, :tool]
+
+	# default installed files
+	Defile				= [:route, :gemfile, :modinfo, :readme]
+
+	# document or template file
+	Docs				= {
+		:layout_css		=> 'stores/docs/layout.css',
+		:common_css		=> 'stores/docs/common.css',
+	}
+
+	# default scfg file settings
+	Scfg				= {
+		:requiredb		=> 'yes',
+		:main_module	=> 'system',
+		:disable_modules=> [],
+		:encoding		=> 'utf-8',
+		:lang			=> 'en',
+		:install_lock	=> 'yes',
+		:db_connect		=> 'sqlite://db/data.db',
+		:db_dir			=> Sdir + 'db',
+		:upload_dir		=> Sdir + 'db/upload/',
+		:backup_dir		=> Sdir + 'db/backup/',
+		:tmp_dir		=> Sdir + 'tmp',
+		:log_dir		=> Sdir + 'log',
+		:log			=> Sdir + 'log/thin.log',
+		:cache_dir		=> '/var/cache/simrb/',
+		:time_types		=> ['created', 'changed'],
+		:fixnum_types	=> ['order', 'level'],
+		:number_types 	=> ['Fixnum', 'Integer', 'Float'],
+		:environment 	=> 'development',	# or production, test
+		:server 		=> 'thin',
+		:bind 			=> '0.0.0.0',
+		:port			=> 3000,
+	}
+
+	# field type alias
+	Alias				=	{
+		:int 			=> 'Fixnum',
+		:str 			=> 'String',
+		:text 			=> 'Text',
+		:time			=> 'Time',
+		:big			=> 'Bignum',
+		:fl				=> 'Float',
+	}
+
 end
-include Simrb
 
 # load the customized file
-Scfg = Sbase::Scfg
-_file_read('scfg').each do | k, v |
+Scfg = Simrb::Scfg
+Simrb.read_file('scfg').each do | k, v |
 	Scfg[k.to_sym] = v
 end
 
@@ -117,7 +111,7 @@ unless File.exist? 'scfg'
 	[:environment, :bind, :port].each do | opt |
 		data[opt] = Scfg[opt]
 	end
-	_file_write('scfg', data)
+	Simrb.write_file('scfg', data)
 end
 
 # initialize default dirs

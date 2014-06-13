@@ -23,7 +23,7 @@ module Simrb
 		# }
 		def system_fetch_install module_name
 			res			= {}
-			files 		= Dir["modules/#{module_name.to_s}/#{Sbase::Dir[:install]}/*"]
+			files 		= Dir["modules/#{module_name.to_s}/#{Simrb::Dir[:install]}/*"]
 
 			files_path	= 'tmp/install.lock'
 			files_lock	= []
@@ -59,20 +59,6 @@ module Simrb
 					end
 					res[installer] << line
 				end
-
-#  				res[installer] 	= _file_read file
-# 				res[installer] 	||= []
-# 				content 		= File.read file
-# 
-# 				content.gsub!(/\t/, '')
-# 				content.split("\n\n").each do | row |
-# 					r = {}
-# 					row.split("\n").each do | item | 
-# 						k, v = item.split('=')
-# 						r[k.strip.to_sym] = v.to_s.strip if k[0] != '#'
-# 					end
-# 					res[installer] << r
-# 				end
 			end
 
 			res

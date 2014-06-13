@@ -18,7 +18,7 @@ module Simrb
 		def db args = []
 			args = system_fetch_modules if args.empty?
 			args.each do | mod_name |
-				path = "modules/#{mod_name}/#{Sbase::Dir[:schema]}"
+				path = "modules/#{mod_name}/#{Simrb::Dir[:schema]}"
 				if Dir[path + '/*'].count > 0
 					Sequel.extension :migration
 					Sequel::Migrator.run(DB, path, :column => mod_name.to_sym, :table => :_schemas)
@@ -35,7 +35,7 @@ module Simrb
 		#
 # 		def bundle
 # 			# bundle gems
-# 			`bundle install --gemfile=modules/"#{Scfg[:main_module]}"/#{Sbase::File[:gemfile]}`
+# 			`bundle install --gemfile=modules/"#{Scfg[:main_module]}"/#{Simrb::File[:gemfile]}`
 # 
 # 			# add the bash commands to your ~/.bashrc file
 #  			`echo 'alias 3s="ruby cmd.rb"' >> ~/.bashrc && source`
@@ -64,17 +64,17 @@ module Simrb
 				`mkdir modules/#{module_name}`
 
 				# sub dirs of module
-				Sbase::Defdir.each do | name |
-					`mkdir modules/#{module_name}/#{Sbase::Dir[name]}`
+				Simrb::Defdir.each do | name |
+					`mkdir modules/#{module_name}/#{Simrb::Dir[name]}`
 				end
 
 				# default files of module dir
-				Sbase::Defile.each do | name |
- 					`touch modules/#{module_name}/#{Sbase::File[name]}`
+				Simrb::Defile.each do | name |
+ 					`touch modules/#{module_name}/#{Simrb::File[name]}`
 				end
 
 				# echo module info
-				`echo name=#{module_name} >> modules/#{module_name}/#{Sbase::File[:modinfo]}`
+				`echo name=#{module_name} >> modules/#{module_name}/#{Simrb::File[:modinfo]}`
 			end
 
 			"Initializing module directory complete"
@@ -100,7 +100,7 @@ module Simrb
 
 			# step 2, run the gemfile
 			args.each do | module_name |
-				path = "modules/#{module_name}/#{Sbase::File[:gemfile]}"
+				path = "modules/#{module_name}/#{Simrb::File[:gemfile]}"
 				if File.exist? path
 					`bundle install --gemfile=#{path}`
 				end

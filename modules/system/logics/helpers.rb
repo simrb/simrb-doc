@@ -3,7 +3,7 @@
 # ================================================
 #/css/modulename/filename => the real path as 'modules/modulename/css/filename'
 get '/_assets/:module/:filename' do
-	path = Sdir + "modules/#{params[:module]}/#{Sbase::Dir[:assets]}/#{params[:filename]}"
+	path = Sdir + "modules/#{params[:module]}/#{Simrb::Dir[:assets]}/#{params[:filename]}"
 	send_file path, :type => params[:filename].split('.').last().to_sym
 end
 

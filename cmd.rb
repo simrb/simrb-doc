@@ -6,7 +6,7 @@ require './init'
 # loads the documentations
 Sdocs = {}
 Smodules.each do | name |
-	Dir["#{Sdir}modules/#{name}/#{Sbase::Dir[:docs]}/*.rb"].each do | path |
+	Dir["#{Sdir}modules/#{name}/#{Simrb::Dir[:docs]}/*.rb"].each do | path |
 		require path
 	end
 end
@@ -20,7 +20,7 @@ def puts_doc args = []
 		else
 			res = Sdocs[name].to_s
 		end
-		iputs res
+		Simrb.p res
 	end
 end
 
@@ -35,15 +35,14 @@ end
 Spath[:tool].each do | f |
 	require f
 end
-include Simrb
 
 helpers do
-	include Stool
+	include Simrb::Stool
 end
 
 get '/_tools' do
 	argv = ARGV.clone
-	if Stool.method_defined? argv[0]
+	if Simrb::Stool.method_defined? argv[0]
 		argv.shift 1
 		if argv.empty?
 			eval(ARGV[0]).to_s
@@ -76,4 +75,4 @@ else
 	output << "You need a argument at least."
 end
 
-iputs output
+Simrb.p output

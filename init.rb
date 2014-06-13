@@ -9,7 +9,7 @@ if Scfg[:requiredb] == 'yes'
 #  		module_ds = DB[:_mods].order(:order).map(:name)
 # 	else
 	if DB.tables.empty?
- 		iputs ["No database table found"] 
+ 		Simrb.p ["No database table found"] 
 	end
 end
 
@@ -32,10 +32,10 @@ Spath[:tool] 		= []
 Spath[:view] 		= []
 
 Smodules.each do | name |
-	Spath[:lang] 	+= Dir["#{Sdir}modules/#{name}/#{Sbase::Dir[:lang]}/*.#{Scfg[:lang]}"]
-	Spath[:logic] 	+= Dir["#{Sdir}modules/#{name}/#{Sbase::Dir[:logic]}/*.rb"]
-	Spath[:tool] 	+= Dir["#{Sdir}modules/#{name}/#{Sbase::Dir[:tool]}/*.rb"]
-	Spath[:view]	<< "#{Sdir}modules/#{name}/#{Sbase::Dir[:view]}"
+	Spath[:lang] 	+= Dir["#{Sdir}modules/#{name}/#{Simrb::Dir[:lang]}/*.#{Scfg[:lang]}"]
+	Spath[:logic] 	+= Dir["#{Sdir}modules/#{name}/#{Simrb::Dir[:logic]}/*.rb"]
+	Spath[:tool] 	+= Dir["#{Sdir}modules/#{name}/#{Simrb::Dir[:tool]}/*.rb"]
+	Spath[:view]	<< "#{Sdir}modules/#{name}/#{Simrb::Dir[:view]}"
 end
 
 # caches language statement
@@ -52,7 +52,7 @@ class L
 	end
 end
 Spath[:lang].each do | lang |
-	L << _file_read(lang)
+	L << Simrb.read_file(lang)
 end
 
 Svalid = {}
