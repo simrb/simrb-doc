@@ -43,7 +43,8 @@ class L
 	@@options = {}
 	class << self
 		def [] key
-			@@options.include?(key) ? @@options[key] : key.to_s
+			key = key.to_s
+			@@options.include?(key) ? @@options[key] : key
 		end
 		def << h
 			@@options.merge!(h)
@@ -51,7 +52,7 @@ class L
 	end
 end
 Spath[:lang].each do | lang |
-	L << _file_kv_read(lang)
+	L << _file_read(lang)
 end
 
 Svalid = {}

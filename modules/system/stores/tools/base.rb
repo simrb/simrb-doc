@@ -108,7 +108,6 @@ module Simrb
 
 			# step 3, submit the data to database
 			args.each do | module_name |
-
 				# installed hoot before
 				installer = "#{module_name}_install_before"
 				eval("#{installer}") if self.respond_to?(installer.to_sym)

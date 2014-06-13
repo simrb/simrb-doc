@@ -1,104 +1,105 @@
-vkey	= shortcut_icon
-vval	= /images/shortcut.png
-tag		= system
-
-vkey	= admin_level
-vval	= 10
-tag		= user
-descpt	= the level enters to administrator of background
-
-vkey	= allow_register
-vval	= yes
-tag		= user
-descpt	= allow the user register account, default value is yes, others is cloesd
-
-vkey	= form_submit_level
-vval	= 1
-tag		= user
-descpt	= allow the user who has the level to submit the form or operation
-
-vkey	= timeout_of_session
-vval	= 30
-tag		= user
-descpt	= 30 is 30 days
-
-vkey	= upload_level
-vval	= 1
-tag		= file
-descpt	= the required for uploading file
-
-vkey	= upload_dir
-vval	= 
-tag		= file
-descpt	= not using in current envorinment
-
-vkey	= default_file
-vval	= 1
-tag		= file
-descpt	= when the file is null, display this file by fid, default is 1
-
-vkey	= encoding
-vval	= gb2312
-tag		= file
-descpt	= encoding, or decodeing the file for output, or input
-
-vkey	= filetype
-vval	= image/pngimage/jpegimage/gif
-tag		= file
-descpt	= the types of file allow to upload
-
-vkey	= filesize
-vval	= 300000
-tag		= file
-descpt	= 300000 is 3M
-
-vkey	= home
-vval	= /_index
-tag		= link
-descpt	= main page
-
-vkey	= login
-vval	= /_login
-tag		= link
-descpt	= account login page
-
-vkey	= logout
-vval	= /_logout
-tag		= link
-descpt	= account logout page
-
-vkey	= after_login
-vval	= /
-tag		= link
-descpt	= jump to this page after user login
-
-vkey	= register
-vval	= /_register
-tag		= link
-descpt	= account register page
-
-vkey	= title
-vval	= page title
-tag		= page
-
-vkey	= description
-vval	= 
-tag		= page
-
-vkey	= keywords
-vval	= page keywords
-tag		= page
-
-vkey	= footer
-vval	= Power by simrb
-tag		= page
-descpt	= footer mark of page
-
-vkey	= admin_title
-vval	= administrator
-tag		= admin_page
-
-vkey	= tags_disable
-vval	= 
-tag		= tag
-descpt	= closing the tag for a gived table name, if more than one, separate with comma
+---
+- vkey		: shortcut_icon
+  vval		: /images/shortcut.png
+  tag		: system
+  
+- vkey		: admin_level
+  vval		: 10
+  tag		: user
+  descpt	: the level enters to administrator of background
+  
+- vkey		: allow_register
+  vval		: yes
+  tag		: user
+  descpt	: allow the user register account, default value is yes, others is cloesd
+  
+- vkey		: form_submit_level
+  vval		: 1
+  tag		: user
+  descpt	: allow the user who has the level to submit the form or operation
+  
+- vkey		: timeout_of_session
+  vval		: 30
+  tag		: user
+  descpt	: 30 is 30 days
+  
+- vkey		: upload_level
+  vval		: 1
+  tag		: file
+  descpt	: the required for uploading file
+  
+- vkey		: upload_dir
+  vval		: 
+  tag		: file
+  descpt	: not using in current envorinment
+  
+- vkey		: default_file
+  vval		: 1
+  tag		: file
+  descpt	: when the file is null, display this file by fid, default is 1
+  
+- vkey		: encoding
+  vval		: gb2312
+  tag		: file
+  descpt	: encoding, or decodeing the file for output, or input
+  
+- vkey		: filetype
+  vval		: image/pngimage/jpegimage/gif
+  tag		: file
+  descpt	: the types of file allow to upload
+  
+- vkey		: filesize
+  vval		: 300000
+  tag		: file
+  descpt	: 300000 is 3M
+  
+- vkey		: home
+  vval		: /_index
+  tag		: link
+  descpt	: main page
+  
+- vkey		: login
+  vval		: /_login
+  tag		: link
+  descpt	: account login page
+  
+- vkey		: logout
+  vval		: /_logout
+  tag		: link
+  descpt	: account logout page
+  
+- vkey		: after_login
+  vval		: /
+  tag		: link
+  descpt	: jump to this page after user login
+  
+- vkey		: register
+  vval		: /_register
+  tag		: link
+  descpt	: account register page
+  
+- vkey		: title
+  vval		: page title
+  tag		: page
+  
+- vkey		: description
+  vval		: 
+  tag		: page
+  
+- vkey		: keywords
+  vval		: page keywords
+  tag		: page
+  
+- vkey		: footer
+  vval		: Power by simrb
+  tag		: page
+  descpt	: footer mark of page
+  
+- vkey		: admin_title
+  vval		: administrator
+  tag		: admin_page
+  
+- vkey		: tags_disable
+  vval		: 
+  tag		: tag
+  descpt	: closing the tag for a gived table name, if more than one, separate with comma

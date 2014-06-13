@@ -34,23 +34,6 @@ module Simrb
 			{"modules/#{modulename}/#{Sbase::Dir[:logic]}/admin.rb" => tpl}
 		end
 
-		# /stores/installs/_menu 
-		def system_tpl_menu modulename
-			datas = system_fetch_data modulename.to_sym
-			tpl = ""
-			tpl << "name\t= #{modulename}\n"
-			tpl << "link\t= /admin/#{modulename}\n"
-			tpl << "tag\t= admin\n\n"
-
-			datas.each do | name |
-				tpl << "name\t= #{name}\n"
-				tpl << "link\t= /admin/#{name}\n"
-				tpl << "parent\t= #{modulename}\n"
-				tpl << "tag\t\t= admin\n\n"
-			end
-			{"modules/#{modulename}/#{Sbase::Dir[:install]}/_menu" => tpl}
-		end
-
 		# /views/name_layout.slim
 		def system_tpl_layout modulename
 			@et = { :name => modulename }
@@ -83,16 +66,40 @@ module Simrb
 			{"modules/#{modulename}/#{Sbase::Dir[:assets]}/#{modulename}.js" => tpl}
 		end
 
+		# /stores/installs/_menu 
+		def system_tpl_menu modulename
+			datas 	= system_fetch_data modulename.to_sym
+			tpl		= []
+			tpl		<< { 'name' => modulename, 'link' => "/admin/#{modulename}", 'tag' => 'admin'}
+
+			datas.each do | name |
+				tpl	<< {
+					'name' => name, 
+					'link' => "/admin/#{modulename}",
+					'parent' => modulename,
+					'tag' => 'admin'
+				}
+			end
+
+			require 'yaml'
+			{"modules/#{modulename}/#{Sbase::Dir[:install]}/_menu" => tpl.to_yaml}
+		end
+
 		# /stores/installs/_vars
 		def system_tpl_var modulename
-			tpl = ""
+			tpl	= []
+
 			[:title, :description, :keywords, :footer].each do | name |
-				tpl << "vkey\t= #{name}\n"
-				tpl << "vval\t= #{modulename}\n"
-				tpl << "tag\t\t= #{modulename}_page\n"
-				tpl << "descpt\t= \n\n"
+				tpl << {
+					"vkey"	=> name,
+					"vval"	=> modulename,
+					"tag"	=> "#{modulename}_page",
+					"descpt"=> "no description"
+				}
 			end
-			{"modules/#{modulename}/#{Sbase::Dir[:install]}/_vars" => tpl}
+
+			require 'yaml'
+			{"modules/#{modulename}/#{Sbase::Dir[:install]}/_vars" => tpl.to_yaml}
 		end
 
 	end

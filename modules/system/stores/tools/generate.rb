@@ -1,12 +1,12 @@
 module Simrb
 	module Stool
 		
-		# generate commands of template tool, assuming a module called demo,
-		# you can use the commands below to implement some functions
+		# the shortcut of generated commands
+		# assuming a module called demo, create the file template as below
 		#
+		#	$3s g data demo
 		#	$3s g admin demo
 		#	$3s g layout demo
-		#	$3s g data demo
 		#
 		#	$3s g vars demo
 		#	$3s g menu demo

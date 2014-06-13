@@ -21,7 +21,7 @@ module Simrb
 		# 		{:name => 'system_opt'},
 		# 	]
 		# }
-		def system_fetch_install module_name = nil
+		def system_fetch_install module_name
 			res			= {}
 			files 		= Dir["modules/#{module_name.to_s}/#{Sbase::Dir[:install]}/*"]
 
@@ -50,18 +50,29 @@ module Simrb
 				installer 		= file.split('/').last
 				installer		= installer.split('.').first if installer.index('.')
 				installer		= installer.to_sym
-				res[installer] 	||= []
-				content 		= File.read file
+ 				res[installer]  = []
 
-				content.gsub!(/\t/, '')
-				content.split("\n\n").each do | row |
-					r = {}
-					row.split("\n").each do | item | 
-						k, v = item.split('=')
-						r[k.strip.to_sym] = v.to_s.strip if k[0] != '#'
+				_file_read(file).each do | row |
+					line = {}
+					row.each do | k, v |
+						line[k.to_sym] = v == nil ? '' : v
 					end
-					res[installer] << r
+					res[installer] << line
 				end
+
+#  				res[installer] 	= _file_read file
+# 				res[installer] 	||= []
+# 				content 		= File.read file
+# 
+# 				content.gsub!(/\t/, '')
+# 				content.split("\n\n").each do | row |
+# 					r = {}
+# 					row.split("\n").each do | item | 
+# 						k, v = item.split('=')
+# 						r[k.strip.to_sym] = v.to_s.strip if k[0] != '#'
+# 					end
+# 					res[installer] << r
+# 				end
 			end
 
 			res
@@ -87,7 +98,7 @@ module Simrb
 			tables.uniq
 		end
 
-		# generate file with path and content given
+		# generate file by path and content given
 		# 
 		# == Examples
 		#	

@@ -1,5 +1,4 @@
-name	= system_opt
-
-name	= viewer
-
-name	= editor
+---
+- name	: system_opt
+- name	: viewer
+- name	: editor

@@ -6,41 +6,21 @@ require 'slim'
 #######################
 # common methods
 #######################
-def _file_kv_read path
-	res		= {}
-	content = File.exist?(path) ? File.read(path) : ''
-	content = content.index("\n") ? content.split("\n") : [content]
-	content.each do | line |
-		if line.index("=") and line[0] != '#'
-			key, val = line.split("=")
-			# value is an array
-			if val.index(',')
-				res[key.strip.to_sym] = val.split(',').map { |v| v.strip }
-
-			# value is a string
-			else
-				res[key.strip.to_sym] = val.strip
-			end
-		end
-	end
-	res
+def _file_read path
+	require 'yaml'
+	YAML.load_file path
 end
 
-def _file_kv_write path, data
-	res = ""
-	data.each do | k, v |
-		res << "#{k.to_s}=#{v}\n"
-	end
+def _file_write path, data
+	require "yaml"
 	File.open(path, 'w+') do | f |
-		f.write res
+		f.write data.to_yaml
 	end
 end
 
 def iputs args
 	args = args.class.to_s == 'Array' ? args.join("\n") : args.to_s
-	puts "="*30
-	puts args
-	puts "="*30
+	puts "="*30 + "\n" + args + "\n" + "="*30
 end
 
 
@@ -96,6 +76,7 @@ module Simrb
 			:lang			=> 'en',
 			:install_lock	=> 'yes',
 			:db_connect		=> 'sqlite://db/data.db',
+			:db_dir			=> Sdir + 'db',
 			:upload_dir		=> Sdir + 'db/upload/',
 			:backup_dir		=> Sdir + 'db/backup/',
 			:tmp_dir		=> Sdir + 'tmp',
@@ -125,24 +106,24 @@ module Simrb
 end
 include Simrb
 
-# a config file of key-val
+# load the customized file
 Scfg = Sbase::Scfg
-Scfg.merge!(_file_kv_read('scfg'))
+_file_read('scfg').each do | k, v |
+	Scfg[k.to_sym] = v
+end
 
 unless File.exist? 'scfg'
 	data = {}
 	[:environment, :bind, :port].each do | opt |
 		data[opt] = Scfg[opt]
 	end
-	_file_kv_write('scfg', data)
+	_file_write('scfg', data)
 end
 
 # initialize default dirs
-Dir.mkdir 'db' unless File.exist? 'db'
-Dir.mkdir Scfg[:tmp_dir] unless File.exist? Scfg[:tmp_dir]
-Dir.mkdir Scfg[:log_dir] unless File.exist? Scfg[:log_dir]
-Dir.mkdir Scfg[:upload_dir] unless File.exist? Scfg[:upload_dir]
-Dir.mkdir Scfg[:backup_dir] unless File.exist? Scfg[:backup_dir]
+[:db_dir, :tmp_dir, :log_dir, :upload_dir, :backup_dir].each do | dir |
+	Dir.mkdir Scfg[dir] unless File.exist? Scfg[dir]
+end
 
 
 
