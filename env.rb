@@ -3,6 +3,7 @@ require 'sinatra/base'
 require 'sequel'
 require 'slim'
 
+
 Sdir = Dir.pwd + '/'
 module Simrb
 
@@ -28,7 +29,7 @@ module Simrb
 
 	end
 
-	# default generated directories
+	# basic definition of directory paths
 	Dir					= {
 		:store			=> 'stores',
 		:logic			=> 'logics',
@@ -41,7 +42,7 @@ module Simrb
 		:install		=> 'stores/installs',
 	}
 
-	# default generated files
+	# basic definition of files
 	File				= {
 		:route			=> 'logics/routes.rb',
 		:gemfile		=> 'stores/Gemfile',
@@ -51,56 +52,59 @@ module Simrb
 		:menu			=> 'stores/installs/_menu',
 	}
 
-	# default installed dirs
+	# dirs to be generated in initializing module
 	Defdir				= [:logic, :store, :view, :assets, :lang, :install, :docs, :schema, :tool]
 
-	# default installed files
+	# files to be generated in initializing module
 	Defile				= [:route, :gemfile, :modinfo, :readme]
 
-	# document or template file
+	# basic definition of assets file path
 	Docs				= {
 		:layout_css		=> 'stores/docs/layout.css',
 		:common_css		=> 'stores/docs/common.css',
 	}
 
-	# default scfg file settings
+	# default settings of scfg file
 	Scfg				= {
-		:requiredb		=> 'yes',
-		:main_module	=> 'system',
-		:disable_modules=> [],
-		:encoding		=> 'utf-8',
-		:lang			=> 'en',
-		:install_lock	=> 'yes',
-		:db_connect		=> 'sqlite://db/data.db',
-		:db_dir			=> Sdir + 'db',
-		:upload_dir		=> Sdir + 'db/upload/',
-		:backup_dir		=> Sdir + 'db/backup/',
-		:tmp_dir		=> Sdir + 'tmp',
-		:log_dir		=> Sdir + 'log',
-		:log			=> Sdir + 'log/thin.log',
-		:cache_dir		=> '/var/cache/simrb/',
-		:time_types		=> ['created', 'changed'],
-		:fixnum_types	=> ['order', 'level'],
-		:number_types 	=> ['Fixnum', 'Integer', 'Float'],
-		:environment 	=> 'development',	# or production, test
-		:server 		=> 'thin',
-		:bind 			=> '0.0.0.0',
-		:port			=> 3000,
+		:requiredb			=> 'yes',
+		:main_module		=> 'system',
+		:disable_modules	=> [],
+		:encoding			=> 'utf-8',
+		:lang				=> 'en',
+		:install_lock		=> 'yes',
+		:db_connect			=> 'sqlite://db/data.db',
+		:db_dir				=> Sdir + 'db',
+		:upload_dir			=> Sdir + 'db/upload/',
+		:backup_dir			=> Sdir + 'db/backup/',
+		:tmp_dir			=> Sdir + 'tmp',
+		:log_dir			=> Sdir + 'log',
+		:server_log			=> Sdir + 'log/thin.log',
+		:command_log		=> Sdir + 'log/command_error_log.html',
+		:server_log_mode	=> 'file',
+		:cache_dir			=> '/var/cache/simrb/',
+		:time_types			=> ['created', 'changed'],
+		:fixnum_types		=> ['order', 'level'],
+		:number_types 		=> ['Fixnum', 'Integer', 'Float'],
+		:environment 		=> 'development',	# or production, test
+		:server 			=> 'thin',
+		:bind 				=> '0.0.0.0',
+		:port				=> 3000,
 	}
 
-	# field type alias
+	# alias of field type 
 	Alias				=	{
-		:int 			=> 'Fixnum',
-		:str 			=> 'String',
-		:text 			=> 'Text',
-		:time			=> 'Time',
-		:big			=> 'Bignum',
-		:fl				=> 'Float',
+		:int 				=> 'Fixnum',
+		:str 				=> 'String',
+		:text 				=> 'Text',
+		:time				=> 'Time',
+		:big				=> 'Bignum',
+		:fl					=> 'Float',
 	}
 
 end
 
-# load the customized file
+
+# load the scfg file
 Scfg = Simrb::Scfg
 Simrb.read_file('scfg').each do | k, v |
 	Scfg[k.to_sym] = v
@@ -114,30 +118,21 @@ unless File.exist? 'scfg'
 	Simrb.write_file('scfg', data)
 end
 
-# initialize default dirs
+
+# default directories initializing
 [:db_dir, :tmp_dir, :log_dir, :upload_dir, :backup_dir].each do | dir |
 	Dir.mkdir Scfg[dir] unless File.exist? Scfg[dir]
 end
 
 
-
-#######################
-# database configs
-#######################
+# default environment and db configuration setting
 set :environment, Scfg[:environment].to_sym
 
 configure do
-	
-	# open local static files
-# 	set :static, true
-# 	set :root, Sdir
-
 	DB = Sequel.connect(Scfg[:db_connect])
-
 end
 
 configure :production do
-
 	not_found do
 		L['Sorry, no page']
 	end
@@ -145,6 +140,5 @@ configure :production do
 	error do
 		'Sorry there was a nasty error - ' + env['sinatra.error'].name
 	end
-
 end
 

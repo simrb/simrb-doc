@@ -1,20 +1,16 @@
 require './env'
 
-#######################
-# load modules
-#######################
-module_ds = []
+# detect the db whether connect
 if Scfg[:requiredb] == 'yes'
-# 	if DB.tables.include? :_mods
-#  		module_ds = DB[:_mods].order(:order).map(:name)
-# 	else
 	if DB.tables.empty?
- 		Simrb.p ["No database table found"] 
+ 		Simrb.p "No database table found"
 	end
 end
 
-# merge local modules to database modules
-ds = Dir["modules/*"].map { |name| name.split("/").last }
+
+# load modules
+module_ds = []
+ds = Dir["#{Sdir}modules/*"].map { |name| name.split("/").last }
 ds.unshift(Scfg[:main_module])
 module_ds = ds.uniq
 
@@ -24,7 +20,8 @@ Scfg[:disable_modules].each do | m |
 end
 Smodules = module_ds
 
-# global variables
+
+# all of path for global files
 Spath 				= {}
 Spath[:lang] 		= []
 Spath[:logic] 		= []
@@ -37,6 +34,7 @@ Smodules.each do | name |
 	Spath[:tool] 	+= Dir["#{Sdir}modules/#{name}/#{Simrb::Dir[:tool]}/*.rb"]
 	Spath[:view]	<< "#{Sdir}modules/#{name}/#{Simrb::Dir[:view]}"
 end
+
 
 # caches language statement
 class L
@@ -55,9 +53,10 @@ Spath[:lang].each do | lang |
 	L << Simrb.read_file(lang)
 end
 
+
+# increase data and valid block
 Svalid = {}
 Sdata = {}
-# add block of data and valid
 module Sinatra
 	class Application < Base
 		def self.data name = '', &block
@@ -73,7 +72,8 @@ module Sinatra
 	end
 end
 
-# custom template path
+
+# alter the path of template customized 
 set :views, Spath[:view]
 helpers do
 	def find_template(views, name, engine, &block)
@@ -81,7 +81,8 @@ helpers do
 	end
 end
 
-# loads the files that would be run
+
+# loads main files of logics dir that would be run
 Spath[:logic].each do | f |
 	require f
 end
