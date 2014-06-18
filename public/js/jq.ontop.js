@@ -1,5 +1,5 @@
 
-$("#header").before("<div id='toTop'><img src='/_public/icons/totop.png'/></div>")
+$("#header").before("<div id='toTop'><img src='/_assets/public/icons/totop.png'/></div>")
 $("#toTop").css({
 	"position" : "fixed",
 	"bottom" : "5px",

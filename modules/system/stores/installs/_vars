@@ -1,6 +1,6 @@
 ---
 - vkey		: shortcut_icon
-  vval		: /images/shortcut.png
+  vval		: public/images/shortcut.png
   tag		: system
   
 - vkey		: admin_level
@@ -44,7 +44,7 @@
   descpt	: encoding, or decodeing the file for output, or input
   
 - vkey		: filetype
-  vval		: image/pngimage/jpegimage/gif
+  vval		: image/png,image/jpeg,image/gif
   tag		: file
   descpt	: the types of file allow to upload
   

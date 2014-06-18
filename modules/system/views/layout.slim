@@ -5,9 +5,9 @@ html
 		meta name="keywords" content="#{@t[:keywords]}"
 		meta name="description" content="#{@t[:description]}"
 		meta http-equiv="content-type" content="text/html; charset=UFT-8"
-		script src="#{_public('/js/jquery-172.js')}" type="text/javascript"
-		link rel="shortcut icon" href="#{_public(_var(:shortcut_icon, :system))}"
-		link rel='stylesheet' type='text/css' href='#{_public("/css/style.css")}'
+		script src="#{_assets('public/js/jquery-172.js')}" type="text/javascript"
+		link rel="shortcut icon" href="#{_assets(_var(:shortcut_icon, :system))}"
+		link rel='stylesheet' type='text/css' href='#{_assets("public/css/style.css")}'
 	body
 		#wrap
 			#header

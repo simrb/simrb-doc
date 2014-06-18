@@ -35,9 +35,9 @@ helpers do
 	#normal view
 	def _view argv = {}
 		@t[:layout]		= false
-		@t[:js]			= _public('/js/view.js')
+		@t[:js]			= _assets('public/js/view.js')
 		@t[:tpl] 		= :_view
-		@t[:css]		= _public('/css/view.css')
+		@t[:css]		= _assets('public/css/view.css')
 		@t[:search_fns]	= :enable
 		@t[:btn_fns] 	= { :create => '_form_' }
 		@t[:opt_fns] 	= { :delete => '_rm_' }
@@ -94,10 +94,10 @@ helpers do
 	#form view
 	def _form argv = {}
 		@t[:layout]		= false
-		@t[:js]			= _public('/js/form.js')
+		@t[:js]			= _assets('public/js/form.js')
 		@t[:tpl] 		= :_form
 		@t[:opt] 		= :insert
-		@t[:css]		= _public('/css/form.css')
+		@t[:css]		= _assets('public/css/form.css')
 		@t[:back_fn] 	= :enable
 		@t[:action] 	= '/_system/_opt'
 		@t[:_method_] 	= '_submit_'

@@ -1,15 +1,17 @@
 # ================================================
 # assets resource
 # ================================================
-#/css/modulename/filename => the real path as 'modules/modulename/css/filename'
-get '/_assets/:module/:filename' do
-	path = Sdir + "modules/#{params[:module]}/#{Simrb::Dir[:assets]}/#{params[:filename]}"
-	send_file path, :type => params[:filename].split('.').last().to_sym
-end
+get '/_assets/*' do
+	path_items 	= request.path.split('/')
+	assets_name	= path_items.shift(3)[2]
 
-get '/_public/:dir/:filename' do
-	path = Sdir + "public/#{params[:dir]}/#{params[:filename]}"
-	send_file path, :type => params[:filename].split('.').last().to_sym
+	if assets_name == 'public'
+		path = Sdir + "public/#{path_items.join('/')}"
+	else
+		path = Sdir + "modules/#{assets_name}/#{Simrb::Dir[:assets]}/#{path_items.join('/')}"
+	end
+
+	send_file path, :type => request.path.split('.').last().to_sym
 end
 
 # require 'sass'
@@ -23,16 +25,30 @@ end
 
 helpers do
 
-	def _public path, domain = nil
-		"/_public#{path}"
+	# generate the assets url
+	#
+	# == Example
+	#
+	# 	_assets('public/css/style.css')
+	# 	_assets('system/tags/README.md')
+	#
+	# 	_assets('system/admin.css')
+	# 	_assets('system/admin.css', 'https//www.example.com')
+	#
+	def _assets path, domain = '/'
+		"#{domain}_assets/#{path}"
 	end
 
-	def _file path, domain = nil
-		"/_file/get/#{path}"
+	def _file path, domain = '/'
+		"#{domain}_file/get/#{path}"
 	end
 
-	def _assets path, domain = nil
-		"/_assets#{path}"
+	def _link path, domain = '/'
+		"<link rel='stylesheet' type='text/css' href='#{_assets(path, domain)}' />"
+	end
+
+	def _script path, domain = '/'
+		"<script src='#{_assets(path, domain)}' type='text/javascript'></script>"
 	end
 
 end
