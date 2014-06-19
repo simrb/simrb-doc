@@ -72,7 +72,7 @@ module Simrb
 		:encoding			=> 'utf-8',
 		:lang				=> 'en',
 		:install_lock		=> 'yes',
-		:db_connect			=> 'sqlite://db/data.db',
+		:db_connection		=> 'sqlite://db/data.db',
 		:db_dir				=> Sdir + 'db',
 		:upload_dir			=> Sdir + 'db/upload/',
 		:backup_dir			=> Sdir + 'db/backup/',
@@ -112,7 +112,7 @@ end
 
 unless File.exist? 'scfg'
 	data = {}
-	[:environment, :bind, :port].each do | opt |
+	[:lang, :db_connection, :environment, :bind, :port].each do | opt |
 		data[opt] = Scfg[opt]
 	end
 	Simrb.write_file('scfg', data)
@@ -129,7 +129,7 @@ end
 set :environment, Scfg[:environment].to_sym
 
 configure do
-	DB = Sequel.connect(Scfg[:db_connect])
+	DB = Sequel.connect(Scfg[:db_connection])
 end
 
 configure :production do

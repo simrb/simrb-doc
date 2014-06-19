@@ -50,7 +50,7 @@ or, production mode
 	$ simrb init myapp --pro
 
 	$ cd myapp
-	$ echo 'db_connect=sqlite://db/data.db' > scfg
+	$ echo 'db_connection=sqlite://db/data.db' > scfg
 
 	$ 3s install
 
