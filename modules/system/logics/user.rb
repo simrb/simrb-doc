@@ -2,7 +2,7 @@ get '/_logout' do
 	_logout
 end
 
-get '/l' do redirect _url('/_login') end
+get '/l' do redirect _var(:login, :link) end
 get '/_login' do
 	redirect _var(:after_login, :link) if _user[:uid] > 0
 	@qs[:come_from] = request.referer unless @qs.include?(:come_from) 
