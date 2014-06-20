@@ -30,8 +30,9 @@ if argv.count > 0 and Simrb::Stool.method_defined?(argv[0])
 		end
 	else
 		File.open(Scfg[:command_log], 'a+') do |f|
-			f.write "\n\n\n#{'='*5}\n#{Time.now.to_s}\n"
-			f.write body
+			f.write "\n#{'='*20}#{Time.now.to_s}\n#{'='*20}\n"
+# 			f.write body
+			f.write Sinatra::ShowExceptions.new(self).call(env.merge("HTTP_USER_AGENT" => "curl"))[2][0]
 		end
 		output << env["sinatra.error"]
 	end
