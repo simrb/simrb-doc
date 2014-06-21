@@ -43,7 +43,7 @@ else
 	argv.shift 1 
 
 	Smodules.each do | name |
-		Dir["#{Sroot}modules/#{name}/#{Simrb::Sroot[:docs]}/*.#{Scfg[:lang]}.rb"].each do | path |
+		Dir["#{Sroot}modules/#{name}/#{Simrb::Sdir[:docs]}/*.#{Scfg[:lang]}.rb"].each do | path |
 			require path
 		end
 	end
