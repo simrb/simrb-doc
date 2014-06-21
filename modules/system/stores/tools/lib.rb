@@ -23,7 +23,7 @@ module Simrb
 		# }
 		def system_fetch_install module_name
 			res			= {}
-			files 		= Dir["modules/#{module_name.to_s}/#{Simrb::Dir[:install]}/*"]
+			files 		= Dir["modules/#{module_name.to_s}/#{Simrb::Sdir[:install]}/*"]
 
 			files_path	= 'tmp/install.lock'
 			files_lock	= []
@@ -52,7 +52,7 @@ module Simrb
 				installer		= installer.to_sym
  				res[installer]  = []
 
-				_file_read(file).each do | row |
+				Simrb.read_file(file).each do | row |
 					line = {}
 					row.each do | k, v |
 						line[k.to_sym] = v == nil ? '' : v

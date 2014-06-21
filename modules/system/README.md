@@ -19,7 +19,7 @@ The base construction includes several little system, such as the database table
 
 	file - media files
 
-	logs - record the status of operation action
+	mark - record the status of operation action
 
 	user - user, just user account, password, and so on
 
@@ -36,5 +36,3 @@ The base construction includes several little system, such as the database table
 
 The db table, and everything could be classified by one tag or more, including itself. So, the tag system is necessary for anything.
 
-
-### OTHERS

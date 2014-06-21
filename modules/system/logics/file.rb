@@ -56,7 +56,7 @@ get '/_file/get/:fid' do
 	unless ds.empty?
 		send_file Scfg[:upload_dir] + ds.get(:path).to_s, :type => ds.get(:type).split('/').last.to_sym
 	else
-		send_file Sdir + 'public/images/default.jpg', :type => :jpeg
+		send_file Sroot + 'public/images/default.jpg', :type => :jpeg
 	end
 end
 

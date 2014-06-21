@@ -54,8 +54,8 @@
   parent	: user
   tag		: admin
   
-- name		: logs
-  link		: /admin/logs
+- name		: mark
+  link		: /admin/mark
   parent	: user
   tag		: admin
   

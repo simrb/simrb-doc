@@ -27,8 +27,8 @@ module Simrb
 			module_name = args.shift(1)[0]
 			@et			= Array.new 4
 
-			path		= system_add_suffix("modules/#{module_name}/#{Simrb::File[:vars]}")
-			content		= system_get_erb("modules/#{Scfg[:main_module]}/#{Simrb::Dir[:docs]}/vars.erb")
+			path		= system_add_suffix("modules/#{module_name}/#{Simrb::Sfile[:vars]}")
+			content		= system_get_erb("modules/#{Scfg[:main_module]}/#{Simrb::Sdir[:docs]}/vars.erb")
 			system_generate_file({path => content})
 		end
 
@@ -40,8 +40,8 @@ module Simrb
 			module_name = args.shift(1)[0]
 			@et			= Array.new 4
 
-			path		= system_add_suffix("modules/#{module_name}/#{Simrb::File[:menu]}")
-			content		= system_get_erb("modules/#{Scfg[:main_module]}/#{Simrb::Dir[:docs]}/menu.erb")
+			path		= system_add_suffix("modules/#{module_name}/#{Simrb::Sfile[:menu]}")
+			content		= system_get_erb("modules/#{Scfg[:main_module]}/#{Simrb::Sdir[:docs]}/menu.erb")
 			system_generate_file({path => content})
 		end
 
@@ -94,7 +94,7 @@ module Simrb
 		def g_m2 args
 			if args.count == 2
 				modulename, filename = args
-				dir 	= "modules/#{modulename}/#{Simrb::Dir[:schema]}"
+				dir 	= "modules/#{modulename}/#{Simrb::Sdir[:schema]}"
 				count 	= Dir[dir + "/*"].count + 1
 				fname 	= "#{filename}_#{Time.now.strftime('%y%m%d')}" 
 				path 	= dir + "/#{count.to_s.rjust(3, '0')}_#{fname}.rb"
@@ -167,7 +167,7 @@ module Simrb
 	
 			# write the migration file
 			if content != ''
-				dir 	= "modules/#{modulename}/#{Simrb::Dir[:schema]}"
+				dir 	= "modules/#{modulename}/#{Simrb::Sdir[:schema]}"
 				count 	= Dir[dir + "/*"].count + 1
 				fname 	= args[1] ? args[1] : "#{operations.join('_')}_#{Time.now.strftime('%y%m%d')}" 
 				path 	= dir + "/#{count.to_s.rjust(3, '0')}_#{fname}.rb"
@@ -295,8 +295,8 @@ module Simrb
 							type = (arr.shift).to_sym
 
 							# normal field type
-							if Simrb::Alias.keys.include? type
-								data[field][:type] = Simrb::Alias[type]
+							if Simrb::Salias.keys.include? type
+								data[field][:type] = Simrb::Salias[type]
 
 							# main keys
 							elsif key_alias.include? type
@@ -332,9 +332,9 @@ module Simrb
 
 			# processes the complex key - type alias
 			data.each do | field, vals |
-				Simrb::Alias.keys.each do | key |
+				Simrb::Salias.keys.each do | key |
 					if data[field].include? key
-						data[field][:type] 		= Simrb::Alias[key]
+						data[field][:type] 		= Simrb::Salias[key]
 						data[field][:default] 	= key == :int ? data[field][key].to_i : data[field][key]
 						data[field].delete key
 					end
@@ -349,7 +349,7 @@ module Simrb
 
 			# write res to data.rb
 			res 	= system_convert_str table, data
-			path 	= "modules/#{module_name}/#{Simrb::Dir[:logic]}/data.rb"
+			path 	= "modules/#{module_name}/#{Simrb::Sdir[:logic]}/data.rb"
 # 			unless File.exist? path
 # 				File.new(path, 'w')
 # 			end

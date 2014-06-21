@@ -35,8 +35,8 @@ Sequel.migration do
 			String :path
 			Time :created
 		end
-		create_table(:_logs) do
-			primary_key :lid
+		create_table(:_mark) do
+			primary_key :mkid
 			String :name
 			String :ip, :size => 16
 			Time :changed

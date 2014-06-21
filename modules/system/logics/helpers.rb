@@ -6,9 +6,9 @@ get '/_assets/*' do
 	assets_name	= path_items.shift(3)[2]
 
 	if assets_name == 'public'
-		path = Sdir + "public/#{path_items.join('/')}"
+		path = Sroot + "public/#{path_items.join('/')}"
 	else
-		path = Sdir + "modules/#{assets_name}/#{Simrb::Dir[:assets]}/#{path_items.join('/')}"
+		path = Sroot + "modules/#{assets_name}/#{Simrb::Sdir[:assets]}/#{path_items.join('/')}"
 	end
 
 	send_file path, :type => request.path.split('.').last().to_sym
@@ -321,14 +321,14 @@ helpers do
 	# ##########################
 	# 		control system
 	# ##########################
-	# log the user operation by ip that refuses to do again at a period of time
-	def _log? name, timeout, msg = ''
+	# mark the operation by ip that prevents the same user do an action many times in specified time
+	def _mark name, timeout, msg = ''
 		reval = false
-		ds = DB[:_logs].filter(:name => name.to_s, :ip => _ip)
+		ds = DB[:_mark].filter(:name => name.to_s, :ip => _ip)
 
 		# if no record, create one
 		if ds.empty?
-			_submit :name => :_logs, :fkv => {:name => name.to_s}
+			_submit :name => :_mark, :fkv => {:name => name.to_s}
 		else
 			# if timeout to the last log, update the changed time
 			if _timeout?(ds.get(:changed), timeout)

@@ -74,9 +74,9 @@ data :_file do
 	}
 end
 
-data :_logs do
+data :_mark do
 	{
-		:lid				=>	{
+		:mkid				=>	{
 			:primary_key	=>	true,
 		},
 		:name				=> 	{},

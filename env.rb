@@ -4,7 +4,7 @@ require 'sequel'
 require 'slim'
 
 
-Sdir = Dir.pwd + '/'
+Sroot = Dir.pwd + '/'
 module Simrb
 
 	# common methods
@@ -30,7 +30,7 @@ module Simrb
 	end
 
 	# basic definition of directory paths
-	Dir					= {
+	Sdir				= {
 		:store			=> 'stores',
 		:logic			=> 'logics',
 		:view			=> 'views',
@@ -43,7 +43,7 @@ module Simrb
 	}
 
 	# basic definition of files
-	File				= {
+	Sfile				= {
 		:route			=> 'logics/routes.rb',
 		:gemfile		=> 'stores/Gemfile',
 		:modinfo		=> 'stores/installs/_mods',
@@ -53,13 +53,13 @@ module Simrb
 	}
 
 	# dirs to be generated in initializing module
-	Defdir				= [:logic, :store, :view, :assets, :lang, :install, :docs, :schema, :tool]
+	Sdefdir				= [:logic, :store, :view, :assets, :lang, :install, :docs, :schema, :tool]
 
 	# files to be generated in initializing module
-	Defile				= [:route, :gemfile, :modinfo, :readme]
+	Sdefile				= [:route, :gemfile, :modinfo, :readme]
 
 	# basic definition of assets file path
-	Docs				= {
+	Sdoc				= {
 		:layout_css		=> 'stores/docs/layout.css',
 		:common_css		=> 'stores/docs/common.css',
 	}
@@ -73,13 +73,13 @@ module Simrb
 		:lang				=> 'en',
 		:install_lock		=> 'yes',
 		:db_connection		=> 'sqlite://db/data.db',
-		:db_dir				=> Sdir + 'db',
-		:upload_dir			=> Sdir + 'db/upload/',
-		:backup_dir			=> Sdir + 'db/backup/',
-		:tmp_dir			=> Sdir + 'tmp',
-		:log_dir			=> Sdir + 'log',
-		:server_log			=> Sdir + 'log/thin.log',
-		:command_log		=> Sdir + 'log/command_error_log.html',
+		:db_dir				=> Sroot + 'db',
+		:upload_dir			=> Sroot + 'db/upload/',
+		:backup_dir			=> Sroot + 'db/backup/',
+		:tmp_dir			=> Sroot + 'tmp',
+		:log_dir			=> Sroot + 'log',
+		:server_log			=> Sroot + 'log/thin.log',
+		:command_log		=> Sroot + 'log/command_error_log.html',
 		:server_log_mode	=> 'file',
 		:cache_dir			=> '/var/cache/simrb/',
 		:time_types			=> ['created', 'changed'],
@@ -92,7 +92,7 @@ module Simrb
 	}
 
 	# alias of field type 
-	Alias				=	{
+	Salias				=	{
 		:int 				=> 'Fixnum',
 		:str 				=> 'String',
 		:text 				=> 'Text',

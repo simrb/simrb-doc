@@ -3,15 +3,14 @@
 # ####################
 require './init'
 
+Spath[:tool].each do | path |
+	require path
+end
 argv = ARGV.clone
 output = []
 
 # command mode
 if argv.count > 0 and Simrb::Stool.method_defined?(argv[0])
-		
-	Spath[:tool].each do | path |
-		require path
-	end
 
 	helpers do
 		include Simrb::Stool
@@ -44,7 +43,7 @@ else
 	argv.shift 1 
 
 	Smodules.each do | name |
-		Dir["#{Sdir}modules/#{name}/#{Simrb::Dir[:docs]}/*.#{Scfg[:lang]}.rb"].each do | path |
+		Dir["#{Sroot}modules/#{name}/#{Simrb::Sroot[:docs]}/*.#{Scfg[:lang]}.rb"].each do | path |
 			require path
 		end
 	end

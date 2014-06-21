@@ -52,8 +52,8 @@ get '/admin/user' do
 	)
 end
 
-get '/admin/logs' do
-	_admin :_logs
+get '/admin/mark' do
+	_admin :_mark
 end
 
 get '/admin/sess' do

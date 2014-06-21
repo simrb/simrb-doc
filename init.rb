@@ -10,7 +10,7 @@ end
 
 # load modules
 module_ds = []
-ds = Dir["#{Sdir}modules/*"].map { |name| name.split("/").last }
+ds = Dir["#{Sroot}modules/*"].map { |name| name.split("/").last }
 ds.unshift(Scfg[:main_module])
 module_ds = ds.uniq
 
@@ -29,10 +29,10 @@ Spath[:tool] 		= []
 Spath[:view] 		= []
 
 Smodules.each do | name |
-	Spath[:lang] 	+= Dir["#{Sdir}modules/#{name}/#{Simrb::Dir[:lang]}/*.#{Scfg[:lang]}"]
-	Spath[:logic] 	+= Dir["#{Sdir}modules/#{name}/#{Simrb::Dir[:logic]}/*.rb"]
-	Spath[:tool] 	+= Dir["#{Sdir}modules/#{name}/#{Simrb::Dir[:tool]}/*.rb"]
-	Spath[:view]	<< "#{Sdir}modules/#{name}/#{Simrb::Dir[:view]}"
+	Spath[:lang] 	+= Dir["#{Sroot}modules/#{name}/#{Simrb::Sdir[:lang]}/*.#{Scfg[:lang]}"]
+	Spath[:logic] 	+= Dir["#{Sroot}modules/#{name}/#{Simrb::Sdir[:logic]}/*.rb"]
+	Spath[:tool] 	+= Dir["#{Sroot}modules/#{name}/#{Simrb::Sdir[:tool]}/*.rb"]
+	Spath[:view]	<< "#{Sroot}modules/#{name}/#{Simrb::Sdir[:view]}"
 end
 
 
@@ -83,7 +83,7 @@ end
 
 
 # loads main files of logics dir that would be run
-Spath[:logic].each do | f |
-	require f
+Spath[:logic].each do | path |
+	require path
 end
 
