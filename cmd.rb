@@ -58,10 +58,10 @@ else
 	end
 
 	if argv.empty?
+		output << L['please select the number before the ducumentation to see detials, like $ 3s doc 0']
 		docs_key.each do | i, key |
 			output << "#{i.to_s}, #{key}"
 		end
-		output << L['please select the number before the ducumentation to see detials, like $ 3s doc 0']
 	else
 		argv.each do | i |
 			output << (docs_val.include?(i.to_i) ? docs_val[i.to_i] : L['no document'])

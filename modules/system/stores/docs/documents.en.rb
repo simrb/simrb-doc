@@ -1,5 +1,5 @@
-Sdocs['About us'] =<<Doc
-	$ 3s new blog
+Sdocs['About us, support, contact'] =<<Doc
+please go to https://github.com/simrb/simrb
 Doc
 
 Sdocs['How to create a module ?'] =<<Doc
@@ -65,6 +65,3 @@ the db connection string, like postgres://localhost/db_pg
 string connection like, sqlite://db/data.db
 Doc
 
-Sdocs['How to get more helps ?'] =<<Doc
-please go to https://github.com/simrb/simrb
-Doc
