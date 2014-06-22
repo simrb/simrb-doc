@@ -15,7 +15,7 @@ html
 				ul#top_menu
 					- @menus.each do | item |
 						- menu_focus = item.include?(:focus) ? "focus1" : ""
-						li
+						li.left
 							span class="#{menu_focus}"
 								a href="#{item[:link]}" title="#{item[:name]}" = L[item[:name].to_sym]
 							- if item.include?(:sub_menu)
@@ -23,9 +23,13 @@ html
 								ul.sub_menu class="#{menu_hide}"
 									- item[:sub_menu].each do | item |
 										- menu_focus = item.include?(:focus) ? "focus2" : ""
-										li
+										li.left
 											span class="#{menu_focus}"
 												a href="#{item[:link]}" title="#{item[:name]}" = L[item[:name].to_sym]
+					li.right
+						a href="/" = L[:frontground]
+						a href="#{_url(_var(:logout, :link))}" = L[:logout]
+
 				.clear
 
 				#description = @t[:description]

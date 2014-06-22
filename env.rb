@@ -134,11 +134,11 @@ end
 
 configure :production do
 	not_found do
-		L['Sorry, no page']
+		L['sorry, no page']
 	end
 
 	error do
-		'Sorry there was a nasty error - ' + env['sinatra.error'].name
+		L['sorry there was a nasty error - '] + env['sinatra.error'].name
 	end
 end
 

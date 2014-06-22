@@ -21,8 +21,7 @@
  *
  */
 #header { min-height: 50px; position: absolute; top: 0; width: 100%; }
-#top_menu { min-height: 20px; }
-#top_menu li { float: left; }
+#top_menu { min-height: 20px; width: 100%; }
 /*#description { height: 25px; }*/
 .box-1 { float: left; }
 #top_menu .sub_menu { position: absolute; width: 100%; left: 0; top: 30px; height: 20px; }
@@ -35,7 +34,7 @@
  */
 #wrap { margin: 0; }
 #bodyer { margin-top: 70px; }
-#top_menu { padding: 5px; }
+#top_menu { padding: 5px 0; }
 #top_menu a { padding: 8px; }
 .box-1 .title, .box-1 .body { padding: 6px; }
 .table span { margin: 0 4px; }
