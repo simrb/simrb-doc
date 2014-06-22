@@ -1,3 +1,42 @@
 ---
-descpt:			description
-no document:	no document
+descpt:					description
+no document:			no document
+upload complete:		upload complete
+the file is null:		the file is null
+recover complete:		recover complete
+delete complete:		delete complete
+backup complete:		backup complete
+upload complete:		upload complete
+the file type is wrong:		the file type is wrong
+the file size is too big:	the file size is too big
+your level is too low:	your level is too low
+no record in database:	no record in database
+no parameter _name:		no parameter _name
+the user is not existing:	the user is not existing
+the password is wrong:	the password is wrong
+the user is existing:	the user is existing
+no user id:				no user id
+backup creating:		backup creating
+select all:				select all
+encoding:				encoding
+filename:				filename
+backup:					backup
+backup operating:		backup operating
+inport records:			inport records
+done:					done
+return:					return
+save:					save
+tag:					tag
+login:					Login
+logout:					logout
+account:				account
+password:				password
+rememberme:				rememberme
+register:				Register
+username:				username
+execute:				execute
+all:					all
+keywords:				keywords
+label:					label
+search:					search
+name:					name
