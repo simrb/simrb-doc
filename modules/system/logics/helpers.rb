@@ -342,9 +342,5 @@ helpers do
 		reval
 	end
 
-	# control the number of action by ip in a period of time
-	def _mark?
-	end
-
 end
 

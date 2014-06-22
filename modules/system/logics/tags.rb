@@ -116,7 +116,7 @@ helpers do
 				if reval == :html
 					ds.each do | r |
 						# reval is html
-						res << "<a href='#{_url2('', :_tag => r[:name])}'>#{r[:name]}</a>"
+						res << "<a href='#{_url('', :_tag => r[:name])}'>#{r[:name]}</a>"
 	# 					res << r[:name]
 					end
 				else
@@ -128,11 +128,11 @@ helpers do
 		res.empty? ? '' : res.join(' , ')
 	end
 
-	# get all of tags, return a hash
+	# get all of tags as a hash by specified table name
 	#
 	# == Example
-	#
-	# 	get all of tags of post
+	#		
+	#	get the tags of the posts table
 	#
 	# 	_tag_hash(:posts)	# => { 1 => 'ruby', 2 => 'python',,, }
 	#
