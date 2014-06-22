@@ -9,7 +9,7 @@ $("#toTop").css({
 })
 
 $("#toTop").click(function() {
-	$('html, body').animate({scrollTop:0}, 800)
+	$('html, body').animate({scrollTop:0}, 100)
 	return false;
 });
 
