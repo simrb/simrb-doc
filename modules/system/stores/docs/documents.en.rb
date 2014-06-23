@@ -1,10 +1,41 @@
 Sdocs['About us, support, contact'] =<<Doc
-please go to https://github.com/simrb/simrb
+please go to https://github.com/simrb/simrb/issues
 Doc
 
+
 Sdocs['How to create a module ?'] =<<Doc
+################
+# Setp 1
+################
+
+initialize a module directory whatever you want to do for your new applications
+
 	$ 3s new blog
+
+the result generated like below
+
+blog
+-- logics/
+-- -- routes.rb
+-- stores/
+-- -- installs/
+-- -- langs/
+-- -- migrations/
+-- -- tools/
+-- -- docs/
+-- -- Gemfile
+-- views/
+-- -- assets/
+-- README.md
+
+################
+# Setp 2
+################
+
+What should i do to these directories
+
 Doc
+
 
 Sdocs['How to install database ?'] =<<Doc
 ################

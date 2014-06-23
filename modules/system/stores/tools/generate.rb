@@ -356,7 +356,7 @@ module Simrb
 # 			File.open(path, 'a') do | f |
 # 				f.write res
 # 			end
-			res << 'generate content as above'
+			res << L['generate content as above']
 		end
 
 	end
