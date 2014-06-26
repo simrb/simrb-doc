@@ -19,11 +19,12 @@ ul li {list-style-type: none;}
 .mr10 {margin-right: 10px;}
 .mb10 {margin-bottom: 10px;}
 .mrb10 {margin: 0 10px 10px 0;}
-.text {
+.text, article {
 	display: block;
+	word-wrap: normal;
 	word-break: keep-all;
-	white-space: nowrap;
-	overflow: hidden;
+	white-space: normal;
+	overflow: ellipsis;
 	text-overflow: ellipsis;
 }
 
