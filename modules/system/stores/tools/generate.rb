@@ -225,9 +225,9 @@ module Simrb
 		#
 		# 	{
 		# 		:table_name	=>	{
-		# 			:field0	=>	{ :pramiry_key => true },
-		# 			:field1	=>	{ :default => ''},
-		# 			:field2	=>	{ :default => ''},
+		# 			:field0	=>	{ :pramiry_key	=> true },
+		# 			:field1	=>	{ :default 		=> ''},
+		# 			:field2	=>	{ :default 		=> ''},
 		# 		}
 		# 	}
 		#
@@ -239,10 +239,10 @@ module Simrb
 		#
 		# 	{
 		# 		:table_name	=>	{
-		# 			:field1	=>	{ :pramiry_key => true },
-		# 			:field2	=>	{ :type	=> :integer },
-		# 			:field3	=>	{ :type	=> :text },
-		# 			:field4	=>	{ :default => ''},
+		# 			:field1	=>	{ :pramiry_key	=> true },
+		# 			:field2	=>	{ :type			=> 'Fixnum' },
+		# 			:field3	=>	{ :type			=> 'Text' },
+		# 			:field4	=>	{ :default		=> ''},
 		# 		}
 		# 	}
 		#
@@ -326,7 +326,7 @@ module Simrb
 					end
 				else
 					data[item.to_sym] = {}
-					data[item.to_sym][:default] = ''
+# 					data[item.to_sym][:default] = ''
 				end
 			end
 
