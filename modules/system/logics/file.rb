@@ -119,15 +119,29 @@ helpers do
 	end
 
 	def _parser_init extension = {}
-		require 'redcarpet'
-		extensions = {:autolink => true, :space_after_headers => true}
-		extensions.merge! extension
-		@markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, extensions)
+# 		require 'redcarpet'
+# 		extensions 	= {:autolink => true, :space_after_headers => true}.merge(extension)
+# 		html_obj 	= Redcarpet::Render::HTML.new()
+# 		@markdown 	= Redcarpet::Markdown.new(html_obj, extensions)
+
+		@markdown_extensions = extension
+# 		require 'rdiscount'
+
+  		require 'kramdown'
+
 	end
 
 	def _m2h str
-		@markdown.render str
+# 		# redcarpet
+#   	@markdown.render str
+
+#  		# rdiscount
+#  		RDiscount.new(str).to_html
+
+		# kramdown
+  		Kramdown::Document.new(str, @markdown_extensions).to_html
 	end
+
 end
 
 

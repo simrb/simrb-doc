@@ -5,7 +5,7 @@ gem 'sinatra', '1.4.5'
 gem 'slim', '2.0.2'
 
 gem 'thin', '1.6.2'
-gem 'redcarpet', '3.1.2'
+gem 'kramdown', '1.4.0'
 
 group :development do
 	gem 'sqlite3'
