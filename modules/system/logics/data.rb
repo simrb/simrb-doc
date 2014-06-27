@@ -123,6 +123,7 @@ data :_sess do
 	{
 		:sid				=> 	{
 			:size			=>	50,
+			:type			=>	'String'
 		},
 		:uid				=> 	{
 			:default		=> 	_user[:uid],

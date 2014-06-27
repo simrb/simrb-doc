@@ -50,7 +50,7 @@ Sequel.migration do
 			Time :created
 		end
 		create_table(:_sess) do
-			Fixnum :sid, :size => 50
+			String :sid, :size => 50
 			Fixnum :uid
 			Fixnum :timeout
 			String :ip, :size => 16

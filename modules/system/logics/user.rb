@@ -43,15 +43,15 @@ helpers do
 	def _login argv = nil
 		if argv[:name] and argv[:pawd]
 
-			#valid field format
+			# valid field format
 			f = argv
 			_valid :user, f
 
-			#no user
+			# if no user
 			ds = DB[:_user].filter(:name => f[:name])
-			_throw L[:'the user is not existing'] if ds.empty?
+			_throw L[:'the user is not existed'] if ds.empty?
 
-			#verity password
+			# verify password
 			require "digest/sha1"
 			if ds.get(:pawd) == Digest::SHA1.hexdigest(f[:pawd] + ds.get(:salt))
 				sid = Digest::SHA1.hexdigest(f[:name] + Time.now.to_s)
@@ -67,10 +67,10 @@ helpers do
 		return_url ||= _var(:after_login, :link)
 		sid = request.cookies['sid']
 
-		#remove from client
+		# remove client cache
 		response.set_cookie "sid", :value => "", :path => "/"
 
-		#clear from server
+		# clear server cache
 		_session_remove sid
 		redirect _url2(return_url)
 	end
@@ -280,7 +280,7 @@ helpers do
 		end
 
 		# server
-		DB[:_sess].insert(:sid => sid, :uid => uid, :changed => Time.now, :timeout => timeout)
+		DB[:_sess].insert(:sid => sid, :uid => uid, :changed => Time.now, :timeout => timeout, :ip => _ip)
 	end
 
 	# the user do nothing in the timeout, the session will be remove, automatically
