@@ -21,7 +21,7 @@ end
 # administration
 # ================================================
 get '/a' do
- 	redirect '/admin/info'
+ 	redirect _url('/admin/info/system')
 end
 
 before '/admin/*' do
@@ -30,10 +30,11 @@ before '/admin/*' do
 end
 
 get "/robots.txt" do
-	arr = []
-	arr << "User-agent:*"
-	arr << "Disallow:/admin*"
-	arr << "Disallow:/_*"
+	arr = [
+		"User-agent:*",
+		"Disallow:/admin*",
+		"Disallow:/_*",
+	]
 	arr.join("\n")
 end
 
@@ -53,7 +54,6 @@ end
 #
 # Second
 # the interface methods need to be added the '_' as the suffix
-
 post '/_system/_opt' do
 	method = params[:_method_] ? params[:_method_] : (@qs.include?(:_method_) ? @qs[:_method_] : nil)
 	if method and method[-1] == '_' and self.respond_to?(method.to_sym)

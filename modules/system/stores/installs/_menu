@@ -1,21 +1,21 @@
 ---
 #system base menu
 - name		: system
-  link		: /admin/info
+  link		: /admin/info/system
   tag		: admin
   
 - name		: module
-  link		: /admin/mods
+  link		: /admin/view/_mods
   parent	: system
   tag		: admin
   
 - name		: menu
-  link		: /admin/menu
+  link		: /admin/view/_menu
   parent	: system
   tag		: admin
   
 - name		: settings
-  link		: /admin/vars
+  link		: /admin/view/_vars
   parent	: system
   tag		: admin
   
@@ -25,12 +25,12 @@
   tag		: admin
   
 - name		: tags
-  link		: /admin/tags
+  link		: /admin/view/_tags
   parent	: system
   tag		: admin
   
 - name		: docs
-  link		: /admin/docs
+  link		: /admin/view/_docs
   parent	: system
   tag		: admin
   
@@ -41,7 +41,7 @@
 
 #user menu
 - name		: user
-  link		: /admin/userinfo
+  link		: /admin/info/_user
   tag		: admin
   
 - name		: menber
@@ -55,7 +55,7 @@
   tag		: admin
   
 - name		: mark
-  link		: /admin/mark
+  link		: /admin/view/_mark
   parent	: user
   tag		: admin
   

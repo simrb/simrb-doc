@@ -1,38 +1,38 @@
-get '/admin/info' do
+get '/admin/info/:name' do
 	admin_page :admin_info
 end
 
-get '/admin/userinfo' do
-	admin_page :admin_info
+get '/admin/view/:table' do
+	_admin params[:table].to_sym
 end
 
-get '/admin/tag' do
-	admin_page :admin_info
-end
-
-get '/admin/mods' do
-	_admin :_mods
-end
-
-get '/admin/menu' do
-	_admin :_menu
-end
-
-get '/admin/vars' do
-	_admin :_vars
-end
-
-get '/admin/tags' do
-	_admin :_tags
-end
-
-get '/admin/atag' do
-	_admin :_atag
-end
-
-get '/admin/docs' do
-	_admin :_docs
-end
+# get '/admin/mods' do
+# 	_admin :_mods
+# end
+# 
+# get '/admin/menu' do
+# 	_admin :_menu
+# end
+# 
+# get '/admin/vars' do
+# 	_admin :_vars
+# end
+# 
+# get '/admin/tags' do
+# 	_admin :_tags
+# end
+# 
+# get '/admin/atag' do
+# 	_admin :_atag
+# end
+# 
+# get '/admin/docs' do
+# 	_admin :_docs
+# end
+# 
+# get '/admin/mark' do
+# 	_admin :_mark
+# end
 
 get '/admin/user' do
 	_admin(
@@ -50,10 +50,6 @@ get '/admin/user' do
 			:_method_	=>	'_user_edit_',
 		}
 	)
-end
-
-get '/admin/mark' do
-	_admin :_mark
 end
 
 get '/admin/sess' do
