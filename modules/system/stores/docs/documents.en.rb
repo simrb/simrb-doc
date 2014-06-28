@@ -1,9 +1,32 @@
 Sdocs['About us, support, contact'] =<<Doc
-please go to https://github.com/simrb/simrb/issues
+## Principle
+
+## Support
+
+## Contact
+Issue:		https://github.com/simrb/simrb/issues
+News:		http://www.simrb.com/www/articles
+Email:		coolesting@gmail.com
 Doc
 
+Sdocs['Basic structure'] =<<Doc
+	database, directory, mechanism
+Doc
 
-Sdocs['How to create a module ?'] =<<Doc
+Sdocs['Using commands'] =<<Doc
+	this is one
+Doc
+
+Sdocs['Configuration, logic application, controler'] =<<Doc
+Doc
+
+Sdocs['Data, model, database'] =<<Doc
+Doc
+
+Sdocs['View, template'] =<<Doc
+Doc
+
+Sdocs['Module introduction'] =<<Doc
 ################
 # Setp 1
 ################
@@ -37,7 +60,7 @@ What should i do to these directories
 Doc
 
 
-Sdocs['How to install database ?'] =<<Doc
+Sdocs['Misc, installing database'] =<<Doc
 ################
 # mysql
 ################

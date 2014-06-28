@@ -58,7 +58,7 @@ else
 	end
 
 	if argv.empty?
-		output << L['please select the number before the ducumentation to see detials, like $ 3s doc 0']
+		output << L['please select the number before the list to see detials, like $ 3s doc 2']
 		docs_key.each do | i, key |
 			output << "#{i.to_s}, #{key}"
 		end
