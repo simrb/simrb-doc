@@ -49,5 +49,10 @@ form
 			input type="file" name="inport"
 			input.button type="submit" value="#{L[:'inport records']}" formaction="/admin/baks/inport" formmethod="post" formenctype="multipart/form-data"
 
+		.body
+			p Tip: if you intend to make a recover, 
+			p you better to backup that table you want to recover at first, 
+			p for preventing lose your data if backup failure.
+
 
 	script src="#{_assets('public/js/view.js')}"

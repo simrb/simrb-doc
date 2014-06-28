@@ -102,18 +102,19 @@ end
 # backup
 ########################################################
 get '/admin/baks' do
-	if @qs[:opt] == 'export'
+	case @qs[:opt]
+	when 'export'
 		if @qs[:id]
 			type = @qs[:id].split('_').last
 			send_file Scfg[:backup_dir] + @qs[:id], :filename => "#{@qs[:id]}.#{type}", :type => type.to_sym
 # 		attachment "#{Time.now}.csv"
 # 		csv_file
 		end
-	elsif @qs[:opt] == 'recover'
+	when 'recover'
 		_backup_recover(@qs[:id], @qs[:encoding]) if @qs[:id]
 		_msg L[:'recover complete']
 		redirect back
-	elsif @qs[:opt] == 'delete'
+	when 'delete'
 		file = File.delete Scfg[:backup_dir] + "#{@qs[:id]}"
 		_msg L[:'delete complete']
 		redirect back
@@ -268,10 +269,11 @@ helpers do
 		require 'csv'
 		contents = CSV.parse(file)
 
-		#split the contents with '##########' to many block. each block is a table data
+		#split the contents with '##########' to many blocks. each block is a table data
 		contents.each do | row |
 			if row.last == '###table###'
 				@table		= row[0].to_sym
+				DB[@table].delete
 
 			elsif row.last == '##fields##'
 				row.pop
