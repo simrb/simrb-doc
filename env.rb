@@ -13,6 +13,8 @@ module Simrb
 		def read_file path
 			require 'yaml'
 			YAML.load_file path
+		rescue
+			[]
 		end
 
 		def write_file path, data
@@ -105,17 +107,17 @@ end
 
 
 # load the scfg file
-Scfg = Simrb::Scfg
-Simrb.read_file('scfg').each do | k, v |
-	Scfg[k.to_sym] = v
-end
-
 unless File.exist? 'scfg'
 	data = {}
 	[:lang, :db_connection, :environment, :bind, :port].each do | opt |
 		data[opt] = Scfg[opt]
 	end
 	Simrb.write_file('scfg', data)
+end
+
+Scfg = Simrb::Scfg
+Simrb.read_file('scfg').each do | k, v |
+	Scfg[k.to_sym] = v
 end
 
 
