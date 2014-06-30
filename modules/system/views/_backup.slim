@@ -1,9 +1,9 @@
 form
 	.box-1
-		.title = L[:'backup creating']
+		.title = Sl[:'backup creating']
 		.body.checkall
 			label.lhover
-				label.pointer class='checkall-switch' #{L[:'select all']} >>> 
+				label.pointer class='checkall-switch' #{Sl[:'select all']} >>> 
 			- i = 0
 			- @tables.each do | t |
 				- if(i % 5) == 0
@@ -14,19 +14,19 @@ form
 					label for="tn_#{t}" = t
 
 		.body
-			label.mr10 = L[:encoding]
+			label.mr10 = Sl[:encoding]
 			input.mr10 type="text" name="encoding" value="#{@encoding}"
 
 		.body
 
-			label.mr10 = L[:filename]
+			label.mr10 = Sl[:filename]
 			input.mr10 type="text" name="filename" placeholder='file name'
 
-			input.button type="submit" name="backup" value="#{L[:backup]}" formaction="/admin/baks/backup" formmethod="post"
+			input.button type="submit" name="backup" value="#{Sl[:backup]}" formaction="/admin/baks/backup" formmethod="post"
 
 	.box-1
 
-		.title = L[:'backup operating']
+		.title = Sl[:'backup operating']
 		table.table
 			thead
 				th file name
@@ -47,7 +47,7 @@ form
 
 		.body
 			input type="file" name="inport"
-			input.button type="submit" value="#{L[:'inport records']}" formaction="/admin/baks/inport" formmethod="post" formenctype="multipart/form-data"
+			input.button type="submit" value="#{Sl[:'inport records']}" formaction="/admin/baks/inport" formmethod="post" formenctype="multipart/form-data"
 
 		.body
 			p Tip: if you intend to make a recover, 

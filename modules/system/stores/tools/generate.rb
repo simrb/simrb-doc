@@ -127,7 +127,7 @@ module Simrb
 
 			content			= ''
 			operations		= []
-			db_tables 		= DB.tables
+			db_tables 		= Sdb.tables
 			create_tables 	= []
 			drop_tables		= []
 			alter_tables	= []
@@ -146,7 +146,7 @@ module Simrb
 				# check it for altering tables
 				else
 					data_cols 	= _data(table).keys
-					db_cols		= DB[table].columns
+					db_cols		= Sdb[table].columns
 				end
 			end
 
@@ -356,7 +356,7 @@ module Simrb
 # 			File.open(path, 'a') do | f |
 # 				f.write res
 # 			end
-			res << L['generate content as above']
+			res << Sl['generate content as above']
 		end
 
 	end

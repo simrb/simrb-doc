@@ -90,9 +90,9 @@ post '/admin/file' do
 		params[:upload].each do | p |
 			_file_save p
 		end
-		_msg L[:'upload complete']
+		_msg Sl[:'upload complete']
 	else
-		_msg L[:'the file is null']
+		_msg Sl[:'the file is null']
 	end
 	redirect back
 end
@@ -112,14 +112,14 @@ get '/admin/baks' do
 		end
 	when 'recover'
 		_backup_recover(@qs[:id], @qs[:encoding]) if @qs[:id]
-		_msg L[:'recover complete']
+		_msg Sl[:'recover complete']
 		redirect back
 	when 'delete'
 		file = File.delete Scfg[:backup_dir] + "#{@qs[:id]}"
-		_msg L[:'delete complete']
+		_msg Sl[:'delete complete']
 		redirect back
 	else
-		@tables = DB.tables
+		@tables = Sdb.tables
 		@encoding = _var(:encoding, :file) != "" ? _var(:encoding, :file) : Scfg[:encoding]
 		admin_page :_backup
 	end
@@ -138,7 +138,7 @@ post '/admin/baks/backup' do
 		File.open(filename, 'w+') do | f |
 			f.write csv_file
 		end
-		_msg L[:'backup complete']
+		_msg Sl[:'backup complete']
 	end
 	redirect back
 end
@@ -150,7 +150,7 @@ post '/admin/baks/inport' do
 		File.open(Scfg[:backup_dir] + filename, 'w+') do | f |
 			f.write params[:inport][:tempfile].read
 		end
-		_msg L[:'upload complete']
+		_msg Sl[:'upload complete']
 	end
 	redirect back
 end
@@ -236,15 +236,15 @@ helpers do
 	def _table_to_csv datas, encoding = nil
 		require 'csv'
 		csv_file 	= ''
-		tables 		= DB.tables
+		tables 		= Sdb.tables
 
 		datas.each do | tn |
 			table_name = tn.to_sym
 			if tables.include?(table_name)
-				ds = DB[table_name]
+				ds = Sdb[table_name]
 				res = CSV.generate do | csv |
 					csv << [table_name, '###table###']
-					csv << (DB[table_name].columns! + ['##fields##'])
+					csv << (Sdb[table_name].columns! + ['##fields##'])
 					csv << []
 					ds.each do | row |
 						csv << row.values
@@ -273,12 +273,12 @@ helpers do
 		contents.each do | row |
 			if row.last == '###table###'
 				@table		= row[0].to_sym
-				DB[@table].delete
+				Sdb[@table].delete
 
 			elsif row.last == '##fields##'
 				row.pop
 				@tb_fields	= row
-				@db_fields	= DB[@table].columns
+				@db_fields	= Sdb[@table].columns
 
 			else
 				unless row.empty?
@@ -288,7 +288,7 @@ helpers do
 							data[@tb_fields[i].to_sym] = row[i]
 						end
 					end
-					DB[@table].insert(data)
+					Sdb[@table].insert(data)
 				end
 
 			end

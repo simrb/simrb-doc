@@ -17,7 +17,7 @@ html
 						- menu_focus = item.include?(:focus) ? "focus1" : ""
 						li.left
 							span class="#{menu_focus}"
-								a href="#{item[:link]}" title="#{item[:name]}" = L[item[:name].to_sym]
+								a href="#{item[:link]}" title="#{item[:name]}" = Sl[item[:name].to_sym]
 							- if item.include?(:sub_menu)
 								- menu_hide = menu_focus == "focus1" ? '' : 'hide'
 								ul.sub_menu class="#{menu_hide}"
@@ -25,10 +25,10 @@ html
 										- menu_focus = item.include?(:focus) ? "focus2" : ""
 										li.left
 											span class="#{menu_focus}"
-												a href="#{item[:link]}" title="#{item[:name]}" = L[item[:name].to_sym]
+												a href="#{item[:link]}" title="#{item[:name]}" = Sl[item[:name].to_sym]
 					li.right
-						a href="/" = L[:frontground]
-						a href="#{_url(_var(:logout, :link))}" = L[:logout]
+						a href="/" = Sl[:frontground]
+						a href="#{_url(_var(:logout, :link))}" = Sl[:logout]
 
 				.clear
 

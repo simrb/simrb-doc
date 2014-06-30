@@ -3,6 +3,43 @@ require 'sinatra/base'
 require 'sequel'
 require 'slim'
 
+class Sl
+	@@options = {}
+	class << self
+		def [] key
+			key = key.to_s
+			@@options.include?(key) ? @@options[key] : key
+		end
+		def << h
+			@@options.merge!(h)
+		end
+	end
+end
+
+# increase data and valid block
+Svalid = {}
+Sdata = {}
+module Sinatra
+	class Application < Base
+		def self.data name = '', &block
+			(Sdata[name] ||= []) << block
+		end
+		def self.valid name = '', &block
+			(Svalid[name] ||= []) << block
+		end
+	end
+
+	module Delegator
+		delegate :data, :valid
+	end
+end
+
+helpers do
+	def find_template(views, name, engine, &block)
+		Array(views).each { |v| super(v, name, engine, &block) }
+	end
+end
+
 
 Sroot = Dir.pwd + '/'
 module Simrb
@@ -131,16 +168,16 @@ end
 set :environment, Scfg[:environment].to_sym
 
 configure do
-	DB = Sequel.connect(Scfg[:db_connection])
+	Sdb = Sequel.connect(Scfg[:db_connection])
 end
 
 configure :production do
 	not_found do
-		L['sorry, no page']
+		Sl['sorry, no page']
 	end
 
 	error do
-		L['sorry there was a nasty error - '] + env['sinatra.error'].name
+		Sl['sorry there was a nasty error - '] + env['sinatra.error'].name
 	end
 end
 

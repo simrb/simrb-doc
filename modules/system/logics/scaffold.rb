@@ -11,7 +11,7 @@ helpers do
 			elsif @qs.include?(:_name)
 				argv[:name] = @qs[:_name]
 			else
-				_throw L[:'no parameter _name']
+				_throw Sl[:'no parameter _name']
 			end
 		end
 
@@ -70,7 +70,7 @@ helpers do
 			end
 		end
 
-		ds = DB[@t[:name]].filter(@t[:conditions])
+		ds = Sdb[@t[:name]].filter(@t[:conditions])
 
 		# order
 		if @qs[:order]
@@ -109,7 +109,7 @@ helpers do
 		#edit record, if has pk value
 		if @qs.include?(@t[:pk])
 			@t[:conditions][@t[:pk]] = @qs[@t[:pk]].to_i 
-			ds = DB[@t[:name]].filter(@t[:conditions])
+			ds = Sdb[@t[:name]].filter(@t[:conditions])
 			unless ds.empty?
 				data = ds.first
 				@t[:opt] = :update
@@ -148,25 +148,25 @@ helpers do
 
 			# check the data whether it exists in db
 			if t.include?(:uniq) and t[:uniq] == true
-				ds = DB[t[:name]].filter(f)
-				DB[t[:name]].insert(f) if ds.empty?
+				ds = Sdb[t[:name]].filter(f)
+				Sdb[t[:name]].insert(f) if ds.empty?
 			else
-				DB[t[:name]].insert(f)
+				Sdb[t[:name]].insert(f)
 			end
-			pkid = DB[t[:name]].filter(f).limit(1).get(t[:pk])
+			pkid = Sdb[t[:name]].filter(f).limit(1).get(t[:pk])
 
 		# update data
 		else
 			#tag	= f.delete(:tag) if f.include?(:tag) 
-			ds = DB[t[:name]].filter(t[:conditions])
+			ds = Sdb[t[:name]].filter(t[:conditions])
 			unless ds.empty?
 				f = _set_f ds.first, t[:fields]
 				_valid t[:name], f if t[:valid] == true
 				f.delete t[:pk]
-				DB[t[:name]].filter(t[:conditions]).update(f)
+				Sdb[t[:name]].filter(t[:conditions]).update(f)
 				pkid = ds.get(t[:pk])
 			else
-				_throw L[:'no record in database']
+				_throw Sl[:'no record in database']
 			end
 		end
 
@@ -189,13 +189,13 @@ helpers do
 		if params[t[:pk]]
 			#delete one morn records
 			if params[t[:pk]].class.to_s == 'Array'
-				DB[t[:name]].where(t[:pk] => params[t[:pk]]).delete
+				Sdb[t[:name]].where(t[:pk] => params[t[:pk]]).delete
 			#delete single record
 			else
 				t[:conditions][t[:pk]] = params[t[:pk]].to_i 
-				DB[t[:name]].filter(t[:conditions]).delete
+				Sdb[t[:name]].filter(t[:conditions]).delete
 			end
-			#_msg L[:'delete complete']
+			#_msg Sl[:'delete complete']
 		end
 	end
 
@@ -262,7 +262,7 @@ helpers do
 		fkv		= {}
 		data 	= _data_format name
 
-# 		schema = DB.schema name.to_sym
+# 		schema = Sdb.schema name.to_sym
 		data.each do | field, val |
 			# save primary_key
 			pk = field if val[:primary_key] == true

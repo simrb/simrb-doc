@@ -1,16 +1,16 @@
 #user_login
 	form action="#{_url2}" method="post"
-		p : h2 = L[:register]
-		p : label = L[:account]
-		p : input type="text" name="name" required="required" placeholder="#{L[:username]}"
+		p : h2 = Sl[:register]
+		p : label = Sl[:account]
+		p : input type="text" name="name" required="required" placeholder="#{Sl[:username]}"
 
-		p : label = L[:password]
-		p : input type="password" name="pawd" required="required" placeholder="#{L[:password]}"
+		p : label = Sl[:password]
+		p : input type="password" name="pawd" required="required" placeholder="#{Sl[:password]}"
 
-		p : input.button type="submit" value="#{L[:submit]}"
+		p : input.button type="submit" value="#{Sl[:submit]}"
 		p
 			input type="checkbox" name="rememberme" id="rememberme" value="yes"
-			label.font13 for="rememberme" = L[:rememberme]
+			label.font13 for="rememberme" = Sl[:rememberme]
 			input type="hidden" name="userstate" value="new"
 
 css:

@@ -12,9 +12,9 @@ end
 post '/_file/upload' do
 	if params[:upload] and params[:upload][:tempfile] and params[:upload][:filename]
 		_file_save params[:upload]
-		L[:'upload complete']
+		Sl[:'upload complete']
 	else
-		L[:'the file is null']
+		Sl[:'the file is null']
 	end
 end
 
@@ -24,7 +24,7 @@ get '/_file/type/:type' do
 	page_curr = (@qs.include?(:page_curr) and @qs[:page_curr].to_i > 0) ? @qs[:page_curr].to_i : 1
 
 	#search condition
-	ds = DB[:_file].filter(:uid => _user[:uid])
+	ds = Sdb[:_file].filter(:uid => _user[:uid])
 	if params[:type] == 'all'
 	elsif params[:type] == 'image'
 		ds = ds.where(Sequel.like(:type, "#{params[:type]}/%"))
@@ -52,7 +52,7 @@ end
 #get the file by id
 get '/_file/get/:fid' do
 	fid = params[:fid].to_i
-	ds = DB[:_file].filter(:fid => fid)
+	ds = Sdb[:_file].filter(:fid => fid)
 	unless ds.empty?
 		send_file Scfg[:upload_dir] + ds.get(:path).to_s, :type => ds.get(:type).split('/').last.to_sym
 	else
@@ -77,16 +77,16 @@ helpers do
 
 		#validate file specification
 		unless _var(:filetype, :file).include? file[:type]
-			_throw L[:'the file type is wrong']
+			_throw Sl[:'the file type is wrong']
 		end
 		file_content = file[:tempfile].read
 		if (fields[:size] = file_content.size) > _var(:filesize, :file).to_i
-			_throw L[:'the file size is too big']
+			_throw Sl[:'the file size is too big']
 		end
 
 		#save the info of file
 		#table = file[:table] ? file[:table].to_sym : :file
-		DB[:_file].insert(fields)
+		Sdb[:_file].insert(fields)
 
 		#save the body of file
 		File.open(Scfg[:upload_dir] + fields[:path], 'w+') do | f |
@@ -95,19 +95,19 @@ helpers do
 
 		#return the value
 		unless returned == nil
-			DB[:_file].filter(fields).get(returned)
+			Sdb[:_file].filter(fields).get(returned)
 		end
 	end
 
 	def _file_rm fid, level = 1
-		ds = DB[:_file].filter(:fid => fid.to_i)
+		ds = Sdb[:_file].filter(:fid => fid.to_i)
 		unless ds.empty?
 			path 	= ds.get(:path)
 			uid		= ds.get(:uid)
 
 			#validate user
 			unless uid.to_i == _user[:uid]
-				_throw L[:'your level is too low'] if _user[:level] < level
+				_throw Sl[:'your level is too low'] if _user[:level] < level
 			end
 
 			#remove record
@@ -121,7 +121,7 @@ helpers do
 	def _parser_init extension = {}
 # 		require 'redcarpet'
 # 		extensions 	= {:autolink => true, :space_after_headers => true}.merge(extension)
-# 		html_obj 	= Redcarpet::Render::HTML.new()
+# 		html_obj 	= Redcarpet::Render::HTMSl.new()
 # 		@markdown 	= Redcarpet::Markdown.new(html_obj, extensions)
 
 		@markdown_extensions = extension

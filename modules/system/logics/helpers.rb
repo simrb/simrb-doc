@@ -114,7 +114,7 @@ helpers do
 		name = "#{table}-#{key}-#{value}".to_sym
 		@cache ||= {}
 		unless @cache.has_key? name
-			@cache[name] = DB[table].to_hash(key, value)
+			@cache[name] = Sdb[table].to_hash(key, value)
 		end
 		@cache[name]
 	end
@@ -135,7 +135,7 @@ helpers do
 	# return a string, others is nil
 	def _var key, tag = ''
 		h 	= {:vkey => key.to_s}
-		ds 	= DB[:_vars].filter(h)
+		ds 	= Sdb[:_vars].filter(h)
 
 		if tag != ''
 			tids = _tag_ids(:_vars, tag)
@@ -152,7 +152,7 @@ helpers do
 
 	# update variable, create one if it doesn't exist
 	def _var_set key, val
- 		DB[:_vars].filter(:vkey => key.to_s).update(:vval => val.to_s, :changed => Time.now)
+ 		Sdb[:_vars].filter(:vkey => key.to_s).update(:vval => val.to_s, :changed => Time.now)
 #  		_submit(:name => :_vars, :fkv => argv, :opt => :update) unless argv.empty?
 	end
 
@@ -210,7 +210,7 @@ helpers do
 	#		{:name => 'name', :link => 'link', :sub_menu => [{:name => 'name', :link => 'link'},{},{}]},
 	# 	]
 	def _menu tag, menu_level = 2, set_tpl = true
-		ds = DB[:_menu].filter(:mid => _tag_ids(:_menu, tag)).order(:order)
+		ds = Sdb[:_menu].filter(:mid => _tag_ids(:_menu, tag)).order(:order)
 		return [] if ds.empty?
 
 		arr_by_parent	= {}
@@ -281,11 +281,11 @@ helpers do
 	def _menu_add data = {}
 		unless data.empty?
 			if data.include? :parent
-				ds = DB[:_menu].filter(:name => data[:parent])
+				ds = Sdb[:_menu].filter(:name => data[:parent])
 				data[:parent] = ds.get(:mid) unless ds.empty?
 			end
  			_submit :name => :_menu, :fkv => data, :uniq => true
-# 			DB[:menu].insert(data)
+# 			Sdb[:menu].insert(data)
 		end
 	end
 
@@ -310,9 +310,9 @@ helpers do
 		end
 		options.each do | ot |
 			if @qs[name] == ot.to_s
-				str << "<a class='focus' href='" + _url2('', name => ot) + "'>" + L[ot] + "</a>"
+				str << "<a class='focus' href='" + _url2('', name => ot) + "'>" + Sl[ot] + "</a>"
 			else
-				str << "<a href='" + _url2('', name => ot) + "'>" + L[ot] + "</a>"
+				str << "<a href='" + _url2('', name => ot) + "'>" + Sl[ot] + "</a>"
 			end
 		end
 		str = "<div class='nav'>" + str + "</div>"
@@ -324,7 +324,7 @@ helpers do
 	# mark the operation by ip that prevents the same user do an action many times in specified time
 	def _mark name, timeout, msg = ''
 		reval = false
-		ds = DB[:_mark].filter(:name => name.to_s, :ip => _ip)
+		ds = Sdb[:_mark].filter(:name => name.to_s, :ip => _ip)
 
 		# if no record, create one
 		if ds.empty?

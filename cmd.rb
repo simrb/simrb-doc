@@ -58,13 +58,13 @@ else
 	end
 
 	if argv.empty?
-		output << L['please select the number before the list to see detials, like $ 3s doc 2']
+		output << Sl['please select the number before the list to see detials, like $ 3s doc 2']
 		docs_key.each do | i, key |
 			output << "#{i.to_s}, #{key}"
 		end
 	else
 		argv.each do | i |
-			output << (docs_val.include?(i.to_i) ? docs_val[i.to_i] : L['no document'])
+			output << (docs_val.include?(i.to_i) ? docs_val[i.to_i] : Sl['no document'])
 		end
 	end
 

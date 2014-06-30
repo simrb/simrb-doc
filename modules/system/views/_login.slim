@@ -1,20 +1,20 @@
 #user_login
 	form action="#{_url2}" method="post"
-		p : h2 = L[:login]
-		p : label = L[:account]
-		p : input type="text" name="name" required="required" placeholder="#{L[:username]}"
+		p : h2 = Sl[:login]
+		p : label = Sl[:account]
+		p : input type="text" name="name" required="required" placeholder="#{Sl[:username]}"
 
-		p : label = L[:password]
-		p : input type="password" name="pawd" required="required" placeholder="#{L[:password]}"
+		p : label = Sl[:password]
+		p : input type="password" name="pawd" required="required" placeholder="#{Sl[:password]}"
 
-		p : input.button type="submit" value="#{L[:login]}"
+		p : input.button type="submit" value="#{Sl[:login]}"
 		p
 			input type="checkbox" name="rememberme" id="rememberme" value="yes"
-			label.font13 for="rememberme" = L[:rememberme]
+			label.font13 for="rememberme" = Sl[:rememberme]
 
 		- if _var(:allow_register, :user) == 'yes'
 			p.font13
-				a href="#{_url2(_var(:register, :link))}" = L[:register]
+				a href="#{_url2(_var(:register, :link))}" = Sl[:register]
 
 css:
 

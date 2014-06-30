@@ -3,14 +3,14 @@ form.form action="#{_url(@t[:action])}" method="post" id='adminform'
 		- unless @t[:btn_fns].empty?
 			- @t[:btn_fns].each do | name, method |
 				a.mr10 href="#{_url('', :_method_ => method)}"
-					button.button = L[name]
+					button.button = Sl[name]
 			span |
 
 		- unless @t[:opt_fns].empty?
-			input.button.mr10 type="submit" value="#{L[:execute]}"
+			input.button.mr10 type="submit" value="#{Sl[:execute]}"
 			select.button.mr10 name="_method_"
 				- @t[:opt_fns].each do | k, v |
-					option value="#{v}" = L[k]
+					option value="#{v}" = Sl[k]
 			span |
 
 		input type="hidden" name="_name" value="#{@t[:name]}"
@@ -21,18 +21,18 @@ form.form action="#{_url(@t[:action])}" method="post" id='adminform'
 form.form action="#{request.path}" method="get"
 	p
 		- unless @t[:search_fns].empty?
-			input.mr10 type="search" name="sc" placeholder="#{L[:keywords]}" value="#{@qs[:sc]}"
+			input.mr10 type="search" name="sc" placeholder="#{Sl[:keywords]}" value="#{@qs[:sc]}"
 
 			select.button.mr10 name="sw"
-				option value='' -- #{L[:all]} --
+				option value='' -- #{Sl[:all]} --
 				- @t[:search_fns].each do | k |
-					- label = @t[:data][k].has_key?(:label) ? L[@t[:data][k][:label]] : L[k]
+					- label = @t[:data][k].has_key?(:label) ? Sl[@t[:data][k][:label]] : Sl[k]
 					- if @qs[:sw] == k.to_s
 						option selected="selected" value="#{k}" = label
 					- else
 						option value="#{k}" = label
 
-			input.button.mr10 type="submit" value="#{L[:search]}"
+			input.button.mr10 type="submit" value="#{Sl[:search]}"
 .clear
 
 
@@ -44,7 +44,7 @@ table.table.checkall
 
 		- @t[:fields].each do | k |
 			th
-				- label = @t[:data][k].has_key?(:label) ? L[@t[:data][k][:label]] : L[k]
+				- label = @t[:data][k].has_key?(:label) ? Sl[@t[:data][k][:label]] : Sl[k]
 				- if @t[:orders].include?(k)
 					a href="#{_url('', :order => k)}" = label
 				- else
@@ -53,7 +53,7 @@ table.table.checkall
 		- tag_enable = false
 		- if _tag_enable?(@t[:name]) and not _tags?(@t[:name])
 			- tag_enable = true
-			th = L[:tag]
+			th = Sl[:tag]
 
 		- unless @t[:lnk_fns].empty?
 			th
@@ -95,7 +95,7 @@ table.table.checkall
 				- unless @t[:lnk_fns].empty?
 					td
 						- @t[:lnk_fns].each do | name, method |
-							a href="#{_url('', :_method_ => method, row.first[0] => row.first[1])}" = L[name]
+							a href="#{_url('', :_method_ => method, row.first[0] => row.first[1])}" = Sl[name]
 
 
 	- unless @t[:css].empty?

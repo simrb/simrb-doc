@@ -48,8 +48,8 @@ helpers do
 			_valid :user, f
 
 			# if no user
-			ds = DB[:_user].filter(:name => f[:name])
-			_throw L[:'the user is not existed'] if ds.empty?
+			ds = Sdb[:_user].filter(:name => f[:name])
+			_throw Sl[:'the user is not existed'] if ds.empty?
 
 			# verify password
 			require "digest/sha1"
@@ -57,7 +57,7 @@ helpers do
 				sid = Digest::SHA1.hexdigest(f[:name] + Time.now.to_s)
 				_session_create sid, ds.get(:uid)
 			else
-				_throw L[:'the password is wrong']
+				_throw Sl[:'the password is wrong']
 			end
 
 		end
@@ -101,12 +101,12 @@ helpers do
 
 	# if the user level less than the given, raise a message
 	def _level? level
-		_throw L[:'your level is too low'] if _user[:level].to_i < level.to_i
+		_throw Sl[:'your level is too low'] if _user[:level].to_i < level.to_i
 	end
 
 	#check the user by name , if it exists, return uid, others is nil
 	def _user? name
-		uid = DB[:_user].filter(:name => name).get(:uid)
+		uid = Sdb[:_user].filter(:name => name).get(:uid)
 		uid ? uid : nil
 	end
 
@@ -134,7 +134,7 @@ helpers do
 
 		# fetch info by uid
 		if uid.to_i > 0
-			ds = DB[:_user].filter(:uid => uid)
+			ds = Sdb[:_user].filter(:uid => uid)
 			@infos[:uid]		= uid
 			@infos[:name] 	= ds.get(:name)
 			@infos[:level] 	= ds.get(:level)
@@ -144,8 +144,8 @@ helpers do
 	end
 
 	def _user_del uid
-		DB[:_user].filter(:uid => uid.to_i).delete
-		DB[:_sess].filter(:uid => uid.to_i).delete
+		Sdb[:_user].filter(:uid => uid.to_i).delete
+		Sdb[:_sess].filter(:uid => uid.to_i).delete
 	end
 
 	def _user_edit_ argv = {}
@@ -154,8 +154,8 @@ helpers do
 
 		_valid :_user_edit, argv
 
-		_throw L[:'no user id'] unless argv.include? :uid
-		ds = DB[:_user].filter(:uid => argv[:uid])
+		_throw Sl[:'no user id'] unless argv.include? :uid
+		ds = Sdb[:_user].filter(:uid => argv[:uid])
 		unless ds.empty?
 			f = {}
 
@@ -166,7 +166,7 @@ helpers do
 
 			#userlevel
 			f[:level] = argv[:level] if argv[:level]
-			DB[:_user].filter(:uid => argv[:uid]).update(f)
+			Sdb[:_user].filter(:uid => argv[:uid]).update(f)
 		end
 	end
 
@@ -183,16 +183,16 @@ helpers do
 		f[:salt] 		= _random_string 5
 
 		#username
-		_throw L[:'the user is existing'] if _user? f[:name]
+		_throw Sl[:'the user is existing'] if _user? f[:name]
 		f[:name] 		= argv[:name]
 
 		#password
 		require "digest/sha1"
 		f[:pawd] 		= Digest::SHA1.hexdigest(argv[:pawd] + f[:salt])
 
-# 		DB[:user].insert(f)
+# 		Sdb[:user].insert(f)
 		_submit :name => :_user, :fkv => f, :uniq => true
-		uid = DB[:_user].filter(:name => f[:name]).get(:uid)
+		uid = Sdb[:_user].filter(:name => f[:name]).get(:uid)
 		uid ? uid : 0
 	end
 
@@ -207,19 +207,19 @@ helpers do
 	# it exists, return rule id, others is throw a msg
 # 	def _rule? name
 # 		uid = _user[:uid]
-# 		ds = DB[:_rule].filter(:name => name.to_s)
+# 		ds = Sdb[:_rule].filter(:name => name.to_s)
 # 		if rid = ds.get(:rid)
-# 			unless DB[:_user2_rule].filter(:uid => uid, :rid => rid).empty?
+# 			unless Sdb[:_user2_rule].filter(:uid => uid, :rid => rid).empty?
 # 				return rid
 # 			end
 # 		end
-# 		_msg L[:'no rule for this operate']
+# 		_msg Sl[:'no rule for this operate']
 # 		redirect _var(:home, :link)
 # 	end
 
 # 	def _rule_add argv = {}
 #    		_submit :name => :_rule, :fkv => argv, :uniq => true
-# #   	DB[:_rule].insert(argv) unless argv.empty?
+# #   	Sdb[:_rule].insert(argv) unless argv.empty?
 # 	end
 
 	# add the rule for user
@@ -233,10 +233,10 @@ helpers do
 # 				_user_join a, user
 # 			end
 # 		else
-# 			rid = DB[:_rule].filter(:name => rule).get(:rid)
+# 			rid = Sdb[:_rule].filter(:name => rule).get(:rid)
 # 			uid = _user? user
 # 			if rid > 0 and uid
-# 				DB[:_user2_rule].insert(:uid => uid, :rid => rid)
+# 				Sdb[:_user2_rule].insert(:uid => uid, :rid => rid)
 # 			end
 # 		end
 # 	end
@@ -252,20 +252,20 @@ helpers do
 	# sid, string, the session id
 	# uid, integer, the user id
 	def _session_update sid = "", uid = 0
-		ds = DB[:_sess].filter(:sid => sid, :uid => uid.to_i)
+		ds = Sdb[:_sess].filter(:sid => sid, :uid => uid.to_i)
 		ds.update(:changed => Time.now) if ds.count > 0
 	end
 
 	def _session_remove sid = nil
-		DB[:_sess].filter(:sid => sid).delete if sid
+		Sdb[:_sess].filter(:sid => sid).delete if sid
 	end
 
 	def _session_clean_all_
-		DB[:_sess].where('uid != ?', _user[:uid]).delete
+		Sdb[:_sess].where('uid != ?', _user[:uid]).delete
 	end
 
 	def _session_clean_timeout_
-		DB[:_sess].where('timeout = ?', 1).delete
+		Sdb[:_sess].where('timeout = ?', 1).delete
 	end
 
 	def _session_create sid, uid
@@ -280,14 +280,14 @@ helpers do
 		end
 
 		# server
-		DB[:_sess].insert(:sid => sid, :uid => uid, :changed => Time.now, :timeout => timeout, :ip => _ip)
+		Sdb[:_sess].insert(:sid => sid, :uid => uid, :changed => Time.now, :timeout => timeout, :ip => _ip)
 	end
 
 	# the user do nothing in the timeout, the session will be remove, automatically
 	# return the uid
 	def _session_has sid
 		uid = 0
-		ds 	= DB[:_sess].filter(:sid => sid)
+		ds 	= Sdb[:_sess].filter(:sid => sid)
 		if ds.get(:sid)
 			# remove the session, if timeout that is current time - login time of last
 			current_time = Time.now

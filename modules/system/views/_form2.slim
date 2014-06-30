@@ -7,7 +7,7 @@ form.form action="#{_url2(@t[:action])}" method="post" id="editform"
 		- allownull = @t[:data][k].has_key?(:required) ? @t[:data][k][:required] : true
 
 		- unless @t[:data][k][:form_type] == :hide
-			- label = @t[:data][k].has_key?(:label) ? L[@t[:data][k][:label]] : L[k]
+			- label = @t[:data][k].has_key?(:label) ? Sl[@t[:data][k][:label]] : Sl[k]
 			p : label = label
 
 		- if @t[:data][k][:form_type] == :select
@@ -63,7 +63,7 @@ form.form action="#{_url2(@t[:action])}" method="post" id="editform"
 
 
 	- if _tag_enable?(@t[:name])
-		p : label = L[:tag]
+		p : label = Sl[:tag]
 		- if @t[:opt] == :update
 			- tag = _tag_names(@t[:name], @qs[@t[:pk]], :array)
 			p : input type="hidden" name="oldtag" value="#{tag}"
@@ -85,7 +85,7 @@ form.form action="#{_url2(@t[:action])}" method="post" id="editform"
 		script src="#{@t[:js]}"
 	
 	p
-		input.button type="submit" value="#{L[:submit]}"
+		input.button type="submit" value="#{Sl[:submit]}"
 		input type="hidden" name="_method_" value="#{@t[:_method_]}"
 		input type="hidden" name="_name" value="#{@t[:name]}"
 		input type="hidden" name="_repath" value="#{_url}"

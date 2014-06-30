@@ -21,7 +21,7 @@ module Simrb
 				path = "modules/#{mod_name}/#{Simrb::Sdir[:schema]}"
 				if Dir[path + '/*'].count > 0
 					Sequel.extension :migration
-					Sequel::Migrator.run(DB, path, :column => mod_name.to_sym, :table => :_schemas)
+					Sequel::Migrator.run(Sdb, path, :column => mod_name.to_sym, :table => :_schemas)
 				end
 			end
 			"Implementing migration complete!"
