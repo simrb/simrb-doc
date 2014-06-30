@@ -11,7 +11,7 @@ html
 		link rel='stylesheet' type='text/css' href='#{_assets("system/admin.css")}'
 	body
 		#wrap
-			#header
+			#header.keeptop
 				ul#top_menu
 					- @menus.each do | item |
 						- menu_focus = item.include?(:focus) ? "focus1" : ""

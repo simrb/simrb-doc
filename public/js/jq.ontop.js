@@ -1,10 +1,24 @@
-
-$("#header").before("<div id='toTop'><img src='/_assets/public/icons/totop.png'/></div>")
+/*
+ * == Example
+ *
+ * html 
+ *
+ * #header.keeptop
+ *		p note that the css of #header need to set {position: absolute; top: 0;}
+ *		p and the color of #toTop { background: "colorwhatyouwant"; }
+ *
+ * script src="#{_assets('public/js/jq.ontop.js')}" type="text/javascript"
+ *
+ */
+$(".keeptop").before("<div id='toTop'><img src='/_assets/public/icons/totop.png'/></div>")
 $("#toTop").css({
 	"position" : "fixed",
 	"bottom" : "5px",
 	"right" : "5px",
 	"display" : "none",
+	"width" : "36px",
+	"height" : "36px",
+	"border-radius" : "6px",
 	"cursor" : "pointer"
 })
 
@@ -14,10 +28,10 @@ $("#toTop").click(function() {
 });
 
 $(window).scroll(function() {
-    var aTop = $('#header').height() - 10
+    var aTop = $('.keeptop').height() - 10
     if($(this).scrollTop() > aTop){
-		$('#header').css('position', 'fixed')
-		$('#header').css('top', '0')
+		$('.keeptop').css('position', 'fixed')
+		$('.keeptop').css('top', '0')
     }
 
     if ($(this).scrollTop()) {

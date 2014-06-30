@@ -3,7 +3,7 @@
  * background, background-color, color 
  *
  */
-#top_menu 			{ background-color: #000; }
+#top_menu, #toTop 	{ background-color: #000; }
 #top_menu a 		{ color: #fff; }
 #top_menu a:hover 	{ color: #000; background-color: #BABCBF; }
 #top_menu .focus1 a { color: #000; background-color: #CCCDCE; }
