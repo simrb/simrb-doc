@@ -1,9 +1,10 @@
 html, head, body, form, table, thead, tbody, th, tr, td, div, p, a, ul, ol, li, p, h1, h2, h3, h4, pre, code {margin: 0; padding: 0;}
 ul li {list-style-type: none;}
 
-#wrap {margin: 20px;}
-#msg {clear: both; width: 100%;}
-#footer {height: 100px; padding: 20px; margin-top: 100px;}
+#wrap 	{ margin: 20px; }
+#msg 	{ clear: both; width: 100%; }
+#footer { height: 100px; padding: 20px; margin-top: 100px; }
+#toTop  { background: black; }
 
 .clear {clear: both; margin-bottom: 10px;}
 .white {color: white;}
