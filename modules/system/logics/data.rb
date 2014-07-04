@@ -13,7 +13,7 @@ data :_mods do
 			:default		=>	'1.0.0'
 		},
 		:order				=> 	{
-			:default		=>	9
+			:default		=>	99
 		},
 	}
 end
