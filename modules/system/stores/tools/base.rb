@@ -124,7 +124,7 @@ module Simrb
 					# if no installer, submit the data with default method
 					else
 						data.each do | row |
-  							_submit :name => name.to_sym, :fkv => row, :unqi => true, :valid => false
+  							_submit name.to_sym, :fkv => row, :unqi => true, :valid => false
 						end
 					end
 				end

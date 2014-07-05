@@ -7,7 +7,7 @@ form.form action="#{_url2(@t[:action])}" method="post" id="editform"
 		input.button type="submit" value="#{Sl[:save]}"
 		input type="hidden" name="_method_" value="#{@t[:_method_]}"
 		input type="hidden" name="_name" value="#{@t[:name]}"
-		input type="hidden" name="_repath" value="#{_url}"
+		input type="hidden" name="_repath" value="#{@t[:_repath]}"
 
 	- load_picture_js = false
 	- load_editor_js = false

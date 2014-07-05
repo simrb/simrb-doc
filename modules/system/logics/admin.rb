@@ -175,7 +175,7 @@ helpers do
 	end
 
 	def _submit_ argv = {}
-		_submit argv
+		_submit argv[:name], argv
 	end
 
 	def admin_page name
@@ -194,6 +194,7 @@ helpers do
 		# == Example
 		# such as, :tags symbol, will be the following
 		# {_view_ => {:name => :tags}, :_form_ => {:name => :tags}}
+		#
 		if options.class.to_s == 'Symbol'
 			options = {:_view_ => {:name => options}, :_form_ => {:name => options}}
 		end

@@ -153,11 +153,11 @@ helpers do
 	# update variable, create one if it doesn't exist
 	def _var_set key, val
  		Sdb[:_vars].filter(:vkey => key.to_s).update(:vval => val.to_s, :changed => Time.now)
-#  		_submit(:name => :_vars, :fkv => argv, :opt => :update) unless argv.empty?
+#  		_submit(:_vars, :fkv => argv, :opt => :update) unless argv.empty?
 	end
 
 	def _var_add argv = {}
- 		_submit(:name => :_vars, :fkv => argv, :uniq => true) unless argv.empty?
+ 		_submit(:_vars, :fkv => argv, :uniq => true) unless argv.empty?
 	end
 
 	# return current path, and with options
@@ -284,7 +284,7 @@ helpers do
 				ds = Sdb[:_menu].filter(:name => data[:parent])
 				data[:parent] = ds.get(:mid) unless ds.empty?
 			end
- 			_submit :name => :_menu, :fkv => data, :uniq => true
+ 			_submit :_menu, :fkv => data, :uniq => true
 # 			Sdb[:menu].insert(data)
 		end
 	end
@@ -328,7 +328,7 @@ helpers do
 
 		# if no record, create one
 		if ds.empty?
-			_submit :name => :_mark, :fkv => {:name => name.to_s}
+			_submit :_mark, :fkv => {:name => name.to_s}
 		else
 			# if timeout to the last log, update the changed time
 			if _timeout?(ds.get(:changed), timeout)

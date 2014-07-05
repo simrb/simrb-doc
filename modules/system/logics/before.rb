@@ -68,14 +68,16 @@ end
 # Fisrt
 # a interface route that preformments the form submit, and record delete, or others
 # you must to assign the rule to user allow to use this route
+#
 before '/_system/_opt' do
  	_level? _var(:form_submit_level)
 # 	_rule? :system_opt
 end
 
-#
+
 # Second
 # the interface methods need to be added the '_' as the suffix
+#
 post '/_system/_opt' do
 	method = params[:_method_] ? params[:_method_] : (@qs.include?(:_method_) ? @qs[:_method_] : nil)
 	if method and method[-1] == '_' and self.respond_to?(method.to_sym)

@@ -191,7 +191,7 @@ helpers do
 		f[:pawd] 		= Digest::SHA1.hexdigest(argv[:pawd] + f[:salt])
 
 # 		Sdb[:user].insert(f)
-		_submit :name => :_user, :fkv => f, :uniq => true
+		_submit :_user, :fkv => f, :uniq => true
 		uid = Sdb[:_user].filter(:name => f[:name]).get(:uid)
 		uid ? uid : 0
 	end
@@ -218,7 +218,7 @@ helpers do
 # 	end
 
 # 	def _rule_add argv = {}
-#    		_submit :name => :_rule, :fkv => argv, :uniq => true
+#    		_submit :_rule, :fkv => argv, :uniq => true
 # #   	Sdb[:_rule].insert(argv) unless argv.empty?
 # 	end
 

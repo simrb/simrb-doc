@@ -1,6 +1,6 @@
 helpers do
 
-	#init base variables
+	# initialize variable @t
 	def _init_t argv = {}
 		t = argv
 
@@ -26,8 +26,10 @@ helpers do
 		# all of field name of the table
  		t[:fields] 		||= @data[:fields]
 
-		#as the kev-val hash to store the field name and value
- 		t[:fkv] 		= argv.include?(:fkv) ? @data[:fkv].merge(argv[:fkv]) : @data[:fkv]
+		# a field kev-val hash
+		# it has some alias name, like the setval, setValue
+ 		t[:fkv] 		= (argv[:setval] || argv[:setValue] || argv[:fkv])
+ 		t[:fkv] 		= t[:fkv] ? @data[:fkv].merge(t[:fkv]) : @data[:fkv]
 
 		t
 	end
@@ -101,7 +103,9 @@ helpers do
 		@t[:back_fn] 	= :enable
 		@t[:action] 	= '/_system/_opt'
 		@t[:_method_] 	= '_submit_'
+		@t[:_repath] 	= request.path
 		@t.merge!(_init_t(argv))
+
 
 		@t[:fields].delete @t[:pk]
 		data = @t[:fkv]
@@ -121,9 +125,8 @@ helpers do
 	end
 
 	#submit data
-	def _submit argv = {}
-		t 				= _init_t argv
-		@t[:repath]		||= (params[:_repath] || request.path)
+	def _submit name, argv = {}
+		t 				= _init_t(argv.merge(name: name))
 		opt 			= argv[:opt] == nil ? :insert : :update
 		t[:tag]			= t.include?(:tag) ? t[:tag] : true
 		t[:valid]		= t.include?(:valid) ? t[:valid] : true
@@ -178,7 +181,6 @@ helpers do
 				_tag_set t[:name], pkid, tag, params[:oldtag]
 			end
 		end
-
 	end
 
 	#remove record
