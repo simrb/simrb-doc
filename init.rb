@@ -1,27 +1,35 @@
 require './env'
 
-# detect the db whether connect
+# load config file
+unless File.exist? 'scfg'
+	data = {}
+	Simrb::Sdefcfg.each do | opt |
+		data[opt] = Scfg[opt]
+	end
+	Simrb.write_file('scfg', data)
+end
+
+Scfg = Simrb::Scfg
+Simrb.read_file('scfg').each do | k, v |
+	Scfg[k.to_sym] = v
+end
+
+# initialize default directories
+Simrb::Sdefolder.each do | dir |
+	Dir.mkdir Scfg[dir] unless File.exist? Scfg[dir]
+end
+
+# detect database connection
 if Scfg[:requiredb] == 'yes'
-	if Sdb.tables.empty?
+	if Sequel.connect(Scfg[:db_connection]).tables.empty?
  		Simrb.p "No database table found"
 	end
 end
 
-
 # load modules
-module_ds = []
-ds = Dir["#{Sroot}modules/*"].map { |name| name.split("/").last }
-ds.unshift(Scfg[:main_module])
-module_ds = ds.uniq
+Smodules = Simrb.load_module
 
-# remove the disable modules
-Scfg[:disable_modules].each do | m |
-	module_ds.delete(m) if module_ds.include?(m)
-end
-Smodules = module_ds
-
-
-# all of path for global files
+# scan file path
 Spath 				= {}
 Spath[:lang] 		= []
 Spath[:logic] 		= []
@@ -35,16 +43,12 @@ Smodules.each do | name |
 	Spath[:view]	<< "#{Sroot}modules/#{name}/#{Simrb::Sdir[:view]}"
 end
 
-
-# caches language statement
+# cache label statement of language
 Spath[:lang].each do | lang |
 	Sl << Simrb.read_file(lang)
 end
 
-# alter the path of template customized 
-set :views, Spath[:view]
-
-# loads main files of logics dir that would be run
+# load main files in logic directory that will be run later
 Spath[:logic].each do | path |
 	require path
 end

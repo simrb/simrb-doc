@@ -3,13 +3,19 @@ require 'sinatra/base'
 require 'sequel'
 require 'slim'
 
+Sroot 	= Dir.pwd + '/'
+Svalid 	= {}
+Sdata 	= {}
+
 class Sl
 	@@options = {}
+
 	class << self
 		def [] key
 			key = key.to_s
 			@@options.include?(key) ? @@options[key] : key
 		end
+
 		def << h
 			@@options.merge!(h)
 		end
@@ -17,8 +23,6 @@ class Sl
 end
 
 # increase data and valid block
-Svalid = {}
-Sdata = {}
 module Sinatra
 	class Application < Base
 		def self.data name = '', &block
@@ -34,14 +38,6 @@ module Sinatra
 	end
 end
 
-helpers do
-	def find_template(views, name, engine, &block)
-		Array(views).each { |v| super(v, name, engine, &block) }
-	end
-end
-
-
-Sroot = Dir.pwd + '/'
 module Simrb
 
 	# common methods
@@ -66,19 +62,37 @@ module Simrb
 			puts "="*30 + "\n" + args + "\n" + "="*30
 		end
 
+		def load_module
+			module_ds = {}
+			Dir["#{Sroot}modules/*"].each do | path |
+				path 	= "#{path}/#{Simrb::Sfile[:modinfo]}"
+				content = Simrb.read_file path
+				name	= content[0]["name"]
+				order	= (content[0]["order"] || 99)
+				module_ds[name] = order unless Scfg[:disable_modules].include?(name)
+			end
+
+			res 		= []
+			module_ds	= module_ds.sort_by { |k, v| v }
+			module_ds.each do | item |
+				res << item[0]
+			end
+			res
+		end
+
 	end
 
 	# basic definition of directory paths
 	Sdir				= {
-		:store			=> 'stores',
 		:logic			=> 'logics',
-		:view			=> 'views',
-		:assets			=> 'views/assets',
+		:store			=> 'stores',
 		:lang			=> 'stores/langs',
 		:docs			=> 'stores/docs',
 		:schema			=> 'stores/migrations',
 		:tool			=> 'stores/tools',
 		:install		=> 'stores/installs',
+		:view			=> 'views',
+		:assets			=> 'views/assets',
 	}
 
 	# basic definition of files
@@ -130,6 +144,9 @@ module Simrb
 		:port				=> 3000,
 	}
 
+	Sdefolder			= [:db_dir, :tmp_dir, :log_dir, :upload_dir, :backup_dir]
+	Sdefcfg 			= [:lang, :db_connection, :environment, :bind, :port]
+
 	# alias of field type 
 	Salias				=	{
 		:int 				=> 'Fixnum',
@@ -140,44 +157,5 @@ module Simrb
 		:fl					=> 'Float',
 	}
 
-end
-
-
-# load the scfg file
-unless File.exist? 'scfg'
-	data = {}
-	[:lang, :db_connection, :environment, :bind, :port].each do | opt |
-		data[opt] = Scfg[opt]
-	end
-	Simrb.write_file('scfg', data)
-end
-
-Scfg = Simrb::Scfg
-Simrb.read_file('scfg').each do | k, v |
-	Scfg[k.to_sym] = v
-end
-
-
-# default directories initializing
-[:db_dir, :tmp_dir, :log_dir, :upload_dir, :backup_dir].each do | dir |
-	Dir.mkdir Scfg[dir] unless File.exist? Scfg[dir]
-end
-
-
-# default environment and db configuration setting
-set :environment, Scfg[:environment].to_sym
-
-configure do
-	Sdb = Sequel.connect(Scfg[:db_connection])
-end
-
-configure :production do
-	not_found do
-		Sl['sorry, no page']
-	end
-
-	error do
-		Sl['sorry there was a nasty error - '] + env['sinatra.error'].name
-	end
 end
 

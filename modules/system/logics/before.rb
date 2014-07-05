@@ -1,6 +1,28 @@
-# ================================================
-# global
-# ================================================
+# default environment and db configuration setting
+set :environment, Scfg[:environment].to_sym
+
+configure do
+	Sdb = Sequel.connect(Scfg[:db_connection])
+end
+
+configure :production do
+	not_found do
+		Sl['sorry, no page']
+	end
+
+	error do
+		Sl['sorry there was a nasty error - '] + env['sinatra.error'].name
+	end
+end
+
+# alter the path of template customized 
+set :views, Spath[:view]
+helpers do
+	def find_template(views, name, engine, &block)
+		Array(views).each { |v| super(v, name, engine, &block) }
+	end
+end
+
 before do
 	_init_base
 end
