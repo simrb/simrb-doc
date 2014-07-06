@@ -3,7 +3,7 @@ require './env'
 # load config file
 unless File.exist? 'scfg'
 	data = {}
-	Simrb::Sdefcfg.each do | opt |
+	Simrb::Scfg[:init_self].each do | opt |
 		data[opt] = Scfg[opt]
 	end
 	Simrb.write_file('scfg', data)
@@ -15,8 +15,16 @@ Simrb.read_file('scfg').each do | k, v |
 end
 
 # initialize default directories
-Simrb::Sdefolder.each do | dir |
-	Dir.mkdir Scfg[dir] unless File.exist? Scfg[dir]
+Scfg[:dirs].each do | name, path |
+	if !Scfg[:uninit_dirs].include?(name) and !File.exist?(path)
+		if path[-1] == '/'
+			Dir.mkdir(path) 
+		else
+			File.open(path, 'w+') do | f |
+				f.write("")
+			end
+		end
+	end
 end
 
 # detect database connection
@@ -30,26 +38,37 @@ end
 Smodules = Simrb.load_module
 
 # scan file path
-Spath 				= {}
-Spath[:lang] 		= []
-Spath[:logic] 		= []
-Spath[:tool] 		= []
-Spath[:view] 		= []
+Sload 				= {}
+Sload[:lang] 		= []
+Sload[:logic] 		= []
+Sload[:tool] 		= []
+Sload[:view] 		= []
 
 Smodules.each do | name |
-	Spath[:lang] 	+= Dir["#{Sroot}modules/#{name}/#{Simrb::Sdir[:lang]}/*.#{Scfg[:lang]}"]
-	Spath[:logic] 	+= Dir["#{Sroot}modules/#{name}/#{Simrb::Sdir[:logic]}/*.rb"]
-	Spath[:tool] 	+= Dir["#{Sroot}modules/#{name}/#{Simrb::Sdir[:tool]}/*.rb"]
-	Spath[:view]	<< "#{Sroot}modules/#{name}/#{Simrb::Sdir[:view]}"
+	Sload[:lang] 	+= Dir["#{Sroot}modules/#{name}/#{Simrb::Spath[:lang]}*.#{Scfg[:lang]}"]
+	Sload[:logic] 	+= Dir["#{Sroot}modules/#{name}/#{Simrb::Spath[:logic]}*.rb"]
+	Sload[:tool] 	+= Dir["#{Sroot}modules/#{name}/#{Simrb::Spath[:tool]}*.rb"]
+	Sload[:view]	<< "#{Sroot}modules/#{name}/#{Simrb::Spath[:view]}".chomp("/")
 end
 
 # cache label statement of language
-Spath[:lang].each do | lang |
+Sload[:lang].each do | lang |
 	Sl << Simrb.read_file(lang)
 end
 
+# default environment and db configuration setting
+set :environment, Scfg[:environment].to_sym
+
+# alter the path of template customized 
+set :views, Sload[:view]
+helpers do
+	def find_template(views, name, engine, &block)
+		Array(views).each { |v| super(v, name, engine, &block) }
+	end
+end
+
 # load main files in logic directory that will be run later
-Spath[:logic].each do | path |
+Sload[:logic].each do | path |
 	require path
 end
 

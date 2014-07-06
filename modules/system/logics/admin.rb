@@ -106,7 +106,7 @@ get '/admin/baks' do
 	when 'export'
 		if @qs[:id]
 			type = @qs[:id].split('_').last
-			send_file Scfg[:backup_dir] + @qs[:id], :filename => "#{@qs[:id]}.#{type}", :type => type.to_sym
+			send_file Scfg[:dirs][:backup_dir] + @qs[:id], :filename => "#{@qs[:id]}.#{type}", :type => type.to_sym
 # 		attachment "#{Time.now}.csv"
 # 		csv_file
 		end
@@ -115,7 +115,7 @@ get '/admin/baks' do
 		_msg Sl[:'recover complete']
 		redirect back
 	when 'delete'
-		file = File.delete Scfg[:backup_dir] + "#{@qs[:id]}"
+		file = File.delete Scfg[:dirs][:backup_dir] + "#{@qs[:id]}"
 		_msg Sl[:'delete complete']
 		redirect back
 	else
@@ -132,7 +132,7 @@ post '/admin/baks/backup' do
 		encoding 	= params[:encoding] ? params[:encoding] : _var(:encoding, :file)
 		csv_file 	= _table_to_csv params[:table_name], encoding
 		filename	= (params[:filename] and params[:filename] !='') ? params[:filename] : 'Records'
-		filename 	= Scfg[:backup_dir] + "#{filename}_#{Time.now.strftime('%y%m%d_%H%M%S')}_csv"
+		filename 	= Scfg[:dirs][:backup_dir] + "#{filename}_#{Time.now.strftime('%y%m%d_%H%M%S')}_csv"
 
 		#save at server
 		File.open(filename, 'w+') do | f |
@@ -147,7 +147,7 @@ end
 post '/admin/baks/inport' do
 	if params[:inport] and params[:inport][:tempfile]
 		filename = params[:inport][:filename].split('.').first
-		File.open(Scfg[:backup_dir] + filename, 'w+') do | f |
+		File.open(Scfg[:dirs][:backup_dir] + filename, 'w+') do | f |
 			f.write params[:inport][:tempfile].read
 		end
 		_msg Sl[:'upload complete']
@@ -260,7 +260,7 @@ helpers do
 	end
 
 	def _backup_recover id, encoding = nil
-		file = File.read Scfg[:backup_dir] + "#{id}"
+		file = File.read Scfg[:dirs][:backup_dir] + "#{id}"
 
 		#encoding
 # 		unless encoding == nil
@@ -298,7 +298,7 @@ helpers do
 
 	def _fetch_backup_list
 		res = []
-		Dir[Scfg[:backup_dir] + '*'].each do | f |
+		Dir[Scfg[:dirs][:backup_dir] + '*'].each do | f |
 			res << f.split('/').last
 		end
 		res.sort.reverse

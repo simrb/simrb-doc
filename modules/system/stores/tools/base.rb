@@ -16,9 +16,9 @@ module Simrb
 		# 	$ 3s db user cms
 		#
 		def db args = []
-			args = system_fetch_modules if args.empty?
+			args = Smodules if args.empty?
 			args.each do | mod_name |
-				path = "modules/#{mod_name}/#{Simrb::Sdir[:schema]}"
+				path = "modules/#{mod_name}/#{Simrb::Spath[:schema]}".chomp("/")
 				if Dir[path + '/*'].count > 0
 					Sequel.extension :migration
 					Sequel::Migrator.run(Sdb, path, :column => mod_name.to_sym, :table => :_schemas)
@@ -35,7 +35,7 @@ module Simrb
 		#
 # 		def bundle
 # 			# bundle gems
-# 			`bundle install --gemfile=modules/"#{Scfg[:main_module]}"/#{Simrb::Sfile[:gemfile]}`
+# 			`bundle install --gemfile=modules/"#{Scfg[:main_module]}"/#{Simrb::Spath[:gemfile]}`
 # 
 # 			# add the bash commands to your ~/.bashrc file
 #  			`echo 'alias 3s="ruby cmd.rb"' >> ~/.bashrc && source`
@@ -64,17 +64,19 @@ module Simrb
 				`mkdir modules/#{module_name}`
 
 				# sub dirs of module
-				Simrb::Sdefdir.each do | name |
-					`mkdir modules/#{module_name}/#{Simrb::Sdir[name]}`
+				Simrb::Spath.each do | name, path |
+					unless Scfg[:uninit_path].include?(name)
+						path = "modules/#{module_name}/#{path}"
+						if path[-1] == '/'
+							`mkdir #{path}`
+						else
+							`touch #{path}`
+						end
+					end
 				end
 
-				# default files of module dir
-				Simrb::Sdefile.each do | name |
- 					`touch modules/#{module_name}/#{Simrb::Sfile[name]}`
-				end
-
-				# echo module info
-				`echo name=#{module_name} >> modules/#{module_name}/#{Simrb::Sfile[:modinfo]}`
+				# fill text to file
+				`echo name=#{module_name} >> modules/#{module_name}/#{Simrb::Spath[:modinfo]}`
 			end
 
 			"Initializing module directory complete"
@@ -93,14 +95,14 @@ module Simrb
 		# 	$ 3s install blog
 		#
 		def install args = []
-			args = system_fetch_modules if args.empty?
+			args = Smodules if args.empty?
 
 			# step 1, run migration files
 			db args
 
 			# step 2, run the gemfile
 			args.each do | module_name |
-				path = "modules/#{module_name}/#{Simrb::Sfile[:gemfile]}"
+				path = "modules/#{module_name}/#{Simrb::Spath[:gemfile]}"
 				if File.exist? path
 					`bundle install --gemfile=#{path}`
 				end

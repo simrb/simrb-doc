@@ -3,7 +3,7 @@
 # ####################
 require './init'
 
-Spath[:tool].each do | path |
+Sload[:tool].each do | path |
 	require path
 end
 argv = ARGV.clone
@@ -43,7 +43,7 @@ else
 	argv.shift 1 
 
 	Smodules.each do | name |
-		Dir["#{Sroot}modules/#{name}/#{Simrb::Sdir[:docs]}/*.#{Scfg[:lang]}.rb"].each do | path |
+		Dir["#{Sroot}modules/#{name}/#{Simrb::Spath[:docs]}*.#{Scfg[:lang]}.rb"].each do | path |
 			require path
 		end
 	end

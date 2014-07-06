@@ -8,7 +8,7 @@ get '/_assets/*' do
 	if assets_name == 'public'
 		path = Sroot + "public/#{path_items.join('/')}"
 	else
-		path = Sroot + "modules/#{assets_name}/#{Simrb::Sdir[:assets]}/#{path_items.join('/')}"
+		path = Sroot + "modules/#{assets_name}/#{Simrb::Spath[:assets]}#{path_items.join('/')}"
 	end
 
 	send_file path, :type => request.path.split('.').last().to_sym

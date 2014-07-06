@@ -23,9 +23,9 @@ module Simrb
 		# }
 		def system_fetch_install module_name
 			res			= {}
-			files 		= Dir["modules/#{module_name.to_s}/#{Simrb::Sdir[:install]}/*"]
+			files 		= Dir["modules/#{module_name.to_s}/#{Simrb::Spath[:install]}*"]
 
-			files_path	= 'tmp/install.lock'
+			files_path	= Scfg[:install_lock_file]
 			files_lock	= []
 
 			if Scfg[:install_lock] == 'yes'
@@ -62,12 +62,6 @@ module Simrb
 			end
 
 			res
-		end
-
-		# fetch the module that need to be implement
-		def system_fetch_modules
-			Smodules
-# 			Dir['modules/*'].map { |m| m.split('/').last }
 		end
 
 		# fetch the data block by module name

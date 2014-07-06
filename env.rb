@@ -65,7 +65,7 @@ module Simrb
 		def load_module
 			module_ds = {}
 			Dir["#{Sroot}modules/*"].each do | path |
-				path 	= "#{path}/#{Simrb::Sfile[:modinfo]}"
+				path 	= "#{path}/#{Simrb::Spath[:modinfo]}"
 				content = Simrb.read_file path
 				name	= content[0]["name"]
 				order	= (content[0]["order"] || 99)
@@ -82,79 +82,59 @@ module Simrb
 
 	end
 
-	# basic definition of directory paths
-	Sdir				= {
-		:logic			=> 'logics',
-		:store			=> 'stores',
-		:lang			=> 'stores/langs',
-		:docs			=> 'stores/docs',
-		:schema			=> 'stores/migrations',
-		:tool			=> 'stores/tools',
-		:install		=> 'stores/installs',
-		:view			=> 'views',
-		:assets			=> 'views/assets',
-	}
-
-	# basic definition of files
-	Sfile				= {
-		:route			=> 'logics/routes.rb',
-		:gemfile		=> 'stores/Gemfile',
-		:modinfo		=> 'stores/installs/_mods',
-		:readme			=> 'README.md',
-		:vars			=> 'stores/installs/_vars',
-		:menu			=> 'stores/installs/_menu',
-	}
-
-	# dirs to be generated in initializing module
-	Sdefdir				= [:logic, :store, :view, :assets, :lang, :install, :docs, :schema, :tool]
-
-	# files to be generated in initializing module
-	Sdefile				= [:route, :gemfile, :modinfo, :readme]
-
-	# basic definition of assets file path
-	Sdoc				= {
-		:layout_css		=> 'stores/docs/layout.css',
-		:common_css		=> 'stores/docs/common.css',
+	# basic definition of module path to the directory and file
+	Spath						= {
+		:logic					=> 'logics/',
+		:route					=> 'logics/routes.rb',
+		:store					=> 'stores/',
+		:lang					=> 'stores/langs/',
+		:docs					=> 'stores/docs/',
+		:layout_css				=> 'stores/docs/layout.css',
+		:common_css				=> 'stores/docs/common.css',
+		:schema					=> 'stores/migrations/',
+		:tool					=> 'stores/tools/',
+		:install				=> 'stores/installs/',
+		:modinfo				=> 'stores/installs/_mods',
+		:vars					=> 'stores/installs/_vars',
+		:menu					=> 'stores/installs/_menu',
+		:gemfile				=> 'stores/Gemfile',
+		:view					=> 'views/',
+		:assets					=> 'views/assets/',
+		:readme					=> 'README.md',
 	}
 
 	# default settings of scfg file
-	Scfg				= {
-		:requiredb			=> 'yes',
-		:main_module		=> 'system',
-		:disable_modules	=> [],
-		:encoding			=> 'utf-8',
-		:lang				=> 'en',
-		:install_lock		=> 'yes',
-		:db_connection		=> 'sqlite://db/data.db',
-		:db_dir				=> Sroot + 'db',
-		:upload_dir			=> Sroot + 'db/upload/',
-		:backup_dir			=> Sroot + 'db/backup/',
-		:tmp_dir			=> Sroot + 'tmp',
-		:log_dir			=> Sroot + 'log',
-		:server_log			=> Sroot + 'log/thin.log',
-		:command_log		=> Sroot + 'log/command_error_log.html',
-		:server_log_mode	=> 'file',
-		:cache_dir			=> '/var/cache/simrb/',
-		:time_types			=> ['created', 'changed'],
-		:fixnum_types		=> ['order', 'level'],
-		:number_types 		=> ['Fixnum', 'Integer', 'Float'],
-		:environment 		=> 'development',	# or production, test
-		:server 			=> 'thin',
-		:bind 				=> '0.0.0.0',
-		:port				=> 3000,
-	}
-
-	Sdefolder			= [:db_dir, :tmp_dir, :log_dir, :upload_dir, :backup_dir]
-	Sdefcfg 			= [:lang, :db_connection, :environment, :bind, :port]
-
-	# alias of field type 
-	Salias				=	{
-		:int 				=> 'Fixnum',
-		:str 				=> 'String',
-		:text 				=> 'Text',
-		:time				=> 'Time',
-		:big				=> 'Bignum',
-		:fl					=> 'Float',
+	Scfg						= {
+		:dirs					=> {
+			:db_dir				=> Sroot + 'db/',
+			:upload_dir			=> Sroot + 'db/upload/',
+			:backup_dir			=> Sroot + 'db/backup/',
+			:tmp_dir			=> Sroot + 'tmp/',
+			:install_lock_file	=> Sroot + 'tmp/install.lock',
+			:log_dir			=> Sroot + 'log/',
+			:server_log			=> Sroot + 'log/thin.log',
+			:command_log		=> Sroot + 'log/command_error_log.html',
+		},
+		:time_types				=> ['created', 'changed'],
+		:fixnum_types			=> ['order', 'level'],
+		:number_types 			=> ['Fixnum', 'Integer', 'Float'],
+		:field_alias			=> {int:'Fixnum', str:'String', text:'Text', time:'Time', big:'Bignum', fl:'Float'},
+		:uninit_path			=> [:vars, :menu, :layout_css, :common_css],
+		:uninit_dirs			=> [],
+		:environment 			=> 'development',	# or production, test
+		:requiredb				=> 'yes',
+		:main_module			=> 'system',
+		:disable_modules		=> [],
+		:encoding				=> 'utf-8',
+		:lang					=> 'en',
+		:install_lock			=> 'yes',
+		:db_connection			=> 'sqlite://db/data.db',
+		:server_log_mode		=> 'file',
+		:cache_dir				=> '/var/cache/simrb/',
+		:server 				=> 'thin',
+		:bind 					=> '0.0.0.0',
+		:port					=> 3000,
+		:init_self				=> [:lang, :db_connection, :environment, :bind, :port],
 	}
 
 end
