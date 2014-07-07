@@ -44,14 +44,14 @@ module Simrb
 	# common methods
 	class << self
 
-		def read_file path
+		def yaml_read path
 			require 'yaml'
 			YAML.load_file path
 		rescue
 			[]
 		end
 
-		def write_file path, data
+		def yaml_write path, data
 			require "yaml"
 			File.open(path, 'w+') do | f |
 				f.write data.to_yaml
@@ -67,7 +67,7 @@ module Simrb
 			module_ds = {}
 			Dir["#{Spath[:module]}*"].each do | path |
 				path 	= "#{path}#{Spath[:modinfo]}"
-				content = Simrb.read_file path
+				content = Simrb.yaml_read path
 				name	= content[0]["name"]
 				order	= (content[0]["order"] || 99)
 				module_ds[name] = order unless Scfg[:disable_modules].include?(name)

@@ -131,7 +131,7 @@ module Simrb
 			create_tables 	= []
 			drop_tables		= []
 			alter_tables	= []
-			data_tables 	= system_fetch_data modulename
+			data_tables 	= system_get_data_block modulename
 
 			# create tables
 			data_tables.each do | table |

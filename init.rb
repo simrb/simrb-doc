@@ -6,11 +6,11 @@ unless File.exist? 'scfg'
 	Simrb::Scfg[:init_self].each do | opt |
 		data[opt] = Simrb::Scfg[opt]
 	end
-	Simrb.write_file('scfg', data)
+	Simrb.yaml_write('scfg', data)
 end
 
 Scfg = Simrb::Scfg
-Simrb.read_file('scfg').each do | k, v |
+Simrb.yaml_read('scfg').each do | k, v |
 	Scfg[k.to_sym] = v
 end
 
@@ -48,7 +48,7 @@ end
 
 # cache label statement of language
 Sload[:lang].each do | lang |
-	Sl << Simrb.read_file(lang)
+	Sl << Simrb.yaml_read(lang)
 end
 
 # default environment and db configuration setting

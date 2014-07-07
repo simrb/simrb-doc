@@ -24,23 +24,9 @@ module Simrb
 					Sequel::Migrator.run(Sdb, path, :column => mod_name.to_sym, :table => :_schemas)
 				end
 			end
-			"Implementing migration complete!"
-		end
 
-		# initialize base operation by bundling gems and injecting the bash command
-		#
-		# == Example
-		# 
-		# 	# 3s bundle
-		#
-# 		def bundle
-# 			# bundle gems
-# 			`bundle install --gemfile=modules/"#{Scfg[:main_module]}"/#{Simrb::Spath[:gemfile]}`
-# 
-# 			# add the bash commands to your ~/.bashrc file
-#  			`echo 'alias 3s="ruby cmd.rb"' >> ~/.bashrc && source`
-# 			"bundle complete"
-# 		end
+			"Successfully migrated"
+		end
 
 		# clone a module from github to modules dir
 		#
@@ -71,10 +57,10 @@ module Simrb
 
 				# fill text to file
 				text = [{ 'name' => module_name }]
-				Simrb.write_file "modules/#{module_name}#{Spath[:modinfo]}", text
+				Simrb.yaml_write "modules/#{module_name}#{Spath[:modinfo]}", text
 			end
 
-			"Initializing module directory complete"
+			"Successfully inintialized"
 		end
 
 		# install a module
@@ -110,7 +96,7 @@ module Simrb
 				eval("#{installer}") if self.respond_to?(installer.to_sym)
 
 				# fetch datas that need to be insert to db
-				installer_ds = system_fetch_install module_name
+				installer_ds = system_get_install_file module_name
 
 				# run installer
 				installer_ds.each do | name, data |
@@ -131,7 +117,7 @@ module Simrb
 				eval("#{installer}") if self.respond_to?(installer.to_sym)
 			end
 
-			"Installing complete"
+			"Successfully installed"
 		end
 
 	end

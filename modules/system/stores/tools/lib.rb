@@ -3,25 +3,27 @@ module Simrb
 
 		# method library of help tool
 
-		# reads the installed module, returns all of data block of this module
+		# get the installed file by module name you need to install
 		#
 		# == Example
 		#
-		# 	system_fetch_install cms
+		# 	system_get_install_file 'cms'		# return the result as below
 		#
-		# return, such as
 		# {
+		# 	# this is a file in installed directory called _user
 		# 	:_user	=>	[
 		# 		{:name => 'guest', :pawd => 'guest'},
 		# 		{:name => 'system', :pawd => 'system', :level => 99},
 		# 		{:name => 'test', :pawd => 'test', :level => 2},
 		# 	]
+		# 	# as above, a file called _rule
 		# 	:_rule	=>	[
 		# 		{:name => 'admin'},
 		# 		{:name => 'system_opt'},
 		# 	]
 		# }
-		def system_fetch_install module_name
+		#
+		def system_get_install_file module_name
 			res			= {}
 			files 		= Dir["#{Spath[:module]}#{module_name.to_s}#{Spath[:install]}*"]
 
@@ -52,7 +54,7 @@ module Simrb
 				installer		= installer.to_sym
  				res[installer]  = []
 
-				Simrb.read_file(file).each do | row |
+				Simrb.yaml_read(file).each do | row |
 					line = {}
 					row.each do | k, v |
 						line[k.to_sym] = v == nil ? '' : v
@@ -64,8 +66,13 @@ module Simrb
 			res
 		end
 
-		# fetch the data block by module name
-		def system_fetch_data name
+		# get the data block by module name
+		#
+		# == Example
+		#
+		# 	system_get_data_block 'cms'
+		#
+		def system_get_data_block name
 			tables = []
 			# if system module
 			name = '' if name == 'system'
@@ -86,11 +93,11 @@ module Simrb
 		#
 		#	or
 		#
-		#	res = {
+		#	data = {
 		# 		'path1'	=>	'the content in path1', 
 		# 		'path2'	=>	'the content in path2', 
 		# 	}
-		#	system_generate_file(res)
+		#	system_generate_file(data)
 		#
 		def system_generate_file content
 			content.each do | path, body |

@@ -20,7 +20,7 @@ module Simrb
 
 		# /logics/admin.rb
 		def system_tpl_admin modulename
-			datas 		= system_fetch_data modulename.to_sym
+			datas 		= system_get_data_block modulename.to_sym
 			tpl 		= ""
 			tpl << "get '/admin/#{modulename}' do\n"
 			tpl << "\tadmin_page :admin_info\n"
@@ -68,7 +68,7 @@ module Simrb
 
 		# /stores/installs/_menu 
 		def system_tpl_menu modulename
-			datas 	= system_fetch_data modulename.to_sym
+			datas 	= system_get_data_block modulename.to_sym
 			tpl		= []
 			tpl		<< { 'name' => modulename, 'link' => "/admin/#{modulename}", 'tag' => 'admin'}
 
