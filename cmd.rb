@@ -11,7 +11,7 @@ output = []
 
 # command mode
 if argv.count > 0 and Simrb::Stool.method_defined?(argv[0])
-
+	
 	helpers do
 		include Simrb::Stool
 	end
@@ -28,7 +28,7 @@ if argv.count > 0 and Simrb::Stool.method_defined?(argv[0])
 			output << line
 		end
 	else
-		File.open(Scfg[:command_log], 'a+') do |f|
+		File.open(Spath[:command_log], 'a+') do | f |
 			f.write "\n#{'='*10}#{Time.now.to_s}\n#{'='*10}\n"
 # 			f.write body
  			f.write (Sinatra::ShowExceptions.new(self).call(env.merge("HTTP_USER_AGENT" => "curl"))[2][0].to_s + "\n")

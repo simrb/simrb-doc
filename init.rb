@@ -4,7 +4,7 @@ require './env'
 unless File.exist? 'scfg'
 	data = {}
 	Simrb::Scfg[:init_self].each do | opt |
-		data[opt] = Scfg[opt]
+		data[opt] = Simrb::Scfg[opt]
 	end
 	Simrb.write_file('scfg', data)
 end

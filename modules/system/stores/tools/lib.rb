@@ -25,7 +25,7 @@ module Simrb
 			res			= {}
 			files 		= Dir["#{Spath[:module]}#{module_name.to_s}#{Spath[:install]}*"]
 
-			files_path	= Scfg[:install_lock_file]
+			files_path	= Spath[:install_lock_file]
 			files_lock	= []
 
 			if Scfg[:install_lock] == 'yes'
