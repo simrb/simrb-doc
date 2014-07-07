@@ -27,8 +27,8 @@ module Simrb
 			module_name = args.shift(1)[0]
 			@et			= Array.new 4
 
-			path		= system_add_suffix("modules/#{module_name}/#{Simrb::Spath[:vars]}")
-			content		= system_get_erb("modules/#{Scfg[:main_module]}/#{Simrb::Spath[:docs]}vars.erb")
+			path		= system_add_suffix("modules/#{module_name}#{Spath[:vars]}")
+			content		= system_get_erb("modules/#{Scfg[:main_module]}#{Spath[:docs]}vars.erb")
 			system_generate_file({path => content})
 		end
 
@@ -40,8 +40,8 @@ module Simrb
 			module_name = args.shift(1)[0]
 			@et			= Array.new 4
 
-			path		= system_add_suffix("modules/#{module_name}/#{Simrb::Spath[:menu]}")
-			content		= system_get_erb("modules/#{Scfg[:main_module]}/#{Simrb::Spath[:docs]}menu.erb")
+			path		= system_add_suffix("modules/#{module_name}#{Spath[:menu]}")
+			content		= system_get_erb("modules/#{Scfg[:main_module]}#{Spath[:docs]}menu.erb")
 			system_generate_file({path => content})
 		end
 
@@ -94,7 +94,7 @@ module Simrb
 		def g_m2 args
 			if args.count == 2
 				modulename, filename = args
-				dir 	= "modules/#{modulename}/#{Simrb::Spath[:schema]}"
+				dir 	= "modules/#{modulename}#{Spath[:schema]}"
 				count 	= Dir[dir + "*"].count + 1
 				fname 	= "#{filename}_#{Time.now.strftime('%y%m%d')}" 
 				path 	= "#{dir}#{count.to_s.rjust(3, '0')}_#{fname}.rb"
@@ -167,7 +167,7 @@ module Simrb
 	
 			# write the migration file
 			if content != ''
-				dir 	= "modules/#{modulename}/#{Simrb::Spath[:schema]}"
+				dir 	= "modules/#{modulename}#{Spath[:schema]}"
 				count 	= Dir[dir + "*"].count + 1
 				fname 	= args[1] ? args[1] : "#{operations.join('_')}_#{Time.now.strftime('%y%m%d')}" 
 				path 	= "#{dir}#{count.to_s.rjust(3, '0')}_#{fname}.rb"
@@ -349,7 +349,7 @@ module Simrb
 
 			# write res to data.rb
 			res 	= system_convert_str table, data
-			path 	= "modules/#{module_name}/#{Simrb::Spath[:logic]}data.rb"
+			path 	= "modules/#{module_name}#{Spath[:logic]}data.rb"
 # 			unless File.exist? path
 # 				File.new(path, 'w')
 # 			end

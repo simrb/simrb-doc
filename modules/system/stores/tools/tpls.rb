@@ -15,7 +15,7 @@ module Simrb
 
 			tpl << "\tend\n\n"
 			tpl << "end"
-			{"modules/#{modulename}/#{Simrb::Spath[:logic]}helpers.rb" => tpl}
+			{"modules/#{modulename}#{Spath[:logic]}helpers.rb" => tpl}
 		end
 
 		# /logics/admin.rb
@@ -31,39 +31,39 @@ module Simrb
 				tpl << "\t_admin :#{name}\n"
 				tpl << "end\n\n"
 			end
-			{"modules/#{modulename}/#{Simrb::Spath[:logic]}admin.rb" => tpl}
+			{"modules/#{modulename}#{Spath[:logic]}admin.rb" => tpl}
 		end
 
 		# /views/name_layout.slim
 		def system_tpl_layout modulename
 			@et = { :name => modulename }
-			tpl	= system_get_erb("modules/#{Scfg[:main_module]}/#{Simrb::Spath[:docs]}layout.erb")
-			{"modules/#{modulename}/#{Simrb::Spath[:view]}#{modulename}_layout.slim" => tpl}
+			tpl	= system_get_erb("modules/#{Scfg[:main_module]}#{Spath[:docs]}layout.erb")
+			{"modules/#{modulename}#{Spath[:view]}#{modulename}_layout.slim" => tpl}
 		end
 
 		# /stores/assets/name.css
 		def system_tpl_layout_css modulename
 			tpl = ""
-			path = "modules/system/#{Simrb::Spath[:layout_css]}"
+			path = "modules/system#{Spath[:layout_css]}"
 			if File.exist? path
 				tpl << File.read(path)
 			end
-			{"modules/#{modulename}/#{Simrb::Spath[:assets]}#{modulename}.css" => tpl}
+			{"modules/#{modulename}#{Spath[:assets]}#{modulename}.css" => tpl}
 		end
 
 		def system_tpl_common_css modulename
 			tpl = ""
-			path = "modules/system/#{Simrb::Spath[:common_css]}"
+			path = "modules/system#{Spath[:common_css]}"
 			if File.exist? path
 				tpl << File.read(path)
 			end
-			{"modules/#{modulename}/#{Simrb::Spath[:assets]}#{modulename}_common.css" => tpl}
+			{"modules/#{modulename}#{Spath[:assets]}#{modulename}_common.css" => tpl}
 		end
 
 		# /stores/assets/name.js
 		def system_tpl_js modulename
 			tpl = ""
-			{"modules/#{modulename}/#{Simrb::Spath[:assets]}#{modulename}.js" => tpl}
+			{"modules/#{modulename}#{Spath[:assets]}#{modulename}.js" => tpl}
 		end
 
 		# /stores/installs/_menu 
@@ -82,7 +82,7 @@ module Simrb
 			end
 
 			require 'yaml'
-			{"modules/#{modulename}/#{Simrb::Spath[:install]}_menu" => tpl.to_yaml}
+			{"modules/#{modulename}#{Spath[:install]}_menu" => tpl.to_yaml}
 		end
 
 		# /stores/installs/_vars
@@ -99,7 +99,7 @@ module Simrb
 			end
 
 			require 'yaml'
-			{"modules/#{modulename}/#{Simrb::Spath[:install]}_vars" => tpl.to_yaml}
+			{"modules/#{modulename}#{Spath[:install]}_vars" => tpl.to_yaml}
 		end
 
 	end

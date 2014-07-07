@@ -23,7 +23,7 @@ module Simrb
 		# }
 		def system_fetch_install module_name
 			res			= {}
-			files 		= Dir["modules/#{module_name.to_s}/#{Simrb::Spath[:install]}*"]
+			files 		= Dir["#{Spath[:module]}#{module_name.to_s}#{Spath[:install]}*"]
 
 			files_path	= Scfg[:install_lock_file]
 			files_lock	= []

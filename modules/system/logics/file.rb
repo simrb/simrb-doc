@@ -54,9 +54,9 @@ get '/_file/get/:fid' do
 	fid = params[:fid].to_i
 	ds = Sdb[:_file].filter(:fid => fid)
 	unless ds.empty?
-		send_file Scfg[:dirs][:upload_dir] + ds.get(:path).to_s, :type => ds.get(:type).split('/').last.to_sym
+		send_file Spath[:upload_dir] + ds.get(:path).to_s, :type => ds.get(:type).split('/').last.to_sym
 	else
-		send_file Sroot + 'public/images/default.jpg', :type => :jpeg
+		send_file "#{Spath[:public]}images/default.jpg", :type => :jpeg
 	end
 end
 
@@ -89,7 +89,7 @@ helpers do
 		Sdb[:_file].insert(fields)
 
 		#save the body of file
-		File.open(Scfg[:dirs][:upload_dir] + fields[:path], 'w+') do | f |
+		File.open(Spath[:upload_dir] + fields[:path], 'w+') do | f |
 			f.write file_content
 		end
 
@@ -114,7 +114,7 @@ helpers do
 			ds.delete
 
 			#remove file
-			File.delete Scfg[:dirs][:upload_dir] + path
+			File.delete Spath[:upload_dir] + path
 		end
 	end
 

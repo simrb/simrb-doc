@@ -14,17 +14,13 @@ Simrb.read_file('scfg').each do | k, v |
 	Scfg[k.to_sym] = v
 end
 
+# load patn
+Spath = Simrb::Spath
+
 # initialize default directories
-Scfg[:dirs].each do | name, path |
-	if !Scfg[:uninit_dirs].include?(name) and !File.exist?(path)
-		if path[-1] == '/'
-			Dir.mkdir(path) 
-		else
-			File.open(path, 'w+') do | f |
-				f.write("")
-			end
-		end
-	end
+Scfg[:init_dir_path].each do | item |
+	path = "#{Spath[item]}"
+	Simrb::path_init path
 end
 
 # detect database connection
@@ -38,17 +34,16 @@ end
 Smodules = Simrb.load_module
 
 # scan file path
-Sload 				= {}
 Sload[:lang] 		= []
 Sload[:logic] 		= []
 Sload[:tool] 		= []
 Sload[:view] 		= []
 
 Smodules.each do | name |
-	Sload[:lang] 	+= Dir["#{Sroot}modules/#{name}/#{Simrb::Spath[:lang]}*.#{Scfg[:lang]}"]
-	Sload[:logic] 	+= Dir["#{Sroot}modules/#{name}/#{Simrb::Spath[:logic]}*.rb"]
-	Sload[:tool] 	+= Dir["#{Sroot}modules/#{name}/#{Simrb::Spath[:tool]}*.rb"]
-	Sload[:view]	<< "#{Sroot}modules/#{name}/#{Simrb::Spath[:view]}".chomp("/")
+	Sload[:lang] 	+= Dir["#{Spath[:module]}#{name}#{Spath[:lang]}*.#{Scfg[:lang]}"]
+	Sload[:logic] 	+= Dir["#{Spath[:module]}#{name}#{Spath[:logic]}*.rb"]
+	Sload[:tool] 	+= Dir["#{Spath[:module]}#{name}#{Spath[:tool]}*.rb"]
+	Sload[:view]	<< "#{Spath[:module]}#{name}#{Spath[:view]}".chomp("/")
 end
 
 # cache label statement of language

@@ -6,9 +6,9 @@ get '/_assets/*' do
 	assets_name	= path_items.shift(3)[2]
 
 	if assets_name == 'public'
-		path = Sroot + "public/#{path_items.join('/')}"
+		path = "#{Spath[:public]}#{path_items.join('/')}"
 	else
-		path = Sroot + "modules/#{assets_name}/#{Simrb::Spath[:assets]}#{path_items.join('/')}"
+		path = "#{Spath[:module]}#{assets_name}#{Spath[:assets]}#{path_items.join('/')}"
 	end
 
 	send_file path, :type => request.path.split('.').last().to_sym
@@ -209,6 +209,7 @@ helpers do
 	#		{:name => 'name', :link => 'link', :focus => true},
 	#		{:name => 'name', :link => 'link', :sub_menu => [{:name => 'name', :link => 'link'},{},{}]},
 	# 	]
+	#
 	def _menu tag, menu_level = 2, set_tpl = true
 		ds = Sdb[:_menu].filter(:mid => _tag_ids(:_menu, tag)).order(:order)
 		return [] if ds.empty?

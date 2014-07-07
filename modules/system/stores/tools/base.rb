@@ -18,7 +18,7 @@ module Simrb
 		def db args = []
 			args = Smodules if args.empty?
 			args.each do | mod_name |
-				path = "modules/#{mod_name}/#{Simrb::Spath[:schema]}".chomp("/")
+				path = "modules/#{mod_name}#{Spath[:schema]}".chomp("/")
 				if Dir[path + '/*'].count > 0
 					Sequel.extension :migration
 					Sequel::Migrator.run(Sdb, path, :column => mod_name.to_sym, :table => :_schemas)
@@ -49,7 +49,7 @@ module Simrb
 		# 	$ 3s clone coolesting/cms
 		#
 		def clone args = []
-			`git clone https://github.com/#{args[0]}.git modules/#{args[0].split('/').last}`
+			`git clone #{Scfg[:repo_source]}#{args[0]}.git modules/#{args[0].split('/').last}`
 		end
 
 		# create a module, initializes the default dirs and files of module
@@ -60,23 +60,18 @@ module Simrb
 		#
 		def new args
 			args.each do | module_name |
-				# module dir
-				`mkdir modules/#{module_name}`
+				# module root dir
+				Simrb::path_init "#{Spath[:module]}#{module_name}/"
 
-				# sub dirs of module
-				Simrb::Spath.each do | name, path |
-					unless Scfg[:uninit_path].include?(name)
-						path = "modules/#{module_name}/#{path}"
-						if path[-1] == '/'
-							`mkdir #{path}`
-						else
-							`touch #{path}`
-						end
-					end
+				# module sub dir
+				Scfg[:init_module_path].each do | item |
+					path = "#{Spath[:module]}#{module_name}#{Spath[item]}"
+					Simrb::path_init path
 				end
 
 				# fill text to file
-				`echo name=#{module_name} >> modules/#{module_name}/#{Simrb::Spath[:modinfo]}`
+				text = [{ 'name' => module_name }]
+				Simrb.write_file "modules/#{module_name}#{Spath[:modinfo]}", text
 			end
 
 			"Initializing module directory complete"
@@ -102,7 +97,7 @@ module Simrb
 
 			# step 2, run the gemfile
 			args.each do | module_name |
-				path = "modules/#{module_name}/#{Simrb::Spath[:gemfile]}"
+				path = "modules/#{module_name}#{Spath[:gemfile]}"
 				if File.exist? path
 					`bundle install --gemfile=#{path}`
 				end
