@@ -35,14 +35,14 @@ Smodules = Simrb.load_module
 
 # scan file path
 Sload[:lang] 		= []
-Sload[:logic] 		= []
+Sload[:main] 		= []
 Sload[:tool] 		= []
 Sload[:view] 		= []
 
 Smodules.each do | name |
 	Sload[:lang] 	+= Dir["#{Spath[:module]}#{name}#{Spath[:lang]}*.#{Scfg[:lang]}"]
-	Sload[:logic] 	+= Dir["#{Spath[:module]}#{name}#{Spath[:logic]}*.rb"]
 	Sload[:tool] 	+= Dir["#{Spath[:module]}#{name}#{Spath[:tool]}*.rb"]
+	Sload[:main] 	+= Dir["#{Spath[:module]}#{name}/*.rb"]
 	Sload[:view]	<< "#{Spath[:module]}#{name}#{Spath[:view]}".chomp("/")
 end
 
@@ -62,8 +62,8 @@ helpers do
 	end
 end
 
-# load main files in logic directory that will be run later
-Sload[:logic].each do | path |
+# load main files that will be run later
+Sload[:main].each do | path |
 	require path
 end
 

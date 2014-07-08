@@ -20,7 +20,7 @@ installing database, assuming the database is sqlite, you should type the comman
 	# yum install sqlite-devel
 
 now, the database connection is `sqlite://db/data.db` that would be used as below,
-more database installation please see `modules/system/stores/docs/db.rb`
+more database installation please see `modules/system/boxes/docs/db.rb`
 
 about web server environment, check the port 80 whether it has been used yet
 
