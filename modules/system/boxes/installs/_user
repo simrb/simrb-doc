@@ -1,0 +1,12 @@
+---
+- name	: guest
+  pawd	: guest
+
+- name	: system
+  pawd	: system
+  level	: 99
+  tag	: [admin, editor, viewer]
+
+- name 	: test
+  pawd 	: test
+  level : 2
