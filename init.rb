@@ -41,7 +41,7 @@ Sload[:view] 		= []
 
 Smodules.each do | name |
 	Sload[:lang] 	+= Dir["#{Spath[:module]}#{name}#{Spath[:lang]}*.#{Scfg[:lang]}"]
-	Sload[:tool] 	+= Dir["#{Spath[:module]}#{name}#{Spath[:tool]}*.rb"]
+	Sload[:tool] 	+= Dir["#{Spath[:module]}#{name}#{Spath[:box]}*.rb"]
 	Sload[:main] 	+= Dir["#{Spath[:module]}#{name}/*.rb"]
 	Sload[:view]	<< "#{Spath[:module]}#{name}#{Spath[:view]}".chomp("/")
 end

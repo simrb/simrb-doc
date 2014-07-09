@@ -43,7 +43,7 @@ else
 	argv.shift 1 
 
 	Smodules.each do | name |
-		Dir["#{Spath[:module]}#{name}#{Spath[:docs]}*.#{Scfg[:lang]}.rb"].each do | path |
+		Dir["#{Spath[:module]}#{name}#{Spath[:doc]}*.#{Scfg[:lang]}.rb"].each do | path |
 			require path
 		end
 	end
