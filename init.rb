@@ -16,6 +16,11 @@ end
 
 # load patn
 Spath = Simrb::Spath
+if File.exist? 'spath'
+	Simrb.yaml_read('spath').each do | k, v |
+		Spath[k.to_sym] = v
+	end
+end
 
 # initialize default directories
 Scfg[:init_dir_path].each do | item |
