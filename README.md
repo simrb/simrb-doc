@@ -41,30 +41,26 @@ reset the port for our server
 
 	$ gem install simrb
 
-initialize a project copy of development
+initialize a project copy with development mode, the default insatlling without option --dev that is production mode
 
 	$ simrb init myapp --dev
 
-or, production mode
-
-	$ simrb init myapp --pro
-
 	$ cd myapp
-	$ echo 'db_connection=sqlite://db/data.db' > scfg
+	$ echo 'db_connection: sqlite://db/data.db' > scfg
 
 	$ 3s install
 
 
 ### Starting
 
-Assuming the default web server is thin
+Assuming the default web server is thin, so we start by
 
 	ruby thin.rb
 
 
 ### Extending
 
-Extending your application with modules of offical repository, just enter the project root dir, then
+Extending your application with modules getting from offical repository, fetch by command
 
 	$ 3s clone repo_name/project_name
 
