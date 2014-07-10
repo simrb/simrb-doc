@@ -1,6 +1,6 @@
 ---
 - vkey		: shortcut_icon
-  vval		: public/images/shortcut.png
+  vval		: system/images/shortcut.png
   tag		: system
   
 - vkey		: admin_level

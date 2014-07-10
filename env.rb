@@ -1,7 +1,3 @@
-require 'sinatra'
-require 'sinatra/base'
-require 'sequel'
-require 'slim'
 
 Sroot 	= Dir.pwd + '/'
 Svalid 	= {}
@@ -20,22 +16,6 @@ class Sl
 		def << h
 			@@options.merge!(h)
 		end
-	end
-end
-
-# increase data and valid block
-module Sinatra
-	class Application < Base
-		def self.data name = '', &block
-			(Sdata[name] ||= []) << block
-		end
-		def self.valid name = '', &block
-			(Svalid[name] ||= []) << block
-		end
-	end
-
-	module Delegator
-		delegate :data, :valid
 	end
 end
 
@@ -155,5 +135,25 @@ module Simrb
 		:init_self				=> [:lang, :db_connection, :environment, :bind, :port],
 	}
 
+end
+
+require 'sinatra'
+require 'sequel'
+require 'slim'
+
+# increase data and valid block
+module Sinatra
+	class Application < Base
+		def self.data name = '', &block
+			(Sdata[name] ||= []) << block
+		end
+		def self.valid name = '', &block
+			(Svalid[name] ||= []) << block
+		end
+	end
+
+	module Delegator
+		delegate :data, :valid
+	end
 end
 

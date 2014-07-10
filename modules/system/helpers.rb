@@ -3,13 +3,8 @@
 # ================================================
 get '/_assets/*' do
 	path_items 	= request.path.split('/')
-	assets_name	= path_items.shift(3)[2]
-
-	if assets_name == 'public'
-		path = "#{Spath[:public]}#{path_items.join('/')}"
-	else
-		path = "#{Spath[:module]}#{assets_name}#{Spath[:assets]}#{path_items.join('/')}"
-	end
+	module_name	= path_items.shift(3)[2]
+	path 		= "#{Spath[:module]}#{module_name}#{Spath[:assets]}#{path_items.join('/')}"
 
 	send_file path, :type => request.path.split('.').last().to_sym
 end
@@ -29,7 +24,7 @@ helpers do
 	#
 	# == Example
 	#
-	# 	_assets('public/css/style.css')
+	# 	_assets('system/css/style.css')
 	# 	_assets('system/tags/README.md')
 	#
 	# 	_assets('system/admin.css')

@@ -29,11 +29,11 @@ Scfg[:init_dir_path].each do | item |
 end
 
 # detect database connection
-if Scfg[:requiredb] == 'yes'
-	if Sequel.connect(Scfg[:db_connection]).tables.empty?
- 		Simrb.p "No database table found"
-	end
-end
+# if Scfg[:requiredb] == 'yes'
+# 	if Sequel.connect(Scfg[:db_connection]).tables.empty?
+#  		Simrb.p "No database table found"
+# 	end
+# end
 
 # load modules
 Smodules = Simrb.load_module
