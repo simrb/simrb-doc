@@ -60,7 +60,7 @@ module Simrb
 			{"modules/#{modulename}#{Spath[:assets]}#{modulename}_common.css" => tpl}
 		end
 
-		def system_tpl_gitgnore modulename
+		def system_tpl_gitignore modulename
 			tpl = ""
 			path = "modules/system#{Spath[:tpl].chomp("/")}#{Spath[:gitgnore]}"
 			if File.exist? path

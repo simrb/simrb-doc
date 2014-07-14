@@ -59,7 +59,7 @@ module Simrb
 				text = [{ 'name' => module_name }]
 				Simrb.yaml_write "modules/#{module_name}#{Spath[:modinfo]}", text
 
-				g_tpl([module_name, 'gitgnore'])
+				g_tpl([module_name, 'gitignore'])
 			end
 
 			"Successfully inintialized"
