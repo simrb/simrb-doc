@@ -13,6 +13,7 @@ Sequel.migration do
 		end
 		create_table(:_menu) do
 			primary_key :mid
+			Fixnum :uid
 			String :name
 			String :link
 			String :description

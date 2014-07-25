@@ -23,6 +23,9 @@ data :_menu do
 		:mid				=>	{
 			:primary_key	=>	true,
 		},
+		:uid				=>	{
+			:default		=>	_user[:uid],
+		},
 		:name				=>	{},
 		:link				=>	{},
 		:description		=>	{},
