@@ -61,7 +61,7 @@ get '/_file/get/:fid' do
 end
 
 helpers do
-	
+
 	# save file info to db, and move the file content to upload directory
 	#
 	# == Arguments

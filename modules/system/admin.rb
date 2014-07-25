@@ -6,34 +6,6 @@ get '/admin/view/:table' do
 	_admin params[:table].to_sym
 end
 
-# get '/admin/mods' do
-# 	_admin :_mods
-# end
-# 
-# get '/admin/menu' do
-# 	_admin :_menu
-# end
-# 
-# get '/admin/vars' do
-# 	_admin :_vars
-# end
-# 
-# get '/admin/tags' do
-# 	_admin :_tags
-# end
-# 
-# get '/admin/atag' do
-# 	_admin :_atag
-# end
-# 
-# get '/admin/docs' do
-# 	_admin :_docs
-# end
-# 
-# get '/admin/mark' do
-# 	_admin :_mark
-# end
-
 get '/admin/user' do
 	_admin(
 		:_view_		=>	{

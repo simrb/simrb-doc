@@ -103,7 +103,6 @@ user log: 日志
 module: 模块
 dependency: 依赖
 return: 返回
-descpt: 描述
 search: 搜索
 save: 保存
 default: 默认

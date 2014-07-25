@@ -77,7 +77,7 @@ helpers do
 	#
 	# == Example
 	#
-	# 	judge the whether it has the tag existed
+	# 	judge the tag whether it is or not existed
 	#
 	def _tags? assoc_table, assoc_id = nil
 		Sdb[:_atag].filter(:assoc_table => _tag(assoc_table)).empty?
@@ -128,10 +128,10 @@ helpers do
 		res.empty? ? '' : res.join(' , ')
 	end
 
-	# get all of tags as a hash by specified table name
+	# get all of tags as an hash by specified table name
 	#
 	# == Example
-	#		
+	#
 	#	get the tags of the posts table
 	#
 	# 	_tag_hash(:posts)	# => { 1 => 'ruby', 2 => 'python',,, }
@@ -146,7 +146,7 @@ helpers do
 	# add tags
 	#
 	# == Example
-	#	
+	#
 	#	_tag_add(:vars, :vid, 'php, ruby, python')
 	#
 	def _tag_add assoc_table, assoc_id, tag

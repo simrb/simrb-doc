@@ -6,7 +6,7 @@ Sequel.migration do
 			String :author
 			String :email
 			String :website
-			String :descpt
+			String :description
 			String :dependon
 			String :version
 			Fixnum :order
@@ -15,7 +15,7 @@ Sequel.migration do
 			primary_key :mid
 			String :name
 			String :link
-			String :descpt
+			String :description
 			Fixnum :parent
 			Fixnum :order
 		end
@@ -23,7 +23,7 @@ Sequel.migration do
 			primary_key :vid
 			String :vkey
 			String :vval
-			String :descpt
+			String :description
 			Time :changed
 		end
 		create_table(:_file) do

@@ -232,7 +232,7 @@ helpers do
 				if set_tpl
 					@t[:title] = arr_by_mid[mid][:name]
 					@t[:keywords] = arr_by_mid[mid][:name]
-					@t[:description] = arr_by_mid[mid][:descpt]
+					@t[:description] = arr_by_mid[mid][:description]
 				end
 			end
 
@@ -251,7 +251,7 @@ helpers do
 						if set_tpl
 							@t[:title] = arr_by_mid[num][:name]
 							@t[:keywords] = arr_by_mid[num][:name]
-							@t[:description] = arr_by_mid[num][:descpt]
+							@t[:description] = arr_by_mid[num][:description]
 						end
 					end
 					menu1[:sub_menu] << menu2

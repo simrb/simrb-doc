@@ -7,7 +7,7 @@ data :_mods do
 		:author				=> 	{},
 		:email				=> 	{},
 		:website			=> 	{},
-		:descpt				=> 	{},
+		:description		=> 	{},
 		:dependon			=> 	{},
 		:version			=> 	{
 			:default		=>	'1.0.0'
@@ -25,7 +25,7 @@ data :_menu do
 		},
 		:name				=>	{},
 		:link				=>	{},
-		:descpt				=>	{},
+		:description		=>	{},
 		:parent				=>	{
 			:default		=>	0,
 		},
@@ -46,7 +46,7 @@ data :_vars do
 		:vval				=>	{
 			:label			=>	:value,
 		},
-		:descpt				=>	{},
+		:description		=>	{},
 		:changed			=>	{
 			:default		=>	Time.now
 		}

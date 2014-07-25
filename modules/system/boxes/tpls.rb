@@ -100,10 +100,10 @@ module Simrb
 
 			[:title, :description, :keywords, :footer].each do | name |
 				tpl << {
-					"vkey"	=> name,
-					"vval"	=> modulename,
-					"tag"	=> "#{modulename}_page",
-					"descpt"=> "no description"
+					"vkey"			=> name,
+					"vval"			=> modulename,
+					"tag"			=> "#{modulename}_page",
+					"description"	=> "no description"
 				}
 			end
 

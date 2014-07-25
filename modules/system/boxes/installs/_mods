@@ -1,5 +1,5 @@
 ---
-- name		: system
-  descpt	: a core module
-  order		: 3
-  author	: linyu deng
+- name			: system
+  description	: a core module
+  order			: 3
+  author		: linyu deng
