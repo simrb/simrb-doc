@@ -23,7 +23,7 @@ module Simrb
 			datas 		= system_get_data_block modulename.to_sym
 			tpl 		= ""
 			tpl << "get '/_admin/#{modulename}' do\n"
-			tpl << "\tadmin_page :admin_info\n"
+			tpl << "\tadmin_page :_dashboard\n"
 			tpl << "end\n\n"
 
 			datas.each do | name |

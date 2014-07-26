@@ -38,11 +38,11 @@ helpers do
 		"#{domain}_file/get/#{path}"
 	end
 
-	def _link path, domain = '/'
+	def _css path, domain = '/'
 		"<link rel='stylesheet' type='text/css' href='#{_assets(path, domain)}' />"
 	end
 
-	def _script path, domain = '/'
+	def _js path, domain = '/'
 		"<script src='#{_assets(path, domain)}' type='text/javascript'></script>"
 	end
 

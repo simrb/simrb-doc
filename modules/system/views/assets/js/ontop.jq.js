@@ -2,14 +2,15 @@
  * == Example
  *
  * html 
+ * 		#header.keeptop
+ *			p note that the css of #header need to set {position: absolute; top: 0;}
+ *			p and the color of #toTop { background: "colorwhatyouwant"; }
  *
- * #header.keeptop
- *		p note that the css of #header need to set {position: absolute; top: 0;}
- *		p and the color of #toTop { background: "colorwhatyouwant"; }
- *
- * script src="#{_assets('system/js/jq.ontop.js')}" type="text/javascript"
+ * js
+ * 		== _js('system/js/jq.ontop.js')
  *
  */
+
 $(".keeptop").before("<div id='toTop'><img src='/_assets/system/icons/totop.png'/></div>")
 $("#toTop").css({
 	"position" : "fixed",

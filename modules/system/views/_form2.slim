@@ -70,12 +70,12 @@ form.form action="#{_url2(@t[:action])}" method="post" id="editform"
 
 		p : input type="text" name="tag" id="itags" value="#{tag}"
 
-		script src="#{_assets('system/jquery.tagsinput.js')}"
-		link rel="stylesheet" type="text/css" href="#{_assets('system/jquery.tagsinput.css')}"
+		script src="#{_assets('system/tag.jq.js')}"
+		link rel="stylesheet" type="text/css" href="#{_assets('system/tag.css')}"
 
 
 	- if load_picture_js == true
-		== _tpl(:_picture_js)
+		script src="#{_assets('system/js/picture.js')}"
 
 
 	- unless @t[:css] == ''

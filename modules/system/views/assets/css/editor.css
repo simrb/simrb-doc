@@ -1,0 +1,68 @@
+
+.toolbar {
+	margin: 10px 0;
+}
+
+.toolbar a {
+	display: block;
+	width: 16px;
+	height: 16px;
+	background-repeat: no-repeat;
+	text-indent: -10000px;
+	text-decoration: none;
+	padding: 3px;
+	margin: 0;
+	float: left;
+	cursor: pointer;
+}
+
+.folder_menu {
+	padding: 5px;
+	position: absolute;
+	background-color: white;
+	width: 200px;
+	border: 1px solid black;
+}
+.folder_progressbar {
+	border: 1px solid black;
+	width: 130px;
+	height: 19px;
+	margin: 3px;
+	text-align: right;
+}
+.folder_close, .folder_submit {
+	padding: 0 3px;
+	float: right;
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+	background-repeat: no-repeat;
+}
+.folder_close {
+	background-image:url('/icons/close.png');
+}
+.folder_submit {
+	background-image:url('/icons/submit.png');
+}
+.folder_view td {
+	padding: 2px;
+}
+.folder_view .name {
+	cursor: pointer;
+}
+
+.picture_view {
+	padding: 5px;
+	position: absolute;
+	background-color: white;
+	width: 200px;
+	border: 1px solid black;
+	display: none;
+}
+.picture_view img {
+	width: 50px;
+	height: 50px;
+	float: left;
+	padding: 8px;
+	cursor: pointer;
+}

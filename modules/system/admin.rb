@@ -5,7 +5,7 @@ end
 
 get '/a' do redirect _url('/_admin/info/system') end
 get '/_admin/info/:name' do
-	admin_page :admin_info
+	admin_page :_dashboard
 end
 
 get '/_admin/view/:table' do
@@ -137,7 +137,7 @@ end
 helpers do
 
 	def _view_ argv = {}
-		argv[:layout] 		||= :admin_layout
+		argv[:layout] 		||= :_admin_layout
 		argv[:title] 		||= _var(:title, :page)
 		argv[:keywords]		||= _var(:keywords, :page)
 		argv[:description]	||= _var(:description, :page)
@@ -145,7 +145,7 @@ helpers do
 	end
 
 	def _form_ argv = {}
-		argv[:layout] 		||= :admin_layout
+		argv[:layout] 		||= :_admin_layout
 		argv[:title] 		||= _var(:title, :page)
 		argv[:keywords]		||= _var(:keywords, :page)
 		argv[:description]	||= _var(:description, :page)
@@ -160,7 +160,7 @@ helpers do
 		@t[:title] 			||= _var(:admin_title, :admin_page)
 		@t[:keywords]		||= _var(:keywords, :admin_page)
 		@t[:description]	||= _var(:description, :admin_page)
-		_tpl name, :admin_layout
+		_tpl name, :_admin_layout
 	end
 
 	def _admin options = {}
