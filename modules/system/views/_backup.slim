@@ -22,7 +22,7 @@ form
 			label.mr10 = Sl[:filename]
 			input.mr10 type="text" name="filename" placeholder='file name'
 
-			input.button type="submit" name="backup" value="#{Sl[:backup]}" formaction="/admin/baks/backup" formmethod="post"
+			input.button type="submit" name="backup" value="#{Sl[:backup]}" formaction="/_admin/baks/backup" formmethod="post"
 
 	.box-1
 
@@ -47,7 +47,7 @@ form
 
 		.body
 			input type="file" name="inport"
-			input.button type="submit" value="#{Sl[:'inport records']}" formaction="/admin/baks/inport" formmethod="post" formenctype="multipart/form-data"
+			input.button type="submit" value="#{Sl[:'inport records']}" formaction="/_admin/baks/inport" formmethod="post" formenctype="multipart/form-data"
 
 		.body
 			p Tip: if you intend to make a recover, 

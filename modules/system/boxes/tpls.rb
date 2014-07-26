@@ -18,16 +18,16 @@ module Simrb
 			{"modules/#{modulename}/helpers.rb" => tpl}
 		end
 
-		# /admin.rb
+		# /_admin.rb
 		def system_tpl_admin modulename
 			datas 		= system_get_data_block modulename.to_sym
 			tpl 		= ""
-			tpl << "get '/admin/#{modulename}' do\n"
+			tpl << "get '/_admin/#{modulename}' do\n"
 			tpl << "\tadmin_page :admin_info\n"
 			tpl << "end\n\n"
 
 			datas.each do | name |
-				tpl << "get '/admin/#{name}' do\n"
+				tpl << "get '/_admin/#{name}' do\n"
 				tpl << "\t_admin :#{name}\n"
 				tpl << "end\n\n"
 			end
@@ -79,12 +79,12 @@ module Simrb
 		def system_tpl_menu modulename
 			datas 	= system_get_data_block modulename.to_sym
 			tpl		= []
-			tpl		<< { 'name' => modulename, 'link' => "/admin/#{modulename}", 'tag' => 'admin'}
+			tpl		<< { 'name' => modulename, 'link' => "/_admin/#{modulename}", 'tag' => 'admin'}
 
 			datas.each do | name |
 				tpl	<< {
 					'name' => name, 
-					'link' => "/admin/#{modulename}",
+					'link' => "/_admin/#{modulename}",
 					'parent' => modulename,
 					'tag' => 'admin'
 				}

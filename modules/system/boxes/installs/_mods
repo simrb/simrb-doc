@@ -1,5 +1,6 @@
 ---
 - name			: system
-  description	: a core module
   order			: 3
   author		: linyu deng
+  version		: 1.0.0
+  description	: a core module

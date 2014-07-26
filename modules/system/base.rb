@@ -26,24 +26,9 @@ get '/_index' do
 	_tpl :_index
 end
 
-
-
-# ================================================
-# administration
-# ================================================
-get '/a' do
- 	redirect _url('/admin/info/system')
-end
-
-before '/admin/*' do
-  	_login? _var(:login, :link)
-	@menus = _menu(:admin)
-end
-
 get "/robots.txt" do
 	arr = [
 		"User-agent:*",
-		"Disallow:/admin*",
 		"Disallow:/_*",
 	]
 	arr.join("\n")

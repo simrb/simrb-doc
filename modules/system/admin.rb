@@ -1,12 +1,18 @@
-get '/admin/info/:name' do
+before '/_admin/*' do
+  	_login? _var(:login, :link)
+	@menus = _menu(:admin)
+end
+
+get '/a' do redirect _url('/_admin/info/system') end
+get '/_admin/info/:name' do
 	admin_page :admin_info
 end
 
-get '/admin/view/:table' do
+get '/_admin/view/:table' do
 	_admin params[:table].to_sym
 end
 
-get '/admin/user' do
+get '/_admin/user' do
 	_admin(
 		:_view_		=>	{
 			:name		=>	:_user,
@@ -24,7 +30,7 @@ get '/admin/user' do
 	)
 end
 
-get '/admin/sess' do
+get '/_admin/sess' do
 	_admin(
 		:_view_		=>	{
 			:name		=>	:_sess,
@@ -43,7 +49,7 @@ end
 ########################################################
 # file
 ########################################################
-get '/admin/file' do
+get '/_admin/file' do
 	_admin(
 		:_view_		=>	{
 			:name		=>	:_file,
@@ -57,7 +63,7 @@ get '/admin/file' do
 	)
 end
 
-post '/admin/file' do
+post '/_admin/file' do
 	if params[:upload]
 		params[:upload].each do | p |
 			_file_save p
@@ -73,7 +79,7 @@ end
 ########################################################
 # backup
 ########################################################
-get '/admin/baks' do
+get '/_admin/baks' do
 	case @qs[:opt]
 	when 'export'
 		if @qs[:id]
@@ -98,7 +104,7 @@ get '/admin/baks' do
 end
 
 #backup
-post '/admin/baks/backup' do
+post '/_admin/baks/backup' do
 	if params[:table_name]
 		#generate the csv file
 		encoding 	= params[:encoding] ? params[:encoding] : _var(:encoding, :file)
@@ -116,7 +122,7 @@ post '/admin/baks/backup' do
 end
 
 #inport
-post '/admin/baks/inport' do
+post '/_admin/baks/inport' do
 	if params[:inport] and params[:inport][:tempfile]
 		filename = params[:inport][:filename].split('.').first
 		File.open(Spath[:backup_dir] + filename, 'w+') do | f |
