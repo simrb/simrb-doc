@@ -8,6 +8,24 @@ before '/_file/*' do
 	end
 end
 
+# assets resource
+get '/_assets/*' do
+	path_items 	= request.path.split('/')
+	module_name	= path_items.shift(3)[2]
+	path 		= "#{Spath[:module]}#{module_name}#{Spath[:assets]}#{path_items.join('/')}"
+
+	send_file path, :type => request.path.split('.').last().to_sym
+end
+
+# require 'sass'
+# configure do
+# 	set :sass, :cache => true, :cahce_location => './tmp/sass-cache', :style => :compressed
+# end
+# 
+# get '/css/sass.css' do
+# 	sass :index
+# end
+
 #upload file
 post '/_file/upload' do
 	if params[:upload] and params[:upload][:tempfile] and params[:upload][:filename]
@@ -118,28 +136,22 @@ helpers do
 		end
 	end
 
-	def _parser_init extension = {}
-# 		require 'redcarpet'
-# 		extensions 	= {:autolink => true, :space_after_headers => true}.merge(extension)
-# 		html_obj 	= Redcarpet::Render::HTMSl.new()
-# 		@markdown 	= Redcarpet::Markdown.new(html_obj, extensions)
-
-		@markdown_extensions = extension
-# 		require 'rdiscount'
-
-  		require 'kramdown'
-
+	# generate the assets url
+	#
+	# == Example
+	#
+	# 	_assets('system/css/style.css')
+	# 	_assets('system/tags/README.md')
+	#
+	# 	_assets('system/admin.css')
+	# 	_assets('system/admin.css', 'https//www.example.com')
+	#
+	def _assets path, domain = '/'
+		"#{domain}_assets/#{path}"
 	end
 
-	def _m2h str
-# 		# redcarpet
-#   	@markdown.render str
-
-#  		# rdiscount
-#  		RDiscount.new(str).to_html
-
-		# kramdown
-  		Kramdown::Document.new(str, @markdown_extensions).to_html
+	def _file path, domain = '/'
+		"#{domain}_file/get/#{path}"
 	end
 
 end

@@ -1,7 +1,3 @@
-configure do
-	Sdb = Sequel.connect(Scfg[:db_connection])
-end
-
 configure :production do
 	not_found do
 		Sl['sorry, no page']
@@ -13,7 +9,7 @@ configure :production do
 end
 
 before do
-	_init_base
+	_base
 end
 
 #set the default page
@@ -34,29 +30,60 @@ get "/robots.txt" do
 	arr.join("\n")
 end
 
+helpers do
 
+	def _base
+		# request query_string
+		@qs	= {}
 
-# ================================================
-# scaffold using interface
-# ================================================
-# Fisrt
-# a interface route that preformments the form submit, and record delete, or others
-# you must to assign the rule to user allow to use this route
-#
-before '/_system/_opt' do
- 	_level? _var(:form_submit_level)
-# 	_rule? :system_opt
-end
+		# template common variable
+		@t = {}
 
+		# a key-val field that will be inserted to database
+		@f = {}
 
-# Second
-# the interface methods need to be added the '_' as the suffix
-#
-post '/_system/_opt' do
-	method = params[:_method_] ? params[:_method_] : (@qs.include?(:_method_) ? @qs[:_method_] : nil)
-	if method and method[-1] == '_' and self.respond_to?(method.to_sym)
-		eval("#{method}")
+  		#env["rack.request.query_hash"]
+		_fill_qs_with request.query_string if request.query_string
+
+		# message variable
+		@msg = ''
+		unless request.cookies['msg'] == ''
+			@msg = request.cookies['msg'] 
+			response.set_cookie 'msg', :value => '', :path => '/'
+		end
 	end
-	@t[:repath] ||= (params[:_repath] || request.referer)
-	redirect @t[:repath]
+
+	def _fill_qs_with str
+		str.split("&").each do | item |
+			key, val = item.split "="
+			if val and val.index '+'
+				@qs[key.to_sym] = val.gsub(/[+]/, ' ')
+			else
+				@qs[key.to_sym] = val
+			end
+		end
+	end
+
+	# throw out the message, and redirect back
+	def _throw str
+		response.set_cookie 'msg', :value => str, :path => '/'
+		redirect back
+	end
+
+	#set the message if get a parameter, otherwise returns the @str value
+	def _msg str = ''
+		@msg = str
+		response.set_cookie 'msg', :value => str, :path => '/'
+	end
+
+	#return a random string with the size given
+	def _random_string size = 12
+		charset = ('a'..'z').to_a + ('0'..'9').to_a + ('A'..'Z').to_a
+		(0...size).map{ charset.to_a[rand(charset.size)]}.join
+	end
+
+	def _ip
+		ENV['REMOTE_ADDR'] || '127.0.0.1'
+	end
+
 end

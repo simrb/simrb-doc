@@ -38,6 +38,25 @@ data :_menu do
 	}
 end
 
+data :_docs do
+	{
+		:pid				=>	{
+			:primary_key	=>	true
+		},
+		:uid				=>	{
+			:form_type		=>	:hide,
+			:default		=>	_user[:uid],
+			:form_type		=>	:hide,
+		},
+		:title				=>	{},
+		:body				=>	{
+			:type			=>	'Text'
+		},
+		:created			=>	{
+			:default		=>	Time.now
+		},
+	}
+end
 data :_vars do
 	{
 		:vid				=>	{
@@ -163,26 +182,6 @@ data :_atag do
 		:assoc_id			=> 	{},
 		:assoc_table		=> 	{
 			:type			=>	'Fixnum'
-		},
-	}
-end
-
-data :_docs do
-	{
-		:pid				=>	{
-			:primary_key	=>	true
-		},
-		:uid				=>	{
-			:form_type		=>	:hide,
-			:default		=>	_user[:uid],
-			:form_type		=>	:hide,
-		},
-		:title				=>	{},
-		:body				=>	{
-			:type			=>	'Text'
-		},
-		:created			=>	{
-			:default		=>	Time.now
 		},
 	}
 end

@@ -321,6 +321,27 @@ helpers do
 		(@current_time - changed_time - timeout) > 0 ? true : false
 	end
 
+	# mark the operation by ip that prevents the same user do an action many times in specified time
+	def _mark name, timeout, msg = ''
+		reval = false
+		ds = Sdb[:_mark].filter(:name => name.to_s, :ip => _ip)
+
+		# if no record, create one
+		if ds.empty?
+			_submit :_mark, :fkv => {:name => name.to_s}
+		else
+			# if timeout to the last log, update the changed time
+			if _timeout?(ds.get(:changed), timeout)
+				ds.update(:changed => Time.now)
+			else
+				reval = true
+				_throw msg if msg != ''
+			end
+		end
+
+		reval
+	end
+
 end
 
 
