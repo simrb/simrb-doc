@@ -97,8 +97,8 @@ get '/_admin/baks' do
 		_msg Sl[:'delete complete']
 		redirect back
 	else
-		@tables = Sdb.tables
-		@encoding = _var(:encoding, :file) != "" ? _var(:encoding, :file) : Scfg[:encoding]
+		@tables 	= Sdb.tables.each_slice(5).to_a
+		@encoding 	= _var(:encoding, :file) != "" ? _var(:encoding, :file) : Scfg[:encoding]
 		admin_page :_backup
 	end
 end
@@ -136,26 +136,6 @@ end
 
 helpers do
 
-	def _view_ argv = {}
-		argv[:layout] 		||= :_admin_layout
-		argv[:title] 		||= _var(:title, :page)
-		argv[:keywords]		||= _var(:keywords, :page)
-		argv[:description]	||= _var(:description, :page)
-		_view argv
-	end
-
-	def _form_ argv = {}
-		argv[:layout] 		||= :_admin_layout
-		argv[:title] 		||= _var(:title, :page)
-		argv[:keywords]		||= _var(:keywords, :page)
-		argv[:description]	||= _var(:description, :page)
-		_form argv
-	end
-
-	def _submit_ argv = {}
-		_submit argv[:name], argv
-	end
-
 	def admin_page name
 		@t[:title] 			||= _var(:admin_title, :admin_page)
 		@t[:keywords]		||= _var(:keywords, :admin_page)
@@ -178,6 +158,7 @@ helpers do
 		end
 
 		argv = options.include?(method.to_sym) ? options[method.to_sym] : {}
+		argv[:layout] ||= :_admin_layout
 		if method and method[-1] == '_' and self.respond_to?(method.to_sym)
 			eval("#{method} argv")
 		end
@@ -188,7 +169,7 @@ helpers do
 		if argv[:name] and argv[:pawd]
 			_user_add argv
 		else
-			_form_ :name => :_user, :fields => [:name, :pawd, :level], :_method_ => '_user_add_'
+			_form :_user, :fields => [:name, :pawd, :level], :_method_ => '_user_add_', :layout => :_admin_layout
 		end
 	end
 

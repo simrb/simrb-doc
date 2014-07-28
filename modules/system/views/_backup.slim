@@ -3,15 +3,14 @@ form
 		.title = Sl[:'backup creating']
 		.body.checkall
 			label.lhover
-				label.pointer class='checkall-switch' #{Sl[:'select all']} >>> 
-			- i = 0
-			- @tables.each do | t |
-				- if(i % 5) == 0
-					br
-				- i = i + 1
-				label.mr10.lhover
-					input id="tn_#{t}" type="checkbox" name="table_name[]" value="#{t}"
-					label for="tn_#{t}" = t
+				label.pointer class='checkall-switch' #{Sl[:'select all']} >>
+			table
+				- @tables.each do | row |
+					tr
+						- row.each do | t |
+							td.mr10.lhover
+								input id="tn_#{t}" type="checkbox" name="table_name[]" value="#{t}"
+								label for="tn_#{t}" = t
 
 		.body
 			label.mr10 = Sl[:encoding]
