@@ -1,20 +1,11 @@
-# ================================================
-# scaffold using interface
-# ================================================
-# Fisrt
-# a interface route that preformments the form submit, and record delete, or others
-# you must to assign the rule to user allow to use this route
-#
-before '/_system/_opt' do
+# a filter for form data submiting
+before '/_view/opt' do
  	_level? _var(:form_submit_level)
 # 	_rule? :system_opt
 end
 
-
-# Second
-# the interface methods need to be added the '_' as the suffix
-#
-post '/_system/_opt' do
+# a interface for form data submiting that need to be added the '_' as the suffix
+post '/_view/opt' do
 	method = params[:_method_] ? params[:_method_] : (@qs.include?(:_method_) ? @qs[:_method_] : nil)
 	if method and method[-1] == '_' and self.respond_to?(method.to_sym)
 		eval("#{method}")
@@ -100,42 +91,8 @@ helpers do
 		"<script src='#{_assets(path, domain)}' type='text/javascript'></script>"
 	end
 
-	# initialize variable @t
-	def _init_t argv = {}
-		t = argv
-
- 		#table name
-		if argv[:name] == nil
-			if params[:_name]
-				argv[:name] = params[:_name]
-			elsif @qs.include?(:_name)
-				argv[:name] = @qs[:_name]
-			else
-				_throw Sl[:'no parameter _name']
-			end
-		end
-
-		t[:name] 		= argv[:name].to_sym
-		t[:conditions]	||= {}
-
-		# datas is a table schema, see _schema method
-		@data 			= _schema t[:name]
-		t[:data]		||= @data[:data]
-		t[:pk] 			||= @data[:pk]
-
-		# all of field name of the table
- 		t[:fields] 		||= @data[:fields]
-
-		# a field kev-val hash
-		# it has some alias name, like the setval, setValue
- 		t[:fkv] 		= (argv[:setval] || argv[:setValue] || argv[:fkv])
- 		t[:fkv] 		= t[:fkv] ? @data[:fkv].merge(t[:fkv]) : @data[:fkv]
-
-		t
-	end
-
-	#normal view
-	def _view argv = {}
+	# normal view
+	def _view name, argv = {}
 		@t[:layout]		= false
 		@t[:js]			= _assets('system/js/view.js')
 		@t[:tpl] 		= :_view
@@ -144,10 +101,10 @@ helpers do
 		@t[:btn_fns] 	= { :create => '_form_' }
 		@t[:opt_fns] 	= { :delete => '_rm_' }
 		@t[:lnk_fns]	= { :edit => '_form_' }
-		@t[:action] 	= '/_system/_opt'
+		@t[:action] 	= '/_view/opt'
 		@t[:_method_] 	= '_submit_'
 
-		@t.merge!(_init_t(argv))
+		@t.merge!(_init_t(name, argv))
 
 		@t[:orders] 	= @t[:fields]
 
@@ -193,19 +150,18 @@ helpers do
 		_tpl @t[:tpl], @t[:layout]
 	end
 
-	#form view
-	def _form argv = {}
+	# form view
+	def _form name, argv = {}
 		@t[:layout]		= false
 		@t[:js]			= _assets('system/js/form.js')
 		@t[:tpl] 		= :_form
 		@t[:opt] 		= :insert
 		@t[:css]		= _assets('system/css/form.css')
 		@t[:back_fn] 	= :enable
-		@t[:action] 	= '/_system/_opt'
+		@t[:action] 	= '/_view/opt'
 		@t[:_method_] 	= '_submit_'
 		@t[:_repath] 	= request.path
-		@t.merge!(_init_t(argv))
-
+		@t.merge!(_init_t(name, argv))
 
 		@t[:fields].delete @t[:pk]
 		data = @t[:fkv]
@@ -222,6 +178,40 @@ helpers do
 
 		@f = _set_f data, @t[:fields]
 		_tpl @t[:tpl], @t[:layout]
+	end
+
+	def _submit_ argv = {}
+		_submit argv[:name], argv
+	end
+
+	# remove record
+	def _rm_ argv = {}
+		t = _init_t argv[:name], argv
+		@t[:repath] ||= (params[:_repath] || request.path)
+
+		if params[t[:pk]]
+			#delete one morn records
+			if params[t[:pk]].class.to_s == 'Array'
+				Sdb[t[:name]].where(t[:pk] => params[t[:pk]]).delete
+			#delete single record
+			else
+				t[:conditions][t[:pk]] = params[t[:pk]].to_i 
+				Sdb[t[:name]].filter(t[:conditions]).delete
+			end
+			#_msg Sl[:'delete complete']
+		end
+	end
+
+	def _view_ argv = {}
+		argv[:layout] 		||= :_layout
+		argv[:title] 		||= _var(:title, :page)
+		_view argv[:name], argv
+	end
+
+	def _form_ argv = {}
+		argv[:layout] 		||= :_layout
+		argv[:title] 		||= _var(:title, :page)
+		_form argv[:name], argv
 	end
 
 end

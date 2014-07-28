@@ -38,9 +38,45 @@ helpers do
   		Kramdown::Document.new(str, @markdown_extensions).to_html
 	end
 
+	# initialize variable @t
+	def _init_t name, argv = {}
+		t = argv
+
+ 		# table name
+		if name == nil
+			if argv[:name]
+				name = argv[:name]
+			elsif params[:_name]
+				name = params[:_name]
+			elsif @qs.include?(:_name)
+				name = @qs[:_name]
+			else
+				_throw Sl[:'no parameter _name']
+			end
+		end
+
+		t[:name] 		= name.to_sym
+		t[:conditions]	||= {}
+
+		# datas is a table schema, see _schema method
+		@data 			= _schema t[:name]
+		t[:data]		||= @data[:data]
+		t[:pk] 			||= @data[:pk]
+
+		# all of field name of the table
+ 		t[:fields] 		||= @data[:fields]
+
+		# a field kev-val hash
+		# it has some alias name, like the setval, setValue
+ 		t[:fkv] 		= (argv[:setval] || argv[:setValue] || argv[:fkv])
+ 		t[:fkv] 		= t[:fkv] ? @data[:fkv].merge(t[:fkv]) : @data[:fkv]
+
+		t
+	end
+
 	#submit data
 	def _submit name, argv = {}
-		t 				= _init_t(argv.merge(name: name))
+		t 				= _init_t(name, argv)
 		opt 			= argv[:opt] == nil ? :insert : :update
 		t[:tag]			= t.include?(:tag) ? t[:tag] : true
 		t[:valid]		= t.include?(:valid) ? t[:valid] : true
@@ -94,24 +130,6 @@ helpers do
 			else
 				_tag_set t[:name], pkid, tag, params[:oldtag]
 			end
-		end
-	end
-
-	#remove record
-	def _rm_ argv = {}
-		t = _init_t argv
-		@t[:repath] ||= (params[:_repath] || request.path)
-
-		if params[t[:pk]]
-			#delete one morn records
-			if params[t[:pk]].class.to_s == 'Array'
-				Sdb[t[:name]].where(t[:pk] => params[t[:pk]]).delete
-			#delete single record
-			else
-				t[:conditions][t[:pk]] = params[t[:pk]].to_i 
-				Sdb[t[:name]].filter(t[:conditions]).delete
-			end
-			#_msg Sl[:'delete complete']
 		end
 	end
 
