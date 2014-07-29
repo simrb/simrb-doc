@@ -85,6 +85,27 @@ module Simrb
 			tables.uniq
 		end
 
+		# generate many tpl with a given module name
+		#
+		# == Example
+		#
+		# generate more than one
+		#
+		# 	$3s system_generate_tpl demo before layout
+		#
+		# or, generate one
+		#
+		# 	$3s system_generate_tpl demo admin
+		#
+		def system_generate_tpl args
+			modulename = args.shift(1)[0]
+			args.uniq!
+			args.each do | name |
+				system_generate_file(eval("system_tpl_#{name} '#{modulename}'"))
+			end
+			'Implementing complete'
+		end
+
 		# generate file by path and content given
 		# 
 		# == Examples

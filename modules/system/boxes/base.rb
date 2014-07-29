@@ -25,44 +25,7 @@ module Simrb
 				end
 			end
 
-			"Successfully migrated"
-		end
-
-		# clone a module from github to modules dir
-		#
-		# == Example
-		# 
-		# 	$ 3s clone coolesting/cms
-		#
-		def clone args = []
-			`git clone #{Scfg[:repo_source]}#{args[0]}.git modules/#{args[0].split('/').last}`
-		end
-
-		# create a module, initializes the default dirs and files of module
-		#
-		# == Example
-		# 
-		# 	$ 3s new blog
-		#
-		def new args
-			args.each do | module_name |
-				# module root dir
-				Simrb::path_init "#{Spath[:module]}#{module_name}/"
-
-				# module sub dir
-				Scfg[:init_module_path].each do | item |
-					path = "#{Spath[:module]}#{module_name}#{Spath[item]}"
-					Simrb::path_init path
-				end
-
-				# fill text to file for module info
-				text = [{ 'name' => module_name }]
-				Simrb.yaml_write "modules/#{module_name}#{Spath[:modinfo]}", text
-
-				g_tpl([module_name, 'gitignore'])
-			end
-
-			"Successfully inintialized"
+			Simrb.p "Successfully migrated"
 		end
 
 		# install a module
@@ -119,7 +82,31 @@ module Simrb
 				eval("#{installer}") if self.respond_to?(installer.to_sym)
 			end
 
-			"Successfully installed"
+			Simrb.p "Successfully installed"
+		end
+
+		# clone a module from github to modules dir
+		#
+		# == Example
+		# 
+		# 	$ 3s clone simrb/test
+		#
+		def clone args = []
+			require 'simrb/comd'
+			simrb_app = Simrb::Scommand.new
+			simrb_app.run(args.unshift('clone'))
+		end
+
+		# create a module, initializes the default dirs and files of module
+		#
+		# == Example
+		# 
+		# 	$ 3s new demo
+		#
+		def new args
+			require 'simrb/comd'
+			simrb_app = Simrb::Scommand.new
+			simrb_app.run(args.unshift('new'))
 		end
 
 	end
