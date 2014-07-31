@@ -1,62 +1,53 @@
-Sdocs['About us, support, contact'] =<<Doc
-## Principle
+Sdocs['About us'] =<<Doc
 
-## Support
-
-## Contact
-Issue:		https://github.com/simrb/simrb/issues
-News:		http://www.simrb.com/www/articles
+Issue:		https://github.com/simrb/system/issues
 Email:		coolesting@gmail.com
 Doc
 
+
+
 Sdocs['Basic structure'] =<<Doc
-	database, directory, mechanism
+
+	base - establish the basic element for creating your application
+
+	data - input and process the data that interconnects with database
+
+	view - display the data with any views, like table, form
+
+	menu - create, insert, update menu data
+
+	file - upload file, send file
+
+	user - user login, register, info stored, allow to access certain app
+
+	admin - a dashboard view to administer the data
+
+	var - save variable to database for settings
+
+	tag - mark any datas with tag that let you avoid classified data each time
 Doc
 
-Sdocs['Using commands'] =<<Doc
+
+
+Sdocs['Available commands'] =<<Doc
 	this is one
 Doc
+
+
 
 Sdocs['Configuration, main application, controler'] =<<Doc
 Doc
 
+
+
 Sdocs['Data, model, database'] =<<Doc
 Doc
+
+
 
 Sdocs['View, template'] =<<Doc
 Doc
 
-Sdocs['Module introduction'] =<<Doc
-################
-# Setp 1
-################
-
-initialize a module directory whatever you want to do for your new applications
-
-	$ 3s new blog
-
-the result generated like below
-
-blog
--- boxes/
--- -- installs/
--- -- langs/
--- -- migrations/
--- -- tools/
--- -- docs/
--- -- Gemfile
--- views/
--- -- assets/
--- routes.rb
--- README.md
-
-################
-# Setp 2
-################
-
-What should i do to these directories
-
-Doc
 
 
 Sdocs['Misc, installing database'] =<<Doc
