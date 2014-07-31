@@ -316,29 +316,46 @@ module Simrb
 		#
 		# == Example
 		#
-		# 	$ 3s g install _vars
-		# 	$ 3s g install _menu
-		#
-		# or, the same as below
-		#
-		# 	$ 3s g install _vars _menu
+		# 	$ 3s g install demo _menu
+		# 	$ 3s g install demo _menu name:myMenu link:myLink 
 		#
 		def g_install args
-			# _vars
 			module_name = args.shift(1)[0]
-			@et			= Array.new 4
+			table_name	= args.shift(1)[0]
+			res 		= ""
+			path 		= "#{Spath[:module]}#{module_name}#{Spath[:install]}#{table_name}"
 
-			path		= system_add_suffix("modules/#{module_name}#{Spath[:vars]}")
-			content		= system_get_erb("modules/#{Scfg[:main_module]}#{Spath[:tpl]}vars.erb")
-			system_generate_file({path => content})
+			# default value of giving by command arguments
+			resh 		= {}
+			args.each do | item |
+				key, val = item.split ":"
+				resh[key.to_sym] = val
+			end
 
-			# _menu
-			module_name = args.shift(1)[0]
-			@et			= Array.new 4
+			_data_format(table_name).each do | k, v |
+				if v.include? :primary_key
+				elsif [:created, :changed, :uid, :parent].include? k
+				else
+					v[:default] = resh[k] if resh.include? k
+					res << "  #{k.to_s.ljust(15)}: #{v[:default]}\n"
+				end
+			end
 
-			path		= system_add_suffix("modules/#{module_name}#{Spath[:menu]}")
-			content		= system_get_erb("modules/#{Scfg[:main_module]}#{Spath[:tpl]}menu.erb")
-			system_generate_file({path => content})
+			res[0] = '-'
+			res << "\n"
+
+			# write file
+			unless File.exist? path
+				Simrb.path_init path
+				res = "---\n" + res
+			end
+
+			File.open(path, "a") do | f |
+				f.write res
+			end
+
+			# display the result
+			"The following content is generated at #{path} \n\n" << res
 		end
 
 		# generate view file
