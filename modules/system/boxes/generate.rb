@@ -1,3 +1,8 @@
+# 
+# the file supports a few of method interface that generates something content to specified file
+# like, installing file, migration file
+#
+
 module Simrb
 	module Stool
 
@@ -73,7 +78,7 @@ module Simrb
 		# 	}
 		#
 		def g_data args = []
-			args, opts	= Simrb.format_input args
+			args, opts	= Simrb.input_format args
 			auto		= opts[:auto] ? true : false
 			write_file	= opts[:nowf] ? false : true
  			has_pk 		= false
@@ -90,7 +95,7 @@ module Simrb
 			# 	'field:int'
 			# 	'field:int=1'
 			# 	'field:text'
-			# 	'field:int=1:label=newfield:assoc_one=tablename,fieldname'
+			# 	'field:int=1:label=newfield:assoc_one=table_name,fieldname'
 			#
 			# the fisrt one is field name,
 			# the second one is field type, or primary key, or other key
@@ -172,7 +177,7 @@ module Simrb
 				data = h.merge(data)
 			end
 
-			# write res to data.rb
+			# write content to data.rb
 			res 	= system_convert_str table, data
 			path 	= "#{Spath[:module]}#{module_name}/data.rb"
 			if write_file == true
@@ -181,10 +186,12 @@ module Simrb
 					f.write res
 				end
  			end
-			res << Sl['generate content as above']
+
+			# display result
+			"The following content is generated at #{path} \n\n" << res
 		end
 
-		# generate one or more migration files by a module name
+		# generate the migration file by a gvied module name
 		#
 		# == Examples
 		#
@@ -192,19 +199,19 @@ module Simrb
 		#
 		def g_m args
 			if args.empty?
-				iputs "no module name given" 
+				Simrb.p "no module name given" 
 				exit
 			else
-				modulename = args[0]
+				module_name = args[0]
 			end
 
-			content			= ''
+			res				= ''
 			operations		= []
 			db_tables 		= Sdb.tables
 			create_tables 	= []
 			drop_tables		= []
 			alter_tables	= []
-			data_tables 	= system_get_data_block modulename
+			data_tables 	= system_get_data_block module_name
 
 			# create tables
 			data_tables.each do | table |
@@ -214,7 +221,7 @@ module Simrb
 			# drop tables
 			db_tables.each do | table |
 				unless data_tables.include?(table)
-					drop_tables << table if table.to_s.start_with?("#{modulename}_")
+					drop_tables << table if table.to_s.start_with?("#{module_name}_")
 
 				# check it for altering tables
 				else
@@ -223,33 +230,35 @@ module Simrb
 				end
 			end
 
-			# generate content
+			# generate result of creating event
 			unless create_tables.empty?
 				operations << :create
 				create_tables.each do | table |
-					content << g_m_c(table)
+					res << g_m_c(table)
 				end
 			end
 
+			# generate result of drop event
 			unless drop_tables.empty?
 				operations << :drop
 				drop_tables.each do | table |
-					content << g_m_d(table)
+					res << g_m_d(table)
 				end
 			end
-	
-			# write the migration file
-			if content != ''
-				dir 	= "modules/#{modulename}#{Spath[:schema]}"
+
+			# write result to the migration file
+			if res != ''
+				dir 	= "#{Spath[:module]}#{module_name}#{Spath[:schema]}"
 				count 	= Dir[dir + "*"].count + 1
 				fname 	= args[1] ? args[1] : "#{operations.join('_')}_#{Time.now.strftime('%y%m%d')}" 
 				path 	= "#{dir}#{count.to_s.rjust(3, '0')}_#{fname}.rb"
-				content = "Sequel.migration do\n\tchange do\n#{content}\tend\nend\n"
+				res		= "Sequel.migration do\n\tchange do\n#{res}\tend\nend\n"
 
-				system_generate_file({path => content})
+				system_generate_file({path => res})
 			end
 
-			"generate the content to #{path}\n\n#{content}"
+			# display result
+			"The following content is generated at #{path} \n\n" << res
 		end
 
 		# generate a migration file by a data block
@@ -259,12 +268,12 @@ module Simrb
 		# generates a migration file at boxes/migrations/filename,
 		# if it has the data block , that will be saved as data.rb in root dir of module
 		#
-		# 	$ 3s g_m2 modulename filename_or_tablename
+		# 	$ 3s g_m2 module_name filename_or_table_name
 		#
 		def g_m2 args
 			if args.count == 2
-				modulename, filename = args
-				dir 	= "modules/#{modulename}#{Spath[:schema]}"
+				module_name, filename = args
+				dir 	= "modules/#{module_name}#{Spath[:schema]}"
 				count 	= Dir[dir + "*"].count + 1
 				fname 	= "#{filename}_#{Time.now.strftime('%y%m%d')}" 
 				path 	= "#{dir}#{count.to_s.rjust(3, '0')}_#{fname}.rb"
@@ -285,10 +294,10 @@ module Simrb
 		#
 		# == Examples
 		#
-		#	g_m_c tablename
+		#	g_m_c table_name
 		#
 		def g_m_c name
-			content = ""
+			res		= ""
 			data 	= _data_format(name)
 
 			data.each do | key, val |
@@ -296,15 +305,15 @@ module Simrb
 				options = {}
 				options[:size] = val[:size] if val.include?(:size)
 
-				content << "\t\t\t"
-				content << "#{type} :#{key}"
+				res << "\t\t\t"
+				res << "#{type} :#{key}"
 				unless options.empty?
-					content << options.collect { |k,v| ", :#{k} => #{v}" }.join
+					res << options.collect { |k,v| ", :#{k} => #{v}" }.join
 				end
-				content << "\n"
+				res << "\n"
 			end
 
-			content = "\t\tcreate_table(:#{name}) do\n#{content}\t\tend\n"
+			res = "\t\tcreate_table(:#{name}) do\n#{res}\t\tend\n"
 		end
 
 		# drop table, as the g_m_c

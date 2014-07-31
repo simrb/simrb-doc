@@ -1,7 +1,10 @@
+# 
+# the file stores the basic commands
+# like, implement the db migration record, install module, new and clone module 
+#
+
 module Simrb
 	module Stool
-
-		# base command to use
 
 		# run the migration file
 		#
@@ -25,7 +28,7 @@ module Simrb
 				end
 			end
 
-			Simrb.p "Successfully migrated"
+			"Successfully implemented the migration records"
 		end
 
 		# install a module
@@ -82,7 +85,7 @@ module Simrb
 				eval("#{installer}") if self.respond_to?(installer.to_sym)
 			end
 
-			Simrb.p "Successfully installed"
+			"Successfully installed"
 		end
 
 		# clone a module from github to modules dir
@@ -95,6 +98,8 @@ module Simrb
 			require 'simrb/comd'
 			simrb_app = Simrb::Scommand.new
 			simrb_app.run(args.unshift('clone'))
+
+			"Successfully cloned a module"
 		end
 
 		# create a module, initializes the default dirs and files of module
@@ -107,6 +112,8 @@ module Simrb
 			require 'simrb/comd'
 			simrb_app = Simrb::Scommand.new
 			simrb_app.run(args.unshift('new'))
+
+			"Successfully initialized an empty module directory"
 		end
 
 	end
