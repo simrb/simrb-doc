@@ -23,7 +23,14 @@ module Simrb
 		#	$ 3s g_view demo form
 		#
 		def g args = []
-			method = 'g_' + args.shift(1)[0]
+			method = args.shift(1)[0]
+
+			# transform method by short name
+			shortcut = {'m' => 'migration', 'inst' => 'install'}
+			method = shortcut[method] if shortcut.keys.include? method
+			method = 'g_' + method
+
+			# implement
 			if Stool.method_defined? method
 				eval("#{method} #{args}")
 			end
@@ -197,7 +204,7 @@ module Simrb
 		#
 		# 	$ 3s g_m demo
 		#
-		def g_m args
+		def g_migration args
 			if args.empty?
 				Simrb.p "no module name given" 
 				exit
