@@ -133,13 +133,13 @@ module Simrb
 			path += ".#{(Dir[path + "*"].count + 1).to_s}"
 		end
 
-		# implement the hash block in file data.rb
-		def system_convert_str table, data
+		# convert an hash block to string
+		def system_hash_to_str table_name, data
 			res = ""
 			data.each do | k, v |
-				res << "\t\t:#{k}\t\t\t=>\t{\n"
+				res << "\t\t:#{k.to_s.ljust(23)}=>\t{\n"
 				v.each do | k, v |
-					res << "\t\t\t:#{k}\t\t=>\t"
+					res << "\t\t\t:#{k.to_s.ljust(19)}=>\t"
 					if v.class.to_s == 'String'
 						res << "'#{v}'"
 					elsif v.class.to_s == 'Symbol'
@@ -151,7 +151,7 @@ module Simrb
 				end
 				res << "\t\t},\n"
 			end
-			res = "data :#{table} do\n\t{\n#{res}\t}\t\nend\n\n"
+			res = "data :#{table_name} do\n\t{\n#{res}\t}\t\nend\n\n"
 		end
 
 		# return the content of erb file by path

@@ -185,7 +185,7 @@ module Simrb
 			end
 
 			# write content to data.rb
-			res 	= system_convert_str table, data
+			res 	= system_hash_to_str table, data
 			path 	= "#{Spath[:module]}#{module_name}/data.rb"
 			if write_file == true
 				Simrb.path_init path
