@@ -151,7 +151,7 @@ module Simrb
 				end
 				res << "\t\t},\n"
 			end
-			res = "data :#{table_name} do\n\t{\n#{res}\t}\t\nend\n\n"
+			res = "data :#{table_name} do\n\t{\n#{res}\t}\nend\n\n"
 		end
 
 		# return the content of erb file by path
