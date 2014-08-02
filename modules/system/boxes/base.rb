@@ -88,18 +88,18 @@ module Simrb
 			"Successfully installed"
 		end
 
-		# clone a module from github to modules dir
+		# get a module from github to local modules dir
 		#
 		# == Example
 		# 
-		# 	$ 3s clone simrb/test
+		# 	$ 3s get simrb/test
 		#
-		def clone args = []
+		def get args = []
 			require 'simrb/comd'
 			simrb_app = Simrb::Scommand.new
-			simrb_app.run(args.unshift('clone'))
+			simrb_app.run(args.unshift('get'))
 
-			"Successfully cloned a module"
+			"Successfully got a module from remote repository"
 		end
 
 		# create a module, initializes the default dirs and files of module
