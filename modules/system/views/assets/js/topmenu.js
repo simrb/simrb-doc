@@ -1,10 +1,12 @@
-/*
+/* 
+ * this is a menu that always keep itself on top of page
+ *
  * == Example
  *
  * html 
  * 		#header.keeptop
- *			p note that the css of #header need to set {position: absolute; top: 0;}
- *			p and the color of #toTop { background: "colorwhatyouwant"; }
+ *			p note that the css of #header need to set by {position: absolute; top: 0;}
+ *			p and the #toTop color set by { background: "colorwhatyouwant"; }
  *
  * js
  * 		== _js('system/js/jq.ontop.js')
@@ -41,3 +43,34 @@ $(window).scroll(function() {
         $('#toTop').fadeOut()
     }
 });
+
+/* 
+ * this is a dropdown menu
+ *
+ * == Example
+ *
+ * html
+ * 		ul
+ * 			li menu itme
+ * 			li menu itme
+ * 			li.dropdownitem this is a dropdown menu
+ * 				ul.hide.dropdownlist
+ * 					li sub menu
+ * 					li sub menu
+ *
+ * js
+ * 		== _js("system/js/dropdown")
+ *
+ */
+
+$(".dropdownitem").hover(function(){
+	$hide = $(this).find('.dropdownlist')
+	$hide.css('position', 'absolute')
+	$hide.css('top', 25)
+	$hide.css('left', $(this).offset().left - 10)
+	$hide.show()
+}, function(){
+	$hide = $(this).find('.dropdownlist')
+	$hide.hide()
+})
+

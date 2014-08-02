@@ -57,6 +57,7 @@ data :_docs do
 		},
 	}
 end
+
 data :_vars do
 	{
 		:vid				=>	{
