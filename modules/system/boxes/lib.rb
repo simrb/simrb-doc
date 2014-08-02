@@ -1,8 +1,6 @@
 module Simrb
 	module Stool
 
-		# method library of help tool
-
 		# get the installed file by module name you need to install
 		#
 		# == Example
@@ -70,7 +68,7 @@ module Simrb
 		#
 		# == Example
 		#
-		# 	system_get_data_block 'cms'
+		# 	system_get_data_block 'www'
 		#
 		def system_get_data_block name
 			tables = []
@@ -83,6 +81,44 @@ module Simrb
 				end
 			end
 			tables.uniq
+		end
+
+		# add the number suffix for path
+		def system_add_suffix path
+			path += ".#{(Dir[path + "*"].count + 1).to_s}"
+		end
+
+		# convert an hash block to string
+		def system_hash_to_str table_name, data
+			res = ""
+			data.each do | k, v |
+				res << "\t\t:#{k.to_s.ljust(23)}=>\t{\n"
+				v.each do | k, v |
+					res << "\t\t\t:#{k.to_s.ljust(19)}=>\t"
+					if v.class.to_s == 'String'
+						res << "'#{v}'"
+					elsif v.class.to_s == 'Symbol'
+						res << ":#{v}"
+					else
+						res << "#{v}"
+					end
+					res << ",\n"
+				end
+				res << "\t\t},\n"
+			end
+			res = "data :#{table_name} do\n\t{\n#{res}\t}\nend\n\n"
+		end
+
+		# return the content of erb file by path
+		def system_get_erb path
+			require 'erb'
+			if File.exist? path
+				content = File.read(path)
+				t = ERB.new(content)
+				t.result(binding)
+			else
+				"No such the file at #{path}" 
+			end
 		end
 
 		# generate many tpl with a given module name
@@ -128,42 +164,35 @@ module Simrb
 			end
 		end
 
-		# add the number suffix for path
-		def system_add_suffix path
-			path += ".#{(Dir[path + "*"].count + 1).to_s}"
-		end
+		# generate the migration created by a data name that maybe is a table name
+		#
+		# == Examples
+		#
+		#	system_generate_migration_created table_name
+		#
+		def system_generate_migration_created name
+			res		= ""
+			data 	= _data_format(name)
 
-		# convert an hash block to string
-		def system_hash_to_str table_name, data
-			res = ""
-			data.each do | k, v |
-				res << "\t\t:#{k.to_s.ljust(23)}=>\t{\n"
-				v.each do | k, v |
-					res << "\t\t\t:#{k.to_s.ljust(19)}=>\t"
-					if v.class.to_s == 'String'
-						res << "'#{v}'"
-					elsif v.class.to_s == 'Symbol'
-						res << ":#{v}"
-					else
-						res << "#{v}"
-					end
-					res << ",\n"
+			data.each do | key, val |
+				type 	= val.include?(:primary_key) ? 'primary_key' : val[:type]
+				options = {}
+				options[:size] = val[:size] if val.include?(:size)
+
+				res << "\t\t\t"
+				res << "#{type} :#{key}"
+				unless options.empty?
+					res << options.collect { |k,v| ", :#{k} => #{v}" }.join
 				end
-				res << "\t\t},\n"
+				res << "\n"
 			end
-			res = "data :#{table_name} do\n\t{\n#{res}\t}\nend\n\n"
+
+			res = "\t\tcreate_table(:#{name}) do\n#{res}\t\tend\n"
 		end
 
-		# return the content of erb file by path
-		def system_get_erb path
-			require 'erb'
-			if File.exist? path
-				content = File.read(path)
-				t = ERB.new(content)
-				t.result(binding)
-			else
-				"No such the file at #{path}" 
-			end
+		# generate the migration dropped, as the system_generate_migration_created
+		def system_generate_migration_drop tables = []
+			"\t\tdrop_table(:#{tables.join(', :')})\n"
 		end
 
 	end

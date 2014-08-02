@@ -241,7 +241,7 @@ module Simrb
 			unless create_tables.empty?
 				operations << :create
 				create_tables.each do | table |
-					res << g_m_c(table)
+					res << system_generate_migration_created(table)
 				end
 			end
 
@@ -249,7 +249,7 @@ module Simrb
 			unless drop_tables.empty?
 				operations << :drop
 				drop_tables.each do | table |
-					res << g_m_d(table)
+					res << system_generate_migration_drop(table)
 				end
 			end
 
@@ -266,66 +266,6 @@ module Simrb
 
 			# display result
 			"The following content is generated at #{path} \n\n" << res
-		end
-
-		# generate a migration file by a data block
-		#
-		# == Example
-		#
-		# generates a migration file at boxes/migrations/filename,
-		# if it has the data block , that will be saved as data.rb in root dir of module
-		#
-		# 	$ 3s g_m2 module_name filename_or_table_name
-		#
-		def g_m2 args
-			if args.count == 2
-				module_name, filename = args
-				dir 	= "modules/#{module_name}#{Spath[:schema]}"
-				count 	= Dir[dir + "*"].count + 1
-				fname 	= "#{filename}_#{Time.now.strftime('%y%m%d')}" 
-				path 	= "#{dir}#{count.to_s.rjust(3, '0')}_#{fname}.rb"
-
-				# create file
-				#File.new(path, 'w') if File.exist? path
-
-				# input content to file
-				args = [filename]
-				system_generate_file({path => g_m_c(args)})
-				"Implementing complete"
-			else
-				"You need 2 arguments"
-			end
-		end
-
-		# generate the migration file content of create event by data name as the table name
-		#
-		# == Examples
-		#
-		#	g_m_c table_name
-		#
-		def g_m_c name
-			res		= ""
-			data 	= _data_format(name)
-
-			data.each do | key, val |
-				type 	= val.include?(:primary_key) ? 'primary_key' : val[:type]
-				options = {}
-				options[:size] = val[:size] if val.include?(:size)
-
-				res << "\t\t\t"
-				res << "#{type} :#{key}"
-				unless options.empty?
-					res << options.collect { |k,v| ", :#{k} => #{v}" }.join
-				end
-				res << "\n"
-			end
-
-			res = "\t\tcreate_table(:#{name}) do\n#{res}\t\tend\n"
-		end
-
-		# drop table, as the g_m_c
-		def g_m_d tables = []
-			"\t\tdrop_table(:#{tables.join(', :')})\n"
 		end
 
 		# generate a file in installed dir
