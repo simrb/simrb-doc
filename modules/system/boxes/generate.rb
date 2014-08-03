@@ -272,11 +272,16 @@ module Simrb
 		#
 		# == Example
 		#
-		# 	$ 3s g install demo _menu
-		# 	$ 3s g install demo _menu name:myMenu link:myLink 
+		# 	$ 3s g install --demo _menu
+		# 	$ 3s g install --demo _menu name:myMenu link:myLink 
+		# 	$ 3s g inst _vars vkey:myvar vval:myval --demo
+		#
+		# the first option with -- that is the module dir where you want the content generated to
+		# `inst` is a alias name of `install`
 		#
 		def g_install args
-			module_name = args.shift(1)[0]
+			args, opts	= Simrb.input_format args
+			module_name = opts.keys[0]
 			table_name	= args.shift(1)[0]
 			res 		= ""
 			path 		= "#{Spath[:module]}#{module_name}#{Spath[:install]}#{table_name}"
@@ -314,12 +319,7 @@ module Simrb
 			"The following content is generated at #{path} \n\n" << res
 		end
 
-		# generate view file
-		#
-		def g_view
-		end
-
-		# generate an admin borad of background, it requires the data block
+		# generate an administration list of background
 		#
 		# == Example
 		#
@@ -328,6 +328,11 @@ module Simrb
 		def g_admin args
 			args += ['admin', 'menu']
 			system_generate_tpl args
+		end
+
+		# generate view file
+		#
+		def g_view
 		end
 
 		# generate the layout template
