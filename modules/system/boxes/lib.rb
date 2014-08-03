@@ -70,13 +70,12 @@ module Simrb
 		#
 		# 	system_get_data_block 'www'
 		#
-		def system_get_data_block name
+		def system_get_data_block name = 'system'
 			tables = []
-			# if system module
 			name = '' if name == 'system'
 
 			Sdata.keys.each do | key |
-				if key.to_s.start_with?("#{name}_")
+				if key.to_s.start_with?("#{name}_") or key.to_s == name
 					tables << key 
 				end
 			end
