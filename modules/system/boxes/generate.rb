@@ -286,7 +286,7 @@ module Simrb
 			res 		= ""
 			path 		= "#{Spath[:module]}#{module_name}#{Spath[:install]}#{table_name}"
 
-			# default value of giving by command arguments
+			# default value of given by command arguments
 			resh 		= {}
 			args.each do | item |
 				key, val = item.split ":"
@@ -319,15 +319,50 @@ module Simrb
 			"The following content is generated at #{path} \n\n" << res
 		end
 
-		# generate an administration list of background
+		# generate a list of administration menu of background to installs dir,
+		# virtually, this is extension for installing data generated of _menu item
 		#
 		# == Example
 		#
 		# 	$ 3s g_admin demo
 		#
 		def g_admin args
-			args += ['admin', 'menu']
-			system_generate_tpl args
+			module_name	= args.shift(1)[0]
+			path 		= "#{Spath[:module]}#{module_name}#{Spath[:install]}_menu"
+			menu_data 	= [
+				{name: module_name, link: "/_admin/info/#{module_name}", tag: 'admin'},
+			]
+
+			system_get_data_block(module_name).each do | name |
+				menu_name = name.to_s
+				menu_name = menu_name.index("_") ? menu_name.split("_")[1..-1].join(" ") : menu_name
+				menu_data << {name: menu_name, link: "/_admin/view/#{name}", parent: module_name, tag: 'admin'}
+			end
+
+			# turn the hash to string of yaml style
+			res = ""
+			menu_data.each do | item |
+				resh = ""
+				item.each do | k, v |
+					resh << "  #{k.to_s.ljust(15)}: #{v}\n"
+				end
+				resh[0] = "-"
+				res << "#{resh}\n"
+			end
+			res
+
+			# write file
+			unless File.exist? path
+				Simrb.path_init path
+				res = "---\n" + res
+			end
+
+			File.open(path, "a") do | f |
+				f.write res
+			end
+
+			# display the result
+			"The following content is generated at #{path} \n\n" << res
 		end
 
 		# generate view file
