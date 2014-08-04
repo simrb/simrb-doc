@@ -33,11 +33,11 @@ form.form action="#{_url2(@t[:action])}" method="post" id="editform"
 			p
 				- kv.each do | ak,av |
 					- if @f[k] == ak
-						input id="radio_#{ak}" type="radio" name="#{k}" value="#{ak}" checked='checked'
-						label.mr10.pointer for="radio_#{ak}" = av
+						input id="#{k}_radio_#{ak}" type="radio" name="#{k}" value="#{ak}" checked='checked'
+						label.mr10.pointer for="#{k}_radio_#{ak}" = av
 					- else
-						input id="radio_#{ak}" type="radio" name="#{k}" value="#{ak}"
-						label.mr10.pointer for="radio_#{ak}" = av
+						input id="#{k}_radio_#{ak}" type="radio" name="#{k}" value="#{ak}"
+						label.mr10.pointer for="#{k}_radio_#{ak}" = av
 
 		- elsif @t[:data][k][:form_type] == :checkbox
 			- kv = _kv(@t[:data][k][:assoc_many][0], @t[:data][k][:assoc_many][1], @t[:data][k][:assoc_many][2])
@@ -45,11 +45,11 @@ form.form action="#{_url2(@t[:action])}" method="post" id="editform"
 			p
 				- arr.each do | ak |
 					- if @f[k] == ak
-						input id="ck_#{ak}" type="checkbox" name="#{k}[]" value="#{kv[ak]}" checked='checked'
-						label.mr10.pointer for="ck_#{ak}" = kv[ak]
+						input id="#{k}_ck_#{ak}" type="checkbox" name="#{k}[]" value="#{kv[ak]}" checked='checked'
+						label.mr10.pointer for="#{k}_ck_#{ak}" = kv[ak]
 					- else
-						input id="ck_#{ak}" type="checkbox" name="#{k}[]" value="#{kv[ak]}"
-						label.mr10.pointer for="ck_#{ak}" = kv[ak]
+						input id="#{k}_ck_#{ak}" type="checkbox" name="#{k}[]" value="#{kv[ak]}"
+						label.mr10.pointer for="#{k}_ck_#{ak}" = kv[ak]
 
 		- elsif @t[:data][k][:form_type] == :img
 			- load_picture_js = true
