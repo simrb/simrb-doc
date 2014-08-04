@@ -285,6 +285,8 @@ module Simrb
 			table_name	= args.shift(1)[0]
 			res 		= ""
 			path 		= "#{Spath[:module]}#{module_name}#{Spath[:install]}#{table_name}"
+			count		= Dir[path, "#{path}.*"].count
+			path		= "#{path}.#{(count + 1)}" if count > 0
 
 			# default value of given by command arguments
 			resh 		= {}
@@ -303,17 +305,8 @@ module Simrb
 			end
 
 			res[0] = '-'
-			res << "\n"
-
-			# write file
-			unless File.exist? path
-				Simrb.path_init path
-				res = "---\n" + res
-			end
-
-			File.open(path, "a") do | f |
-				f.write res
-			end
+			res = "---\n#{res}\n"
+			Simrb.path_init path, res
 
 			# display the result
 			"The following content is generated at #{path} \n\n" << res
@@ -329,6 +322,9 @@ module Simrb
 		def g_admin args
 			module_name	= args.shift(1)[0]
 			path 		= "#{Spath[:module]}#{module_name}#{Spath[:install]}_menu"
+			count		= Dir[path, "#{path}.*"].count
+			path		= "#{path}.#{(count + 1)}" if count > 0
+
 			menu_data 	= [
 				{name: module_name, link: "/_admin/info/#{module_name}", tag: 'admin'},
 			]
@@ -349,17 +345,8 @@ module Simrb
 				resh[0] = "-"
 				res << "#{resh}\n"
 			end
-			res
 
-			# write file
-			unless File.exist? path
-				Simrb.path_init path
-				res = "---\n" + res
-			end
-
-			File.open(path, "a") do | f |
-				f.write res
-			end
+			Simrb.path_init path, "---\n#{res}"
 
 			# display the result
 			"The following content is generated at #{path} \n\n" << res
