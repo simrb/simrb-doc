@@ -165,7 +165,7 @@ helpers do
 	end
 
 	def _data name
-		Sdata[name].map { |b| instance_eval(&b) }.inject(:merge) if Sdata[name]
+		Sdata[name] ? Sdata[name].map { |b| instance_eval(&b) }.inject(:merge) : []
 	end
 
 	# set the form_type of field for template, 
