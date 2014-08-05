@@ -137,14 +137,20 @@ module Simrb
 		# 	$ 3s system_generate_tpl demo admin
 		#
 		def system_generate_tpl args
+			res			= {}
 			module_name = args.shift(1)[0]
+
 			args.uniq!
 			args.each do | name |
 				method = "system_tpl_#{name}"
-				if self.response_to? method.to_sym
-					system_generate_file(eval("#{method} '#{module_name}'"))
+				if self.respond_to? method.to_sym
+					resh = eval("#{method} '#{module_name}'")
+					res.merge! resh
+					Simrb.path_init resh.keys[0], resh.values[0]
 				end
 			end
+
+			res
 		end
 
 		# generate file by path and content given
@@ -161,13 +167,13 @@ module Simrb
 		# 	}
 		#	system_generate_file(data)
 		#
-		def system_generate_file content
-			content.each do | path, body |
-				File.open(path, 'w') do | f |
-					f.write body
-				end
-			end
-		end
+# 		def system_generate_file content
+# 			content.each do | path, body |
+# 				File.open(path, 'w') do | f |
+# 					f.write body
+# 				end
+# 			end
+# 		end
 
 		# generate the migration created by a data name that maybe is a table name
 		#

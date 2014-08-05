@@ -206,8 +206,7 @@ module Simrb
 		#
 		def g_migration args
 			if args.empty?
-				Simrb.p "no module name given" 
-				exit
+				Simrb.p "no module name given", :exit
 			else
 				module_name = args[0]
 			end
@@ -261,7 +260,7 @@ module Simrb
 				path 	= "#{dir}#{count.to_s.rjust(3, '0')}_#{fname}.rb"
 				res		= "Sequel.migration do\n\tchange do\n#{res}\tend\nend\n"
 
-				system_generate_file({path => res})
+				Simrb.path_init path, res
 			end
 
 			# display result
@@ -272,21 +271,17 @@ module Simrb
 		#
 		# == Example
 		#
-		# 	$ 3s g install --demo _menu
-		# 	$ 3s g install --demo _menu name:myMenu link:myLink 
+		# 	$ 3s g install demo _menu
+		# 	$ 3s g install demo _menu name:myMenu link:myLink 
 		# 	$ 3s g inst _vars vkey:myvar vval:myval --demo
 		#
-		# the first option with -- that is the module dir where you want the content generated to
 		# `inst` is a alias name of `install`
 		#
 		def g_install args
-			args, opts	= Simrb.input_format args
-			module_name = opts.keys[0]
+			module_name = args.shift(1)[0]
 			table_name	= args.shift(1)[0]
+			path 		= system_add_suffix "#{Spath[:module]}#{module_name}#{Spath[:install]}#{table_name}"
 			res 		= ""
-			path 		= "#{Spath[:module]}#{module_name}#{Spath[:install]}#{table_name}"
-			count		= Dir[path, "#{path}.*"].count
-			path		= "#{path}.#{(count + 1)}" if count > 0
 
 			# default value of given by command arguments
 			resh 		= {}
@@ -321,9 +316,7 @@ module Simrb
 		#
 		def g_admin args
 			module_name	= args.shift(1)[0]
-			path 		= "#{Spath[:module]}#{module_name}#{Spath[:install]}_menu"
-			count		= Dir[path, "#{path}.*"].count
-			path		= "#{path}.#{(count + 1)}" if count > 0
+			path 		= system_add_suffix "#{Spath[:module]}#{module_name}#{Spath[:install]}_menu"
 
 			menu_data 	= [
 				{name: module_name, link: "/_admin/info/#{module_name}", tag: 'admin'},
@@ -352,16 +345,30 @@ module Simrb
 			"The following content is generated at #{path} \n\n" << res
 		end
 
-		# generate view file
+		# generate view files
 		#
-		def g_view
+		# == Example
+		#
+		# 	$ 3s g view demo js
+		# 	$ 3s g view demo css
+		# 
+		# same as,
+		#
+		# 	$ 3s g view demo js css
+		#
+		def g_view args = []
+			res		= ""
+			resh 	= system_generate_tpl args
+			resh.each do | k, v |
+				res << "The following content is generated at #{k} \n\n#{v}"
+			end
+			res 
 		end
 
-		# generate the layout template
-		def g_layout args
-			args += ['helper', 'layout', 'layout_css', 'js', 'var']
-			system_generate_tpl args
-		end
+# 		def g_layout args = []
+# 			args += ['helper', 'layout', 'layout_css', 'js', 'var']
+# 			system_generate_tpl args
+# 		end
 
 	end
 end
