@@ -347,14 +347,31 @@ module Simrb
 
 		# generate view files
 		#
-		# == Example
+		# == Examples
 		#
-		# 	$ 3s g view demo js
-		# 	$ 3s g view demo css
-		# 
-		# same as,
+		# Example 01, create a layout template
 		#
-		# 	$ 3s g view demo js css
+		# 	$ 3s g view demo layout
+		#
+		# by default, the file demo_layout.slim would be generated,
+		#
+		#
+		# Example 02, or specify the file name with option --, like below
+		#
+		# 	$ 3s g view demo --my layout
+		#
+		# that created a file demo_my_layout.slim
+		#
+		#
+		# Example 03, more about the file name option
+		#
+		# 	$ 3s g view demo list --new_list
+		#
+		# same as
+		#
+		# 	$ 3s g view demo --new_list list
+		#
+		# Above would generate a file demo_new_list.slim
 		#
 		def g_view args = []
 			res		= ""
@@ -365,10 +382,14 @@ module Simrb
 			res 
 		end
 
-# 		def g_layout args = []
-# 			args += ['helper', 'layout', 'layout_css', 'js', 'var']
-# 			system_generate_tpl args
-# 		end
+		def g_layout args = []
+			args += ['helper', 'layout2', 'css', 'js']
+			system_generate_tpl args
+			resh.each do | k, v |
+				res << "The following content is generated at #{k} \n\n#{v}"
+			end
+			res 
+		end
 
 	end
 end

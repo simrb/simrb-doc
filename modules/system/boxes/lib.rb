@@ -124,27 +124,30 @@ module Simrb
 			end
 		end
 
-		# generate many tpl with a given module name
+		# generate many tpls with a given module name, and file name
+		# details see the g_view method
 		#
 		# == Example
 		#
-		# generate more than one
+		# generate more files than one
 		#
 		# 	$ 3s system_generate_tpl demo before layout
 		#
 		# or, generate one
 		#
-		# 	$ 3s system_generate_tpl demo admin
+		# 	$ 3s system_generate_tpl demo --file_name layout
 		#
 		def system_generate_tpl args
-			res			= {}
+			args, opts	= Simrb.input_format args
 			module_name = args.shift(1)[0]
+			file_name	= opts.empty? ? "" : opts.keys[0]
 
+			res	= {}
 			args.uniq!
 			args.each do | name |
 				method = "system_tpl_#{name}"
 				if self.respond_to? method.to_sym
-					resh = eval("#{method} '#{module_name}'")
+					resh = eval("#{method} '#{module_name}', '#{file_name}'")
 					res.merge! resh
 					Simrb.path_init resh.keys[0], resh.values[0]
 				end

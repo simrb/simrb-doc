@@ -2,7 +2,7 @@ module Simrb
 	module Stool
 
 		# /before.rb
-		def system_tpl_helper module_name
+		def system_tpl_helper module_name, file_name = ""
 			tpl = ""
 			tpl << "helpers '/#{module_name}/*' do\n\n"
 			tpl << "\tdef #{module_name}_page name\n"
@@ -19,45 +19,40 @@ module Simrb
 		end
 
 		# /views/name_layout.slim
-		def system_tpl_layout module_name
-			@et = { :name => module_name }
-			tpl	= system_get_erb("#{Spath[:module]}system#{Spath[:tpl]}layout.erb")
-			{"#{Spath[:module]}#{module_name}#{Spath[:view]}#{module_name}_layout.slim" => tpl}
+		def system_tpl_layout module_name, file_name = ""
+			@et 		= { :name => module_name }
+			tpl			= system_get_erb("#{Spath[:module]}system#{Spath[:tpl_layout]}")
+			file_name 	= file_name == "" ? module_name : "#{module_name}_#{file_name}"
+			path		= "#{Spath[:module]}#{module_name}#{Spath[:view]}#{file_name}_layout.slim"
+			{path => tpl}
 		end
 
 		# /boxes/assets/name.css
-		def system_tpl_layout_css module_name
-			tpl = ""
-			path = "#{Spath[:module]}system#{Spath[:layout_css]}"
+		def system_tpl_css module_name, file_name = ""
+			tpl 		= ""
+			path 		= "#{Spath[:module]}system#{Spath[:tpl_css]}"
+			file_name 	= file_name == "" ? module_name : "#{module_name}_#{file_name}"
 			if File.exist? path
 				tpl << File.read(path)
 			end
-			{"#{Spath[:module]}#{module_name}#{Spath[:assets]}#{module_name}.css" => tpl}
+			{"#{Spath[:module]}#{module_name}#{Spath[:assets]}#{file_name}.css" => tpl}
 		end
 
-		def system_tpl_common_css module_name
-			tpl = ""
-			path = "#{Spath[:module]}system#{Spath[:common_css]}"
-			if File.exist? path
-				tpl << File.read(path)
-			end
-			{"#{Spath[:module]}#{module_name}#{Spath[:assets]}#{module_name}_common.css" => tpl}
+		# /boxes/assets/name.js
+		def system_tpl_js module_name, file_name = ""
+			tpl 		= ""
+			file_name 	= file_name == "" ? module_name : "#{module_name}_#{file_name}"
+			{"#{Spath[:module]}#{module_name}#{Spath[:assets]}#{file_name}.js" => tpl}
 		end
 
 		# /.gitignore
-		def system_tpl_gitignore module_name
-			tpl = ""
-			path = "#{Spath[:module]}system#{Spath[:tpl].chomp("/")}#{Spath[:gitgnore]}"
+		def system_tpl_gitignore module_name, file_name = ''
+			tpl 		= ""
+			path 		= "#{Spath[:module]}system#{Spath[:tpl].chomp("/")}#{Spath[:gitgnore]}"
 			if File.exist? path
 				tpl << File.read(path)
 			end
 			{"#{Spath[:module]}#{module_name}#{Spath[:gitgnore]}" => tpl}
-		end
-
-		# /boxes/assets/name.js
-		def system_tpl_js module_name
-			tpl = ""
-			{"#{Spath[:module]}#{module_name}#{Spath[:assets]}#{module_name}.js" => tpl}
 		end
 
 	end
