@@ -5,7 +5,9 @@ module Simrb
 		#
 		# == Example
 		#
-		# 	system_get_install_file 'cms'		# return the result as below
+		# 	system_get_install_file "demo"
+		#
+		# return the result as below
 		#
 		# {
 		# 	# this is a file in installed directory called _user
@@ -68,7 +70,7 @@ module Simrb
 		#
 		# == Example
 		#
-		# 	system_get_data_block 'www'
+		# 	system_get_data_block "demo"
 		#
 		def system_get_data_block name = 'system'
 			tables = []
@@ -84,7 +86,9 @@ module Simrb
 
 		# add the number suffix for path
 		def system_add_suffix path
-			path += ".#{(Dir[path + "*"].count + 1).to_s}"
+			count 	= Dir[path, "#{path}.*"].count
+			suffix 	= count > 0 ? ".#{count}" : ""
+			path 	= "#{path}#{suffix}"
 		end
 
 		# convert an hash block to string
@@ -126,19 +130,21 @@ module Simrb
 		#
 		# generate more than one
 		#
-		# 	$3s system_generate_tpl demo before layout
+		# 	$ 3s system_generate_tpl demo before layout
 		#
 		# or, generate one
 		#
-		# 	$3s system_generate_tpl demo admin
+		# 	$ 3s system_generate_tpl demo admin
 		#
 		def system_generate_tpl args
-			modulename = args.shift(1)[0]
+			module_name = args.shift(1)[0]
 			args.uniq!
 			args.each do | name |
-				system_generate_file(eval("system_tpl_#{name} '#{modulename}'"))
+				method = "system_tpl_#{name}"
+				if self.response_to? method.to_sym
+					system_generate_file(eval("#{method} '#{module_name}'"))
+				end
 			end
-			'Implementing complete'
 		end
 
 		# generate file by path and content given
