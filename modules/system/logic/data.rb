@@ -174,9 +174,9 @@ data :_tags do
 	}
 end
 
-data :_atag do
+data :_taga do
 	{
-		:atid				=> 	{
+		:taid				=> 	{
 			:primary_key	=>	true,
 		},
 		:tid				=> 	{},

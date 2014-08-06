@@ -98,8 +98,4 @@
 - vkey			: admin_title
   vval			: administrator
   tag			: admin_page
-  
-- vkey			: tags_disable
-  vval			: 
-  tag			: tag
-  description	: closing the tag for a gived table name, if more than one, separate with comma
+

@@ -20,6 +20,13 @@ Sequel.migration do
 			Fixnum :parent
 			Fixnum :order
 		end
+		create_table(:_docs) do
+			primary_key :pid
+			Fixnum :uid
+			String :title
+			Text :body
+			Time :created
+		end
 		create_table(:_vars) do
 			primary_key :vid
 			String :vkey
@@ -36,6 +43,7 @@ Sequel.migration do
 			String :path
 			Time :created
 		end
+
 		create_table(:_mark) do
 			primary_key :mkid
 			String :name
@@ -57,22 +65,16 @@ Sequel.migration do
 			String :ip, :size => 16
 			Time :changed
 		end
+
 		create_table(:_tags) do
 			primary_key :tid
 			String :name
 		end
-		create_table(:_atag) do
-			primary_key :atid
+		create_table(:_taga) do
+			primary_key :taid
 			Fixnum :tid
 			Fixnum :assoc_id
 			Fixnum :assoc_table
-		end
-		create_table(:_docs) do
-			primary_key :pid
-			Fixnum :uid
-			String :title
-			Text :body
-			Time :created
 		end
 	end
 end

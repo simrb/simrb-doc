@@ -22,9 +22,9 @@ Sdocs['Basic structure'] =<<Doc
 
 	admin - a dashboard view to administer the data
 
-	var - save variable to database for settings
+	vars - save variable to database for settings
 
-	tag - mark any datas with tag that let you avoid classified data each time
+	tags - mark any datas with tag that lets you avoid classifiing data each time
 Doc
 
 

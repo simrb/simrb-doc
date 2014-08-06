@@ -9,30 +9,7 @@ helpers do
 	# 	_tag_enable? :posts
 	#
 	def _tag_enable? name
-		name 			= name.to_s
-		tag_key			= 'TagsForTables'
-		tag_disable 	= _var2(:tags_disable)
-		reval			= false
-
-		# if current tag is not disable, do it
-		unless tag_disable.include? name
-			tags = _var2(tag_key)
-
-			# the first time access the enabled tag key, create it
-			if tags.empty?
- 				_var_add({:vkey => tag_key})
- 				tags = _var2(tag_key)
-			end
-
-			# not current tag, create it
-			unless tags.index(name)
-				tags << name
- 				_var_set(tag_key, tags.join(','))
-			end
-			reval = true
-		end
-
-		reval
+ 		_var2(:table_tags_disable).include?(name.to_s) ? false : true
 	end
 
 	# tag name convert to tag id
@@ -44,8 +21,8 @@ helpers do
 	# 	_tag(:ruby) # => 2
 	#
 	def _tag name
-		name = name.to_s.strip
-		ds = Sdb[:_tags].filter(:name => name)
+		name 	= name.to_s.strip
+		ds		= Sdb[:_tags].filter(:name => name)
 		if ds.empty?
 			Sdb[:_tags].insert(:name => name) 
 			Sdb[:_tags].filter(:name => name).get(:tid)
@@ -80,7 +57,7 @@ helpers do
 	# 	judge the tag whether it is or not existed
 	#
 	def _tags? assoc_table, assoc_id = nil
-		Sdb[:_atag].filter(:assoc_table => _tag(assoc_table)).empty?
+		Sdb[:_taga].filter(:assoc_table => _tag(assoc_table)).empty?
 	end
 
 	# get associated ids by table and tag
@@ -95,7 +72,7 @@ helpers do
 		h 		= {:assoc_table => _tag(assoc_table)}
 		tags 	= _tag2 tag
 		h[:tid] = tags unless tags.empty?
-		Sdb[:_atag].filter(h).map(:assoc_id)
+		Sdb[:_taga].filter(h).map(:assoc_id)
 	end
 
 	# get tag names
@@ -108,7 +85,7 @@ helpers do
 	#
 	def _tag_names assoc_table, assoc_id, reval = :html
 		res = []
-		ds 	= Sdb[:_atag].filter(:assoc_table => _tag(assoc_table), :assoc_id => assoc_id).map(:tid)
+		ds 	= Sdb[:_taga].filter(:assoc_table => _tag(assoc_table), :assoc_id => assoc_id).map(:tid)
 
 		unless ds.empty?
 			ds = Sdb[:_tags].filter(:tid => ds)
@@ -137,7 +114,7 @@ helpers do
 	# 	_tag_hash(:posts)	# => { 1 => 'ruby', 2 => 'python',,, }
 	#
 	def _tag_hash assoc_table
-		tids = Sdb[:_atag].filter(:assoc_table => _tag(assoc_table)).map(:tid)
+		tids = Sdb[:_taga].filter(:assoc_table => _tag(assoc_table)).map(:tid)
 		unless tids.empty?
 			ds = Sdb[:_tags].filter(:tid => tids).to_hash(:tid, :name)
 		end
@@ -152,7 +129,7 @@ helpers do
 	def _tag_add assoc_table, assoc_id, tag
 		tids = _tag2 tag
 		tids.each do | tid |
-			Sdb[:_atag].insert(:assoc_table => _tag(assoc_table), :assoc_id => assoc_id, :tid => tid)
+			Sdb[:_taga].insert(:assoc_table => _tag(assoc_table), :assoc_id => assoc_id, :tid => tid)
 		end
 	end
 
@@ -215,7 +192,7 @@ helpers do
 		tids = _tag2 tag
 		unless tids.empty?
 			tids.each do | tid |
-				Sdb[:_atag].filter(
+				Sdb[:_taga].filter(
 					:assoc_table 	=> _tag(assoc_table),
 					:assoc_id 		=> assoc_id,
 					:tid 			=> tid
