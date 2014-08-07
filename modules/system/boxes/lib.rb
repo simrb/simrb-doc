@@ -92,7 +92,7 @@ module Simrb
 		end
 
 		# convert an hash block to string
-		def system_hash_to_str table_name, data
+		def system_data_to_str table_name, data
 			res = ""
 			data.each do | k, v |
 				res << "\t\t:#{k.to_s.ljust(23)}=>\t{\n"
@@ -207,6 +207,18 @@ module Simrb
 		# generate the migration dropped, as the system_generate_migration_created
 		def system_generate_migration_drop tables = []
 			"\t\tdrop_table(:#{tables.join(', :')})\n"
+		end
+
+		# match the language sentence with regular expression
+		def system_match_lang args = []
+			str = args
+			res = []
+
+			str.scan(/Sl\[(:|'|")?(:|'|")?(.+?)('|")?\]/) do |x, y, z, j|
+				res << z unless [x, y, z, j].count(nil) == 3
+			end
+
+			res
 		end
 
 	end

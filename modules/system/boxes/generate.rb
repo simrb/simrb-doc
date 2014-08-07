@@ -185,7 +185,7 @@ module Simrb
 			end
 
 			# write content to data.rb
-			res 	= system_hash_to_str table, data
+			res 	= system_data_to_str table, data
 			path 	= "#{Spath[:module]}#{module_name}/data.rb"
 			if write_file == true
 				Simrb.path_init path
@@ -389,6 +389,65 @@ module Simrb
 				res << "The following content is generated at #{k} \n\n#{v}"
 			end
 			res 
+		end
+
+		# generate the language sentence to file boxes/langs/*.en
+		#
+		# == Example
+		#
+		# 	$ 3s g lang demo en
+		#
+		# or
+		#
+		# 	$ 3s g lang demo jp
+		# 	$ 3s g lang demo cn
+		# 	$ 3s g lang demo de
+		#
+		def g_lang args = []
+			module_name = args.shift(1)[0]
+			lang		= args[0] ? args[0] : Scfg[:lang]
+			dirs		= Dir["#{Spath[:module]}#{module_name}#{Spath[:lang]}*.#{lang}"]
+			old_path 	= ""
+			resp 		= ""
+			data		= {}
+			res			= {}
+
+			dirs.each do | path |
+				data.merge! Simrb.yaml_read path
+			end
+
+			Dir[
+				"#{Spath[:module]}#{module_name}#{Spath[:logic]}*.rb",
+				"#{Spath[:module]}#{module_name}/*.rb",
+				"#{Spath[:module]}#{module_name}#{Spath[:store]}*.rb",
+				"#{Spath[:module]}#{module_name}#{Spath[:tool]}*.rb",
+				"#{Spath[:module]}#{module_name}#{Spath[:view]}*.slim",
+			].each do | path |
+				system_match_lang(File.read(path)).each do | name |
+					unless data.has_key? name
+						res[name] = name
+						unless old_path == path
+							old_path = path
+							resp << "\nExtracting from: #{old_path}"
+						end
+						resp << "\n=> #{name}"
+					end
+				end
+			end
+
+			# write content to file
+			unless res.empty?
+				path = "#{Spath[:module]}#{module_name}#{Spath[:lang]}#{module_name}#{(dirs.count + 1)}.#{lang}"
+				content = ""
+				res.each do | k, v |
+					content << "#{k}: #{v}\n"
+				end
+				content = "---\n#{content}"
+
+				Simrb.path_init path, content
+			end
+
+			"The following content is generated \n #{resp}"
 		end
 
 	end
