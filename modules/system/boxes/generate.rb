@@ -271,17 +271,42 @@ module Simrb
 		#
 		# == Example
 		#
-		# 	$ 3s g install demo _menu
-		# 	$ 3s g install demo _menu name:myMenu link:myLink 
+		# Example 01, the option starts with `--` that is module name
+		#
+		# 	$ 3s g install --demo _menu
+		# 	$ 3s g install --demo _menu name:myMenu link:myLink 
+		#
+		# Example 02, `inst` is a alias name of `install`
+		# 
 		# 	$ 3s g inst _vars vkey:myvar vval:myval --demo
 		#
-		# `inst` is a alias name of `install`
+		# Example 03, by default, the prefix of table is module name
+		#
+		# 	$ 3s g inst demo_post
+		#
+		# Example 04, create many records at one time
+		#
+		# 	$ 3s g inst demo_post -3
 		#
 		def g_install args
-			module_name = args.shift(1)[0]
+			args, opts	= Simrb.input_format args
+			module_name = args[0].split("_").first
+			record_num	= 2
+			res 		= ""
+
+			# has it specify the module name, or record number ?
+			unless opts.empty?
+				opts.keys.each do | k |
+					if k.to_s.to_i == 0
+						module_name = k
+					else
+						record_num	= k.to_s.to_i
+					end
+				end
+			end
+
 			table_name	= args.shift(1)[0]
 			path 		= system_add_suffix "#{Spath[:module]}#{module_name}#{Spath[:install]}#{table_name}"
-			res 		= ""
 
 			# default value of given by command arguments
 			resh 		= {}
@@ -292,15 +317,15 @@ module Simrb
 
 			_data_format(table_name).each do | k, v |
 				if v.include? :primary_key
-				elsif [:created, :changed, :uid, :parent].include? k
+				elsif [:created, :changed, :parent].include? k
 				else
 					v[:default] = resh[k] if resh.include? k
 					res << "  #{k.to_s.ljust(15)}: #{v[:default]}\n"
 				end
 			end
 
-			res[0] = '-'
-			res = "---\n#{res}\n"
+			res[0]	= "-"
+			res 	= "---\n" + "#{res}\n"*record_num
 			Simrb.path_init path, res
 
 			# display the result
@@ -397,7 +422,7 @@ module Simrb
 		#
 		# 	$ 3s g lang demo en
 		#
-		# or
+		# or, like this
 		#
 		# 	$ 3s g lang demo jp
 		# 	$ 3s g lang demo cn
@@ -430,17 +455,17 @@ module Simrb
 							old_path = path
 							resp << "\nExtracting from: #{old_path}"
 						end
-						resp << "\n=> #{name}"
+						resp << "\n#{name.ljust(20)} : #{name}"
 					end
 				end
 			end
 
 			# write content to file
 			unless res.empty?
-				path = "#{Spath[:module]}#{module_name}#{Spath[:lang]}#{module_name}#{(dirs.count + 1)}.#{lang}"
+				path 	= "#{Spath[:module]}#{module_name}#{Spath[:lang]}#{module_name}#{(dirs.count + 1)}.#{lang}"
 				content = ""
 				res.each do | k, v |
-					content << "#{k}: #{v}\n"
+					content << "#{k.ljust(20)}: #{v}\n"
 				end
 				content = "---\n#{content}"
 
