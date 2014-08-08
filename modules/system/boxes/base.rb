@@ -47,15 +47,18 @@ module Simrb
 			args = Smodules if args.empty?
 
 			# step 1, run migration files
-			db args
+			puts db(args)
 
 			# step 2, run the gemfile
 			args.each do | module_name |
-				path = "modules/#{module_name}#{Spath[:gemfile]}"
+				path = "#{Spath[:module]}#{module_name}#{Spath[:gemfile]}"
 				if File.exist? path
 					`bundle install --gemfile=#{path}`
 				end
 			end
+
+			puts "Implemented the bundle install complete"
+			puts "Starting to submit data of installing directory to database"
 
 			# step 3, submit the data to database
 			args.each do | module_name |
