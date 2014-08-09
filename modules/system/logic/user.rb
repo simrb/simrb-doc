@@ -180,7 +180,7 @@ helpers do
 	def _user_add argv = {}
 		f				= {}
 		f[:tag]			= argv[:tag] if argv.include?(:tag)
-		f[:salt] 		= _random_string 5
+		f[:salt] 		= _random 5
 
 		#username
 		_throw Sl[:'the user is existing'] if _user? f[:name]

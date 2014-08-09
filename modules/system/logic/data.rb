@@ -131,7 +131,7 @@ data :_user do
 		},
 		:salt				=>	{
 			:size			=>	5,
-			:default		=>	_random_string(5),
+			:default		=>	_random(5),
 		},
 		:level				=>	{
 			:default		=>	1,

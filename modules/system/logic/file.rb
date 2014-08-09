@@ -91,7 +91,7 @@ helpers do
 		fields[:name] 		= file[:filename].split('.').first
 		fields[:created]	= Time.now
 		fields[:type]		= file[:type]
-		fields[:path] 		= "#{_user[:uid]}-#{fields[:created].to_i}#{_random_string(3)}"
+		fields[:path] 		= "#{_user[:uid]}-#{fields[:created].to_i}#{_random(3)}"
 
 		#validate file specification
 		unless _var(:filetype, :file).include? file[:type]
