@@ -7,7 +7,8 @@
  * js
  * 		== _js("system/js/select.js")
  *
- * /
+ */
+
 
 //display a menu , return the name be chosen with mouse
 function linyu_select(data, $this, options) {

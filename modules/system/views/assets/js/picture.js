@@ -6,7 +6,7 @@
  *
  * js
  * 		== _js("system/js/picture.js")
- * /
+ */
 
 
 (function($){

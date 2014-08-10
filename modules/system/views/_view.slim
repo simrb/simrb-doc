@@ -99,10 +99,12 @@ table.table.checkall
 
 
 	- unless @t[:css].empty?
-		link rel='stylesheet' type='text/css' href='#{@t[:css]}'
+		- @t[:css].each do | url |
+			== _css(url)
 
 	- unless @t[:js].empty?
-		script src="#{@t[:js]}"
+		- @t[:js].each do | url |
+			== _js(url)
 
 - if @page_count > 1
 	p.page_bar

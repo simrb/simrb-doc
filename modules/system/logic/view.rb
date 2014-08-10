@@ -94,9 +94,9 @@ helpers do
 	# normal view
 	def _view name, argv = {}
 		@t[:layout]		= false
-		@t[:js]			= _assets('system/js/view.js')
+		@t[:js]			= ['system/js/checkbox.js']
 		@t[:tpl] 		= :_view
-		@t[:css]		= _assets('system/css/view.css')
+		@t[:css]		= ['system/css/view.css']
 		@t[:search_fns]	= :enable
 		@t[:btn_fns] 	= { :create => '_form_' }
 		@t[:opt_fns] 	= { :delete => '_rm_' }
