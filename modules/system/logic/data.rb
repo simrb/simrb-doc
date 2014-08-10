@@ -80,6 +80,9 @@ data :_file do
 	{
 		:fid				=>	{
 			:primary_key	=>	true,
+		},
+		:file_num			=>	{
+			:default		=>	_file_num_generate,
 			:view_type		=>	:img
 		},
 		:uid				=>	{

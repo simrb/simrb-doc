@@ -37,6 +37,7 @@ Sequel.migration do
 		create_table(:_file) do
 			primary_key :fid
 			Fixnum :uid
+			String :file_num
 			String :size
 			String :type, :size => 15
 			String :name

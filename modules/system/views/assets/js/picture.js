@@ -79,7 +79,7 @@
 							}
 							else {
 								//picture
-								datas.push('<img style="padding:' + options.img_pad + ';float:left;width:' + options.img_width + ';height:' + options.img_height + ';" src="' + options.file_path + item.fid + '" fid="' + item.fid + '" title="' + item.name + '"  />');
+								datas.push('<img style="padding:' + options.img_pad + ';float:left;width:' + options.img_width + ';height:' + options.img_height + ';" src="' + options.file_path + item.file_num + '" file_num="' + item.file_num + '" title="' + item.name + '"  />');
 							}
 						});
 
@@ -87,10 +87,10 @@
 						$('.ly_picture_view').html(datas.join('') + page_bar);
 
 						//add event
-						//insert fid to picture text
+						//insert file_num to picture text
 						$('.ly_picture_view img').click(function(){
-							var fid = $(this).attr("fid");
-							$(this).parent().prev().prev().val(fid);
+							var file_num = $(this).attr("file_num");
+							$(this).parent().prev().prev().val(file_num);
 						});
 
 						//add event

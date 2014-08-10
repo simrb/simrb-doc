@@ -49,15 +49,15 @@ get '/_file/type/:type' do
 	end
 
 	unless ds.empty?
-		ds = ds.select(:fid, :name, :type).reverse_order(:fid)
-		Sequel.extension :pagination
-		result = ds.paginate(page_curr, page_size, ds.count)
-		page_count = result.page_count
+		ds 			= ds.select(:fid, :name, :type, :file_num).reverse_order(:fid)
+		ds 			= ds.extension :pagination
+		ds 			= ds.paginate(page_curr, page_size, ds.count)
 
-		page_prev = (page_curr > 1 and page_curr <= page_count) ? (page_curr - 1) : 0
-		page_next = (page_curr > 0 and page_curr < page_count) ? (page_curr + 1) : 0
+		page_count 	= ds.page_count
+		page_prev 	= (page_curr > 1 and page_curr <= page_count) ? (page_curr - 1) : 0
+		page_next 	= (page_curr > 0 and page_curr < page_count) ? (page_curr + 1) : 0
 
-		res = result.all
+		res 		= ds.all
 		res.unshift({:prev => page_prev, :next => page_next, :size => page_count, :curr => page_curr})
 
 		require 'json'
@@ -67,14 +67,15 @@ get '/_file/type/:type' do
 	end
 end
 
-#get the file by id
-get '/_file/get/:fid' do
-	fid = params[:fid].to_i
-	ds = Sdb[:_file].filter(:fid => fid)
+# get the file by file_num
+get '/_file/get/:file_num' do
+	ds = Sdb[:_file].filter(:file_num => params[:file_num])
 	unless ds.empty?
 		send_file Spath[:upload_dir] + ds.get(:path).to_s, :type => ds.get(:type).split('/').last.to_sym
 	else
-		send_file "#{Spath[:public]}images/default.jpg", :type => :jpeg
+		module_name = "system"
+		path = "#{Spath[:module]}#{module_name}#{Spath[:assets]}images/default.jpg"
+		send_file path, :type => :jpeg
 	end
 end
 
@@ -85,15 +86,17 @@ helpers do
 	# == Arguments
 	# file, 		filename, tempfile
 	# returned, 	return file info by the symbol you pass
+	#
 	def _file_save file, returned = nil
 		fields = {}
 		fields[:uid] 		= _user[:uid]
+		fields[:file_num] 	= _file_num_generate
 		fields[:name] 		= file[:filename].split('.').first
 		fields[:created]	= Time.now
 		fields[:type]		= file[:type]
 		fields[:path] 		= "#{_user[:uid]}-#{fields[:created].to_i}#{_random(3)}"
 
-		#validate file specification
+		# validate file specification
 		unless _var(:filetype, :file).include? file[:type]
 			_throw Sl[:'the file type is wrong']
 		end
@@ -102,16 +105,16 @@ helpers do
 			_throw Sl[:'the file size is too big']
 		end
 
-		#save the info of file
-		#table = file[:table] ? file[:table].to_sym : :file
+		# save the info of file
+		# table = file[:table] ? file[:table].to_sym : :file
 		Sdb[:_file].insert(fields)
 
-		#save the body of file
+		# save the body of file
 		File.open(Spath[:upload_dir] + fields[:path], 'w+') do | f |
 			f.write file_content
 		end
 
-		#return the value
+		# return the value
 		unless returned == nil
 			Sdb[:_file].filter(fields).get(returned)
 		end
@@ -134,6 +137,11 @@ helpers do
 			#remove file
 			File.delete Spath[:upload_dir] + path
 		end
+	end
+
+	# create a random number for file
+	def _file_num_generate
+		_random(6) + "#{_user[:uid]}"
 	end
 
 	# generate the assets url

@@ -282,7 +282,7 @@ function linyu_insert_to_textarea(opt) {
 						datas.push('<tr><td>name</td><td>type</td></tr>');
 						$.each(data, function(index, item){
 							var type = item.type.split('/')
-							datas.push('<tr><td class="name" href="' + config.file_path + item.fid + '">' + item.name + '</td><td class="type">' + item.type + '</td></tr>');
+							datas.push('<tr><td class="name" href="' + config.file_path + item.file_num + '">' + item.name + '</td><td class="type">' + item.type + '</td></tr>');
 						});
 						$('.folder_view').html('<table>' + datas.join('') + '</table>');
 
@@ -338,7 +338,7 @@ function linyu_insert_to_textarea(opt) {
 						var datas = [];
 						$.each(data, function(index, item){
 							var type = item.type.split('/')
-							datas.push('<li><img src="' + config.file_path + item.fid + '" alt="' + item.name + '" title="' + item.name + '"  /></li>');
+							datas.push('<li><img src="' + config.file_path + item.file_num + '" alt="' + item.name + '" title="' + item.name + '"  /></li>');
 						});
 						$('.picture_view').html('<ul>' + datas.join('') + '</ul>');
 						$('.picture_view li img').click(function(){
