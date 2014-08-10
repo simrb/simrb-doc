@@ -8,7 +8,7 @@
  * 			input type="checkbox"
  *
  * js
- * 		== _js("system/js/view.js")
+ * 		== _js("system/js/checkbox.js")
  */
 
 $('.checkall-switch').click(function(){
