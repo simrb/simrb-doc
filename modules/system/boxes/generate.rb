@@ -53,6 +53,10 @@ module Simrb
 		# 		}
 		# 	}
 		#
+		# or, no writing the file, just display the generated content
+		#
+		# 	$ 3s g_data table_name field1 field2 --nw
+		#
 		#
 		# Example 02, specify the field type, by default, that is string
 		#
@@ -87,7 +91,7 @@ module Simrb
 		def g_data args = []
 			args, opts	= Simrb.input_format args
 			auto		= opts[:auto] ? true : false
-			write_file	= opts[:nowf] ? false : true
+			write_file	= opts[:nw] ? false : true
  			has_pk 		= false
 			table 		= args.shift
 			module_name = opts[:module] || (table.index('_') ? table.split('_').first : table)
@@ -187,7 +191,8 @@ module Simrb
 			# write content to data.rb
 			res 	= system_data_to_str table, data
 			path 	= "#{Spath[:module]}#{module_name}/data.rb"
-			if write_file == true
+
+			if write_file
 				Simrb.path_init path
 				File.open(path, 'a') do | f |
 					f.write res
@@ -195,7 +200,7 @@ module Simrb
  			end
 
 			# display result
-			"The following content is generated at #{path} \n\n" << res
+			"The following content would be generated at #{path} \n\n" << res
 		end
 
 		# generate the migration file by a gvied module name
@@ -204,7 +209,14 @@ module Simrb
 		#
 		# 	$ 3s g_m demo
 		#
+		# or, no writing the file, just display the generated content
+		#
+		# 	$ 3s g_m demo --nw
+		#
 		def g_migration args
+			args, opts		= Simrb.input_format args
+			write_file		= opts[:nw] ? false : true
+
 			if args.empty?
 				Simrb.p "no module name given", :exit
 			else
@@ -253,7 +265,7 @@ module Simrb
 			end
 
 			# write result to the migration file
-			if res != ''
+			if write_file
 				dir 	= "#{Spath[:module]}#{module_name}#{Spath[:schema]}"
 				count 	= Dir[dir + "*"].count + 1
 				fname 	= args[1] ? args[1] : "#{operations.join('_')}_#{Time.now.strftime('%y%m%d')}" 
@@ -264,7 +276,7 @@ module Simrb
 			end
 
 			# display result
-			"The following content is generated at #{path} \n\n" << res
+			"The following content would be generated at #{path} \n\n" << res
 		end
 
 		# generate a file in installed dir
@@ -272,8 +284,10 @@ module Simrb
 		# == Example
 		#
 		# Example 01, the option starts with `--` that is module name
+		# or, no writing the file, just display the generated content
 		#
 		# 	$ 3s g install --demo _menu
+		# 	$ 3s g install --demo _menu --nw
 		# 	$ 3s g install --demo _menu name:myMenu link:myLink 
 		#
 		# Example 02, `inst` is a alias name of `install`
@@ -291,11 +305,18 @@ module Simrb
 		def g_install args
 			args, opts	= Simrb.input_format args
 			module_name = args[0].split("_").first
+			write_file	= true
 			record_num	= 2
 			res 		= ""
 
-			# has it specify the module name, or record number ?
+			# does it have specified the module name, 
+			# or how many the number of records ?
 			unless opts.empty?
+				if opts[:nw]
+					write_file = false
+					opts.delete :nw
+				end
+
 				opts.keys.each do | k |
 					if k.to_s.to_i == 0
 						module_name = k
@@ -326,10 +347,13 @@ module Simrb
 
 			res[0]	= "-"
 			res 	= "---\n" + "#{res}\n"*record_num
-			Simrb.path_init path, res
+
+			if write_file
+				Simrb.path_init path, res
+			end
 
 			# display the result
-			"The following content is generated at #{path} \n\n" << res
+			"The following content would be generated at #{path} \n\n" << res
 		end
 
 		# generate a list of administration menu of background to installs dir,
@@ -367,7 +391,7 @@ module Simrb
 			Simrb.path_init path, "---\n#{res}"
 
 			# display the result
-			"The following content is generated at #{path} \n\n" << res
+			"The following content would be generated at #{path} \n\n" << res
 		end
 
 		# generate view files
@@ -402,7 +426,7 @@ module Simrb
 			res		= ""
 			resh 	= system_generate_tpl args
 			resh.each do | k, v |
-				res << "The following content is generated at #{k} \n\n#{v}"
+				res << "The following content would be generated at #{k} \n\n#{v}"
 			end
 			res 
 		end
@@ -411,7 +435,7 @@ module Simrb
 			args += ['helper', 'layout2', 'css', 'js']
 			system_generate_tpl args
 			resh.each do | k, v |
-				res << "The following content is generated at #{k} \n\n#{v}"
+				res << "The following content would be generated at #{k} \n\n#{v}"
 			end
 			res 
 		end
@@ -428,7 +452,13 @@ module Simrb
 		# 	$ 3s g lang demo cn
 		# 	$ 3s g lang demo de
 		#
+		# or, just display the result rather than write result to file
+		#
+		# 	$ 3s g lang demo en --nw
+		#
 		def g_lang args = []
+			args, opts	= Simrb.input_format args
+			write_file	= opts[:nw] ? false : true
 			module_name = args.shift(1)[0]
 			lang		= args[0] ? args[0] : Scfg[:lang]
 			dirs		= Dir["#{Spath[:module]}#{module_name}#{Spath[:lang]}*.#{lang}"]
@@ -453,7 +483,7 @@ module Simrb
 						res[name] = name
 						unless old_path == path
 							old_path = path
-							resp << "\nExtracting from: #{old_path}"
+							resp << "\n\nExtracting from: #{old_path}"
 						end
 						resp << "\n#{name.ljust(20)} : #{name}"
 					end
@@ -469,10 +499,12 @@ module Simrb
 				end
 				content = "---\n#{content}"
 
-				Simrb.path_init path, content
+				if write_file
+					Simrb.path_init path, content
+				end
 			end
 
-			"The following content is generated \n #{resp}"
+			"The following content would be generated at #{path} #{resp}"
 		end
 
 	end
