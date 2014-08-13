@@ -58,8 +58,8 @@ helpers do
 		t[:name] 		= name.to_sym
 		t[:conditions]	||= {}
 
-		# datas is a table schema, see _schema method
-		@data 			= _schema t[:name]
+		# datas is a table schema, see _data_schema method
+		@data 			= _data_schema t[:name]
 		t[:data]		||= @data[:data]
 		t[:pk] 			||= @data[:pk]
 
@@ -137,8 +137,10 @@ helpers do
 	# @f is a key-val hash of field that would be submit to db
 	#
 	# == Arguments
+	#
 	# data,   a key-value hash that stores field name and value
 	# fields, specify some fields to assign value
+	#
 	def _set_f data, fields
 		res = {}
 		fields.each do | k |
@@ -168,10 +170,11 @@ helpers do
 		Sdata[name] ? Sdata[name].map { |b| instance_eval(&b) }.inject(:merge) : []
 	end
 
-	# set the form_type of field for template, 
-	# and return data block, fields, primary_key, kv
+	# return a entire schema of data that includes the form_type of field for template, 
+	# data block, field keys, primary_key, an key-val hash of field
 	#
 	# == Returned
+	#
 	# table/data block defined schema
 	# all of field names
 	# primary_key of field
@@ -179,17 +182,18 @@ helpers do
 	#
 	# == Example
 	#
-	# 	_schema :user
+	# 	_data_schema :user
 	#
 	# output
 	# 
 	# {
-	# 	:data => {:uid => {:default => 0, :type => 'Fixnum' ,,,}, :name => {:default => '', ,,,}}, 
+	# 	:data 	=> {:uid => {:default => 0, :type => 'Fixnum' ,,,}, :name => {:default => '', ,,,}}, 
 	# 	:fields => [:uid, :name, :pawd, :level ,,,],
-	# 	:pk => :uid, 
-	# 	:fkv => {:uid => 0, :name => '', :pawd => '123456' ,,,}
+	# 	:pk 	=> :uid, 
+	# 	:fkv 	=> {:uid => 0, :name => '', :pawd => '123456' ,,,}
 	# }
-	def _schema name
+	# `
+	def _data_schema name
 		#wait to build cache
 		pk 		= nil
 		fields 	= []
