@@ -70,18 +70,20 @@ module Simrb
 		#
 		# == Example
 		#
-		# 	system_get_data_block "demo"
+		# 	system_get_data_names "demo"
 		#
-		def system_get_data_block name = 'system'
-			tables = []
-			name = '' if name == 'system'
+		def system_get_data_names module_name = 'system', data = []
+			tables 		= []
+			module_name = '' if module_name == 'system'
+			data 		= Sdata.keys if data.empty?
+			data.map{ |t| ((t.to_s.index("#{module_name}_") == 0) or (t.to_s == module_name)) ? t : nil }.uniq[1..-1]
 
-			Sdata.keys.each do | key |
-				if key.to_s.start_with?("#{name}_") or key.to_s == name
-					tables << key 
-				end
-			end
-			tables.uniq
+# 			Sdata.keys.each do | key |
+# 				if key.to_s.start_with?("#{name}_") or key.to_s == name
+# 					tables << key 
+# 				end
+# 			end
+# 			tables.uniq
 		end
 
 		# add the number suffix for path
@@ -207,6 +209,25 @@ module Simrb
 		# generate the migration dropped, as the system_generate_migration_created
 		def system_generate_migration_drop tables = []
 			"\t\tdrop_table(:#{tables.join(', :')})\n"
+		end
+
+		# generate the migration altered
+		def system_generate_migration_altered table, data
+			res = ""
+
+			p table
+			p data
+			data.each do | key, val |
+				val.each do | item |
+					res << "\t\t\t"
+					res << "#{key} "
+					res << ":#{item.shift(1)[0]}"
+					res << ", #{item[0]}" unless item.empty?
+					res << "\n"
+				end
+			end
+
+			res = "\t\talter_table(:#{table}) do\n#{res}\t\tend\n"
 		end
 
 		# match the language sentence with regular expression

@@ -207,11 +207,11 @@ module Simrb
 		#
 		# == Examples
 		#
-		# 	$ 3s g_m demo
+		# 	$ 3s g m demo
 		#
 		# or, no writing the file, just display the generated content
 		#
-		# 	$ 3s g_m demo --nw
+		# 	$ 3s g m demo --nw
 		#
 		def g_migration args
 			args, opts		= Simrb.input_format args
@@ -225,53 +225,83 @@ module Simrb
 
 			res				= ''
 			operations		= []
-			db_tables 		= Sdb.tables
 			create_tables 	= []
 			drop_tables		= []
-			alter_tables	= []
-			data_tables 	= system_get_data_block module_name
+			alter_tables	= {}
+			origin_tables 	= system_get_data_names module_name, Sdb.tables
+			current_data 	= system_get_data_names module_name
+			all_tables		= (origin_tables + current_data).uniq
 
-			# create tables
-			data_tables.each do | table |
-				create_tables << table unless db_tables.include?(table)
-			end
+			all_tables.each do | table |
+				data = _data_format table
 
-			# drop tables
-			db_tables.each do | table |
-				unless data_tables.include?(table)
-					drop_tables << table if table.to_s.start_with?("#{module_name}_")
+				# altered tables if the change is checked
+				if origin_tables.include?(table) and current_data.include?(table)
 
-				# check it for altering tables
+					current_fields 	= _data_format(table).keys
+					origin_fields	= Sdb[table].columns
+					all_fields		= (current_fields + origin_fields).uniq
+
+					all_fields.each do | field |
+						# altered fields if the change is checked
+						if origin_fields.include?(field) and current_fields.include?(field)
+
+						# removed fields
+						elsif origin_fields.include? field
+							alter_tables[table] ||= {}
+							alter_tables[table][:drop_column] ||= []
+							alter_tables[table][:drop_column] << [field]
+
+						# created fields
+						else
+							alter_tables[table] ||= {}
+							alter_tables[table][:add_column] ||= []
+							alter_tables[table][:add_column] << [field, data[field][:type]]
+						end
+					end
+
+				# dropped tables
+				elsif origin_tables.include?(table)
+					drop_tables << table
+
+				# created tables
 				else
-					data_cols 	= _data(table).keys
-					db_cols		= Sdb[table].columns
+					create_tables << table
 				end
 			end
 
-			# generate result of creating event
+			# generated result about altering operation
+			unless alter_tables.empty?
+				operations << :altered
+				alter_tables.each do | table, data |
+					res << system_generate_migration_altered(table, data)
+				end
+			end
+
+			# generated result about creating operation
 			unless create_tables.empty?
-				operations << :create
+				operations << :created
 				create_tables.each do | table |
 					res << system_generate_migration_created(table)
 				end
 			end
 
-			# generate result of drop event
+			# generated result about dropping operation
 			unless drop_tables.empty?
-				operations << :drop
+				operations << :dropped
 				drop_tables.each do | table |
 					res << system_generate_migration_drop(table)
 				end
 			end
 
+			dir 	= "#{Spath[:module]}#{module_name}#{Spath[:schema]}"
+			count 	= Dir[dir + "*"].count + 1
+			fname 	= args[1] ? args[1] : "#{operations.join('_')}_#{Time.now.strftime('%y%m%d')}" 
+			path 	= "#{dir}#{count.to_s.rjust(3, '0')}_#{fname}.rb"
+			res		= "Sequel.migration do\n\tchange do\n#{res}\tend\nend\n"
+
 			# write result to the migration file
 			if write_file
-				dir 	= "#{Spath[:module]}#{module_name}#{Spath[:schema]}"
-				count 	= Dir[dir + "*"].count + 1
-				fname 	= args[1] ? args[1] : "#{operations.join('_')}_#{Time.now.strftime('%y%m%d')}" 
-				path 	= "#{dir}#{count.to_s.rjust(3, '0')}_#{fname}.rb"
-				res		= "Sequel.migration do\n\tchange do\n#{res}\tend\nend\n"
-
 				Simrb.path_init path, res
 			end
 
@@ -371,7 +401,7 @@ module Simrb
 				{name: module_name, link: "/_admin/info/#{module_name}", tag: 'admin'},
 			]
 
-			system_get_data_block(module_name).each do | name |
+			system_get_data_names(module_name).each do | name |
 				menu_name = name.to_s
 				menu_name = menu_name.index("_") ? menu_name.split("_")[1..-1].join(" ") : menu_name
 				menu_data << {name: menu_name, link: "/_admin/view/#{name}", parent: module_name, tag: 'admin'}
